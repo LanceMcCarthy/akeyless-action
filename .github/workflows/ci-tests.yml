@@ -59,8 +59,19 @@ jobs:
       run: |
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
 
-        MY_VALS=${{ steps.fetch-dynamic-secrets-no-var.outputs.my_dynamic_secret }}
-        echo $MY_VALS.id
-        echo $MY_VALS.user
-        echo $MY_VALS.password
-        echo $MY_VALS.ttl_in_minutes
+        echo ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}["id"]
+        echo ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}["user"]
+        echo ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}["password"]
+        echo ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}["ttl_in_minutes"]
+
+        MY_DICT=${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}
+        echo $MY_DICT["id"]
+        echo $MY_DICT["user"]
+        echo $MY_DICT["password"]
+        echo $MY_DICT["ttl_in_minutes"]
+
+        MY_JSON=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs.my_dynamic_secret }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+        echo $MY_JSON["id"]
+        echo $MY_JSON["user"]
+        echo $MY_JSON["password"]
+        echo $MY_JSON["ttl_in_minutes"]
