@@ -31,7 +31,36 @@ jobs:
         echo "[static] Your output secret is ${{ steps.fetch-static-secrets.my_static_secret }}"
         echo "[static] Your environment secret is ${{ env.my_static_secret }}"
 
-  fetch_dynamic_secrets:
+  fetch_aws_dynamic_secrets:
+    runs-on: ubuntu-latest
+    name: Fetch AWS dynamic secrets
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secrets from AKeyless
+      id: fetch-dynamic-secrets
+      uses: ./
+      with:
+        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }} # Looks like p-fq3afjjxv839
+        dynamic-secrets: '{"/DevTools/test-grib":"aws_dynamic_secrets"}'
+        export-secrets-to-outputs: true
+        export-secrets-to-environment: true
+        
+    - name: Verify Environment Variables output
+      run: |
+        echo "[Env Var] Your environment secret is ${{ env.aws_dynamic_secrets }}"
+
+    - name: Verify Job Outputs
+      run: |
+        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets }}"
+
+  fetch_sql_dynamic_secrets:
     runs-on: ubuntu-latest
     name: Fetch dynamic secrets
     permissions:
