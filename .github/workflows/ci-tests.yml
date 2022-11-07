@@ -53,12 +53,18 @@ jobs:
         export-secrets-to-environment: true
         
     - name: Verify Environment Variables
-      run: echo "[Env Var] Your environment secret is ${{ env.my_dynamic_secret }}"
+      run: |
+        echo "[Env Var] Your environment secret is ${{ env.my_dynamic_secret }}"
+        echo ${{ env.my_dynamic_secret }}.id
+        echo ${{ env.my_dynamic_secret }}.user
+        echo ${{ env.my_dynamic_secret }}.password
+        echo ${{ env.my_dynamic_secret }}.ttl_in_minutes
+
 
     - name: Verify Job Outputs
       run: |
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
         # jq should already be installed on the runner
-
-        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]'
+        # echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("\(.key) = \(.value|tostring)")|.[]'
+        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("\(.key) = \(.value|tostring)")|.[]' >> $GITHUB_ENV
 
