@@ -57,8 +57,8 @@ jobs:
 
     - name: Verify Job Outputs
       run: |
-      MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
-      echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
+        MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
 
 
     - name: Fetch dynamic secrets with no output path
