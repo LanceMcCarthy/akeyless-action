@@ -52,10 +52,23 @@ jobs:
         export-secrets-to-outputs: true
         export-secrets-to-environment: true
         
-    - name: Verify Environment Variables output
-      run: |
-        echo "[Env Var] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
+    - name: Verify Environment Variables
+      run: echo "[Env Var] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
 
     - name: Verify Job Outputs
+      run: echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.dynamic_sqlsrv_secret }}"
+
+
+    - name: Fetch dynamic secrets with no output path
+      id: fetch-dynamic-secrets-no-var
+      uses: ./
+      with:
+        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret"}'
+        export-secrets-to-outputs: true
+        export-secrets-to-environment: false
+
+    - name: Verify No-Var Job Outputs
       run: |
-        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.dynamic_sqlsrv_secret }}"
+        MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+        #echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets-no-var.outputs }}"
