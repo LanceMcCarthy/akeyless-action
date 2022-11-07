@@ -55,20 +55,27 @@ jobs:
     - name: Verify Fetch Job Environment Variables
       run: |
         echo "[Env Var] Your environment secret is ${{ env.my_dynamic_secret }}"
+        
+        echo "ID:"
         echo '${{ env.my_dynamic_secret }}' | jq '.id'
+        echo "TTL_IN_MINUTES:"
         echo '${{ env.my_dynamic_secret }}' | jq '.ttl_in_minutes'
+        echo "USER:"
         echo '${{ env.my_dynamic_secret }}' | jq '.user'
+        echo "PASSWORD:"
         echo '${{ env.my_dynamic_secret }}' | jq '.password'
-
 
     - name: Verify Fetch Job Outputs
       run: |
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
         # jq should already be installed on the runner
-        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key) = \(.value|tostring)")|.[]'
-        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key) = \(.value|tostring)")|.[]' >> $GITHUB_ENV
-
-    - name: Confirm GitHub runner Env Vars
+        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key)=\(.value|tostring)")|.[]'
+        echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+    
+    - name: Custom A - Export Job Outputs to Separate GitHub Runner Env Vars
+      run: echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+    
+    - name: Cusotm B - Confirm GitHub Runner Env Vars
       run: |
         echo "AKEYLESS_id = ${{ env.AKEYLESS_id }}"
         echo "AKEYLESS_user = ${{ env.AKEYLESS_user }}"
