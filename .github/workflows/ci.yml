@@ -54,5 +54,5 @@ jobs:
         
     - name: Verify dynamic secrets output
       run: |
-        echo "[dynamic] Your output secret is ${{ steps.fetch-dynamic-secrets.dynamic_sqlsrv_secret }}"
+        echo "[dynamic] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs }}"
         echo "[dynamic] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
