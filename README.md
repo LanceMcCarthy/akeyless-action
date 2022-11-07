@@ -5,12 +5,16 @@
 This action will login to AKeyless using JWT or IAM authentication and then fetch secrets and/or provision AWS access via a dynamic producer.
 
 - [AKeyless GitHub Action](#akeyless-github-action)
-  - [Inputs](#inputs)
-  - [Outputs](#outputs)
-  - [Job Permissions Requirement](#job-permissions-requirement)
-- [AKeyless Setup](#akeyless-setup)
-  - [Authentication Methods](#authentication-methods)
-  - [Setting up JWT Auth](#setting-up-jwt-auth)
+    - [Inputs](#inputs)
+    - [Outputs](#outputs)
+    - [Job Permissions Requirement](#job-permissions-requirement)
+  - [AKeyless Setup](#akeyless-setup)
+    - [Authentication Methods](#authentication-methods)
+    - [Setting up JWT Auth](#setting-up-jwt-auth)
+  - [Examples](#examples)
+    - [Static Secrets Demo](#static-secrets-demo)
+    - [Dynamic Secrets Example](#dynamic-secrets-example)
+  - [Feature Requests & Issues](#feature-requests--issues)
 
 ### Inputs
 
@@ -88,7 +92,7 @@ repository=octo-org/octo-repo
 ref=refs/heads/main
 ```
 
-## Example
+## Examples
 
 Here are some examples you can use for guidance:
 
@@ -96,6 +100,7 @@ Here are some examples you can use for guidance:
 - This Action's CI validation workflow at [LanceMcCarthy/akeyless-action => workflows/ci.yml](https://github.com/LanceMcCarthy/akeyless-action/blob/main/.github/workflows/ci.yml).
 - Use the YAML snippet below for a quick start:
 
+### Static Secrets Demo
 ```
 jobs:
   fetch_secrets:
@@ -127,6 +132,51 @@ jobs:
         echo "my_second_secret: ${{ env.my_second_secret }}"
         echo "my_dynamic_secret: ${{ env.my_dynamic_secret }}"
 ```
+
+### Dynamic Secrets Example
+
+The key difference with dynamic secrets is the output value is typcially a json array. If you want those secrets as separate environment variables, there's one extra step to take. See the `KEY TAKEAWAY` section in the following example.
+
+```yaml
+  fetch_aws_dynamic_secrets:
+    runs-on: ubuntu-latest
+    name: Fetch AWS dynamic secrets
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secrets from AKeyless
+      id: fetch-dynamic-secrets
+      uses: ./
+      with:
+        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }} # Looks like p-fq3afjjxv839
+        dynamic-secrets: '{"/DevTools/test-grib":"aws_dynamic_secrets"}'
+        
+    # **** KEY TAKEAWAY - EXPORT EVERY DYNAMIC SECRET VALUE AS ENV VARS *****
+    - name: Export Secrets to Environment
+      run: |
+        echo '${{ steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets }}' | jq -r 'to_entries|map("AWS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+
+    # You can now access each secret separately as environment variables
+    - name: Verify Vars
+      run: |
+        echo "access_key_id: ${{ env.AWS_access_key_id }}"
+        echo "id: ${{ env.AWS_id }}"
+        echo "secret_access_key: ${{ env.AWS_secret_access_key }}"
+        echo "security_token: ${{ env.AWS_security_token }}"
+        echo "ttl_in_minutes: ${{ env.AWS_ttl_in_minutes }}"
+        echo "type: ${{ env.AWS_type }}"
+        echo "user: ${{ env.AWS_user }}"
+```
+
+Here's a screenshot from an example workflow.  Notice how you can now access every separate dynamic secret vis it's expected keyname:
+
+![dyn-secrets-out-highlighted](https://user-images.githubusercontent.com/3520532/200424232-d52d0896-cabb-4ff1-bef3-76652c5ac469.png)
 
 ## Feature Requests & Issues
 
