@@ -49,20 +49,23 @@ jobs:
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }} # Looks like p-fq3afjjxv839
         dynamic-secrets: '{"/DevTools/test-grib":"aws_dynamic_secrets"}'
-        export-secrets-to-outputs: true
-        export-secrets-to-environment: true
         
-    - name: Verify Environment Variables output
-      run: |
-        echo "[Env Var] Your environment secret is ${{ env.aws_dynamic_secrets }}"
+    - name: Export Secrets to Environment
+      run: echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AWS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
 
-    - name: Verify Job Outputs
+    - name: Verify Vars
       run: |
-        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets }}"
+        echo "access_key_id: ${{ env.AWS_access_key_id }}"
+        echo "id: ${{ env.AWS_id }}"
+        echo "secret_access_key: ${{ env.AWS_secret_access_key }}"
+        echo "security_token: ${{ env.AWS_security_token }}"
+        echo "ttl_in_minutes: ${{ env.AWS_ttl_in_minutes }}"
+        echo "type: ${{ env.AWS_type }}"
+        echo "user: ${{ env.AWS_user }}"
 
   fetch_sql_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Fetch dynamic secrets
+    name: Fetch SQL dynamic secrets
     permissions:
       id-token: write
       contents: read
