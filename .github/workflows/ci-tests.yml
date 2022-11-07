@@ -57,20 +57,10 @@ jobs:
 
     - name: Verify Job Outputs
       run: |
-        MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
 
-
-    - name: Fetch dynamic secrets with no output path
-      id: fetch-dynamic-secrets-no-var
-      uses: ./
-      with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret" : ""}'
-        export-secrets-to-outputs: true
-        export-secrets-to-environment: false
-
-    - name: Verify No-Var Job Outputs
-      run: |
-        #MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
-        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets-no-var.outputs }}"
+        MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs.my_dynamic_secret }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+        echo $MY_VALS.id
+        echo $MY_VALS.user
+        echo $MY_VALS.password
+        echo $MY_VALS.ttl_in_minutes
