@@ -33,7 +33,7 @@ jobs:
 
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Fetch dynamic secrets (sqlserver)
+    name: Fetch dynamic secrets
     permissions:
       id-token: write
       contents: read
@@ -48,15 +48,17 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"dynamic_sqlsrv_secret"}'
+        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"my_dynamic_secret"}'
         export-secrets-to-outputs: true
         export-secrets-to-environment: true
         
     - name: Verify Environment Variables
-      run: echo "[Env Var] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
+      run: echo "[Env Var] Your environment secret is ${{ env.my_dynamic_secret }}"
 
     - name: Verify Job Outputs
-      run: echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.dynamic_sqlsrv_secret }}"
+      run: |
+      MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+      echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
 
 
     - name: Fetch dynamic secrets with no output path
@@ -64,7 +66,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret"}'
+        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret" : ""}'
         export-secrets-to-outputs: true
         export-secrets-to-environment: false
 
