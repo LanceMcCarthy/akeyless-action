@@ -59,7 +59,7 @@ jobs:
       run: |
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
 
-        MY_VALS=$(echo ${{ steps.fetch-dynamic-secrets-no-var.outputs.my_dynamic_secret }} | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]')
+        MY_VALS=${{ steps.fetch-dynamic-secrets-no-var.outputs.my_dynamic_secret }}
         echo $MY_VALS.id
         echo $MY_VALS.user
         echo $MY_VALS.password
