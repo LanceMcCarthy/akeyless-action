@@ -58,8 +58,7 @@ jobs:
     - name: Verify Job Outputs
       run: |
         echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}"
-
-        apt install jq
+        # jq should already be installed on the runner
 
         echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("\(.key)=\(.value|tostring)")|.[]'
 
