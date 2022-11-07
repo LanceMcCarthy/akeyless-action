@@ -51,7 +51,8 @@ jobs:
         dynamic-secrets: '{"/DevTools/test-grib":"aws_dynamic_secrets"}'
         
     - name: Export Secrets to Environment
-      run: echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AWS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+      run: |
+        echo '${{ steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets }}' | jq -r 'to_entries|map("AWS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
 
     - name: Verify Vars
       run: |
