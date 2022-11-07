@@ -33,7 +33,7 @@ jobs:
 
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Fetch SQL Server dynamic secrets
+    name: Fetch dynamic secrets (sqlserver)
     permissions:
       id-token: write
       contents: read
@@ -52,7 +52,10 @@ jobs:
         export-secrets-to-outputs: true
         export-secrets-to-environment: true
         
-    - name: Verify dynamic secrets output
+    - name: Verify Environment Variables output
       run: |
-        echo "[dynamic] Your output secret is ${{ steps.fetch-dynamic-secrets.dynamic_sqlsrv_secret }}"
-        echo "[dynamic] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
+        echo "[Env Var] Your environment secret is ${{ env.dynamic_sqlsrv_secret }}"
+
+    - name: Verify Job Outputs
+      run: |
+        echo "[Job Output] Your output secret is ${{ steps.fetch-dynamic-secrets.outputs.dynamic_sqlsrv_secret }}"
