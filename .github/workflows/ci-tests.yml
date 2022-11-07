@@ -68,7 +68,7 @@ jobs:
         echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key) = \(.value|tostring)")|.[]'
         echo '${{ steps.fetch-dynamic-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key) = \(.value|tostring)")|.[]' >> $GITHUB_ENV
 
-    -name: Confirm GitHub runner Env Vars
+    - name: Confirm GitHub runner Env Vars
       run: |
         echo "AKEYLESS_id = ${{ env.AKEYLESS_id }}"
         echo "AKEYLESS_user = ${{ env.AKEYLESS_user }}"
