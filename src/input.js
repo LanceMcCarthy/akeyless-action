@@ -27,7 +27,8 @@ const fetchAndValidateInput = () => {
     staticSecrets: core.getInput('static-secrets'),
     dynamicSecrets: core.getInput('dynamic-secrets'),
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs'),
-    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment')
+    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment'),
+    separateDynamicSecrets: core.getBooleanInput('separate-dynamic-secrets')
   };
   // our only required parameter
   if (!params['accessId']) {

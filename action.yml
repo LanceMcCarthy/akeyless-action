@@ -26,6 +26,10 @@ inputs:
   dynamic-secrets:
     description: 'Dynamic secrets to fetch from AKeyless (should be a dictionary with the secret path as the key and the destination output/ENV as the value).'
     required: false
+  separate-dynamic-secrets:
+    description: 'Dynamic secrets get exported as a single JSON object. This switch will let you get separate output/env variables for each key.'
+    required: false
+    default: false
   export-secrets-to-outputs:
     description: 'Whether or not to export the extracted secrets to job outputs.'
     required: false
