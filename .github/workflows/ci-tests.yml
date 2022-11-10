@@ -2,7 +2,9 @@ name: 'CI Tests'
 
 on:
   push:
-    branches: [ 'investigation/*' ]
+    branches:
+    - 'investigation/*'
+    - 'feature/*'
 
 jobs:
   fetch_static_secrets:
