@@ -29,7 +29,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
         // switch 1
         if (exportSecretsToOutputs) {
-          core.setSecret(dynamicSecret);
+          //core.setSecret(dynamicSecret);
           core.setOutput(variableName, dynamicSecret);
         }
         // switch 2
@@ -38,7 +38,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
             toEnvironment = JSON.stringify(dynamicSecret);
           }
-          core.setSecret(toEnvironment);
+          //core.setSecret(toEnvironment);
           core.exportVariable(variableName, toEnvironment);
         }
       } else {
