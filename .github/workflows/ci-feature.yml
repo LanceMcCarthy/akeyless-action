@@ -79,4 +79,3 @@ jobs:
         echo "USER: ${{ steps.sql-dyn-secrets.outputs.SQL_user }}" 
         echo "TTL_IN_MINUTES: ${{ steps.sql-dyn-secrets.outputs.SQL_ttl_in_minutes }}" 
         echo "PASSWORD: ${{ steps.sql-dyn-secrets.outputs.SQL_password }}"
-
