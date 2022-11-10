@@ -22,42 +22,14 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       }
 
       // Feature Request #11
-      if (separateValues) {
-        // CONDITON 1 - generate separate output/env vars for each value?
-
-        // switch 1
-        for (let key in dynamicSecret) {
-          let value = dynamicSecret[key];
-
-          console.log(`${variableName}_${key}`);
-
-          core.setSecret(key, value);
-          
-          // Swicth 1
-          if(exportSecretsToOutputs) {
-            core.setOutput(`${variableName}_${key}`, value);
-          }
-
-          // Switch 2
-          if (exportSecretsToEnvironment) {
-            core.exportVariable(`${variableName}_${key}`, value);
-          }
-
-
-          if (dynamicSecret.hasOwnProperty(key)) {
-            console.log(`Property ${key} is NOT from prototype chain`);
-          } else {
-            console.log(`Property ${key} is from prototype chain`);
-          }
-        }
-
-
-      } else {
-        // Condition 2 (default) Just export the entire value as one
+      if (separateValues === false) {
+        // **** Condition 1 (DEFAULT BEHAVIOR) ***** //
+        // Just export the entire dynamic secret value as one object
+        // the user can parsw the object in the next step in their workflow
 
         // switch 1
         if (exportSecretsToOutputs) {
-          core.setSecret(variableName, dynamicSecret);
+          core.setSecret(dynamicSecret);
           core.setOutput(variableName, dynamicSecret);
         }
         // switch 2
@@ -66,8 +38,45 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
             toEnvironment = JSON.stringify(dynamicSecret);
           }
-          core.setSecret(variableName, toEnvironment);
+          core.setSecret(toEnvironment);
           core.exportVariable(variableName, toEnvironment);
+        }
+      } else {
+        // **** Condition 2 (FEATURE REQUEST 11) ***** //
+        // Generate separate output/env vars for each value
+        // Must be placed behind feature flag because is a breaking change
+
+        // switch 1
+        for (let key in dynamicSecret) {
+          let value = dynamicSecret[key];
+
+          // TODO 
+          // uncomment for production
+          //core.setSecret(value);
+
+          // The default output/envar name will be the key name
+          let finalVarName = `${key}`;
+
+          // if the user set an output variable name, use it to prefix the output/env var's name
+          if(variableName !== undefined || variableName !== "") {
+            finalVarName = `${variableName}_${key}`;
+          }
+
+          // Switch 1
+          if(exportSecretsToOutputs) {
+            core.setOutput(finalVarName, value);
+          }
+
+          // Switch 2
+          if (exportSecretsToEnvironment) {
+            core.exportVariable(finalVarName, value);
+          }
+
+          if (dynamicSecret.hasOwnProperty(key)) {
+            console.log(`Property ${key} is NOT from prototype chain`);
+          } else {
+            console.log(`Property ${key} is from prototype chain`);
+          }
         }
       }
     } catch (error) {
