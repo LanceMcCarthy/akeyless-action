@@ -1,11 +1,11 @@
-name: 'CI'
+name: 'CI Main'
 
 on:
   push:
     branches: [ 'main' ]
 
 jobs:
-  fetch_static_secrets:
+  static_secrets:
     runs-on: ubuntu-latest
     name: Fetch static secrets
     permissions:
@@ -86,74 +86,75 @@ jobs:
         echo "AKEYLESS_password = ${{ env.AKEYLESS_password }}"
         echo "AKEYLESS_ttl_in_minutes = ${{ env.AKEYLESS_ttl_in_minutes }}"
 
-  dynamic_secrets_separated_without_prefix:
-    runs-on: ubuntu-latest
-    name: Fetch AWS dynamic secrets
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+# to be uncommented once Feature 11 is merged
+  # dynamic_secrets-separate_without_prefix:
+  #   runs-on: ubuntu-latest
+  #   name: Fetch AWS dynamic secrets
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Fetch dynamic secrets from AKeyless (NO PREFIX)
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":""}' # empty output variable name for no-prefix
-        export-secrets-to-outputs: true
-        export-secrets-to-environment: true
-        separate-dynamic-secrets: true # to separate the secrets
+  #   - name: Fetch dynamic secrets from AKeyless (NO PREFIX)
+  #     id: fetch-secrets
+  #     uses: ./
+  #     with:
+  #       access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+  #       dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":""}' # empty output variable name for no-prefix
+  #       export-secrets-to-outputs: true
+  #       export-secrets-to-environment: true
+  #       separate-dynamic-secrets: true # to separate the secrets
         
-    - name: Verify Separate Environment Varables
-      run: |
-        echo "ID: ${{ env.id }}"
-        echo "USER: ${{ env.user }}"
-        echo "TTL_IN_MINUTES: ${{ env.ttl_in_minutes }}"
-        echo "PASSWORD: ${{ env.password }}"
+  #   - name: Verify Separate Environment Varables
+  #     run: |
+  #       echo "ID: ${{ env.id }}"
+  #       echo "USER: ${{ env.user }}"
+  #       echo "TTL_IN_MINUTES: ${{ env.ttl_in_minutes }}"
+  #       echo "PASSWORD: ${{ env.password }}"
 
-    - name: Verify Outputs
-      run: |
-        echo "ID: ${{ steps.fetch-secrets.outputs.id }}" 
-        echo "USER: ${{ steps.fetch-secrets.outputs.user }}" 
-        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}" 
-        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.password }}"
+  #   - name: Verify Outputs
+  #     run: |
+  #       echo "ID: ${{ steps.fetch-secrets.outputs.id }}" 
+  #       echo "USER: ${{ steps.fetch-secrets.outputs.user }}" 
+  #       echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}" 
+  #       echo "PASSWORD: ${{ steps.fetch-secrets.outputs.password }}"
 
-  dynamic_secrets_separated_using_prefix:
-    runs-on: ubuntu-latest
-    name: Fetch SQL dynamic secrets
-    permissions:
-      id-token: write
-      contents: read
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+  # dynamic_secrets-separate_with_prefix:
+  #   runs-on: ubuntu-latest
+  #   name: Fetch SQL dynamic secrets
+  #   permissions:
+  #     id-token: write
+  #     contents: read
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  #     with:
+  #       fetch-depth: 0
 
-    - name: Fetch dynamic secrets from AKeyless ('SQL' PREFIX)
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}' # out variable name becomes a prefix
-        export-secrets-to-outputs: true
-        export-secrets-to-environment: true
-        separate-dynamic-secrets: true # to separate the secrets
+  #   - name: Fetch dynamic secrets from AKeyless ('SQL' PREFIX)
+  #     id: fetch-secrets
+  #     uses: ./
+  #     with:
+  #       access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+  #       dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}' # out variable name becomes a prefix
+  #       export-secrets-to-outputs: true
+  #       export-secrets-to-environment: true
+  #       separate-dynamic-secrets: true # to separate the secrets
         
-    - name: Verify Separated Environment Varables
-      run: |
-        echo "ID: ${{ env.SQL_id }}"
-        echo "USER: ${{ env.SQL_user }}"
-        echo "TTL_IN_MINUTES: ${{ env.SQL_ttl_in_minutes }}"
-        echo "PASSWORD: ${{ env.SQL_password }}"
+  #   - name: Verify Separated Environment Varables
+  #     run: |
+  #       echo "ID: ${{ env.SQL_id }}"
+  #       echo "USER: ${{ env.SQL_user }}"
+  #       echo "TTL_IN_MINUTES: ${{ env.SQL_ttl_in_minutes }}"
+  #       echo "PASSWORD: ${{ env.SQL_password }}"
 
-    - name: Verify Separated Outputs
-      run: |
-        echo "ID: ${{ steps.fetch-secrets.outputs.SQL_id }}" 
-        echo "USER: ${{ steps.fetch-secrets.outputs.SQL_user }}" 
-        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.SQL_ttl_in_minutes }}" 
-        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.SQL_password }}"
+  #   - name: Verify Separated Outputs
+  #     run: |
+  #       echo "ID: ${{ steps.fetch-secrets.outputs.SQL_id }}" 
+  #       echo "USER: ${{ steps.fetch-secrets.outputs.SQL_user }}" 
+  #       echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.SQL_ttl_in_minutes }}" 
+  #       echo "PASSWORD: ${{ steps.fetch-secrets.outputs.SQL_password }}"
