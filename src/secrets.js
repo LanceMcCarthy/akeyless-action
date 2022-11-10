@@ -29,7 +29,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
         // switch 1
         if (exportSecretsToOutputs) {
-          //core.setSecret(dynamicSecret);
+          core.setSecret(dynamicSecret);
           core.setOutput(variableName, dynamicSecret);
         }
         // switch 2
@@ -38,7 +38,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
             toEnvironment = JSON.stringify(dynamicSecret);
           }
-          //core.setSecret(toEnvironment);
+          core.setSecret(toEnvironment);
           core.exportVariable(variableName, toEnvironment);
         }
       } else {
@@ -52,22 +52,23 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
           // TODO 
           // uncomment for production
-          //core.setSecret(value);
-
-          // The default output/envar name will be the key name
-          let finalVarName = `${key}`;
+          core.setSecret(value);
 
           // if the user set an output variable name, use it to prefix the output/env var's name
-          if(variableName !== undefined || variableName !== "") {
+          let finalVarName = variableName;
+          if(variableName === null || variableName.trim() === "") {
+            finalVarName = `${key}`;
+          }
+          else{
             finalVarName = `${variableName}_${key}`;
           }
 
-          // Switch 1
+          // Switch 1 - set outputs
           if(exportSecretsToOutputs) {
             core.setOutput(finalVarName, value);
           }
 
-          // Switch 2
+          // Switch 2 - export env variables
           if (exportSecretsToEnvironment) {
             core.exportVariable(finalVarName, value);
           }
