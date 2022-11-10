@@ -22,7 +22,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       }
 
       // Feature Request #11
-      if (separateValues === false) {
+      if (separateValues == false) {
         // **** Condition 1 (DEFAULT BEHAVIOR) ***** //
         // Just export the entire dynamic secret value as one object
         // the user can parsw the object in the next step in their workflow
