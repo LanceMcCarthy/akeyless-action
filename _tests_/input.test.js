@@ -16,6 +16,7 @@ test('Input is all good', () => {
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(false);
   params = input.fetchAndValidateInput();
+
   expect(params).toEqual({
     accessId: 'p-asdf',
     accessType: 'jwt',
@@ -25,7 +26,7 @@ test('Input is all good', () => {
     dynamicSecrets: {'/some/dynamic/secret': 'other_key'},
     exportSecretsToOutputs: true,
     exportSecretsToEnvironment: true,
-    separateDynamicSecrets: false
+    parseDynamicSecrets: false
   });
   expect(core.getInput.mock.calls).toEqual([['access-id', {required: true}], ['access-type'], ['api-url'], ['producer-for-aws-access'], ['static-secrets'], ['dynamic-secrets']]);
 

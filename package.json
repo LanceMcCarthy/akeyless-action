@@ -1,6 +1,6 @@
 {
   "name": "akeyless-action",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "src/index.js",
   "scripts": {
@@ -14,7 +14,7 @@
     "url": "git+https://github.com/LanceMcCarthy/akeyless-action.git"
   },
   "keywords": [],
-  "author": "Lance McCarthy, Connor Mancone",
+  "author": "Lance McCarthy",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/LanceMcCarthy/akeyless-action/issues"

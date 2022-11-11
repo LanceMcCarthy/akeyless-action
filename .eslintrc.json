@@ -16,7 +16,7 @@
         "import/no-commonjs": "off",
         "i18n-text/no-en": 0,
         "prefer-template": "warn",
-        "filenames/match-regex": "warn",
+        "filenames/match-regex": "off",
         "github/no-then": "off",
         "no-unused-vars": "off",
         "camelcase": "off",

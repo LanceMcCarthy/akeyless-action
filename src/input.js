@@ -11,7 +11,7 @@ const stringInputs = {
 const boolInputs = {
   exportSecretsToOutputs: 'export-secrets-to-outputs',
   exportSecretsToEnvironment: 'export-secrets-to-environment',
-  separateDynamicSecrets: 'separate-dynamic-secrets'
+  parseDynamicSecrets: 'parse-dynamic-secrets'
 };
 
 const dictInputs = {
@@ -22,14 +22,14 @@ const dictInputs = {
 const fetchAndValidateInput = () => {
   const params = {
     accessId: core.getInput('access-id', {required: true}),
-    accessType: core.getInput('access-type'),
-    apiUrl: core.getInput('api-url'),
+    accessType: core.getInput('access-type', {required: false, defaultValue: 'jwt'}),
+    apiUrl: core.getInput('api-url', {required: false, defaultValue: 'https://api.akeyless.io'}),
     producerForAwsAccess: core.getInput('producer-for-aws-access'),
     staticSecrets: core.getInput('static-secrets'),
     dynamicSecrets: core.getInput('dynamic-secrets'),
-    exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs'),
-    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment'),
-    separateDynamicSecrets: core.getBooleanInput('separate-dynamic-secrets')
+    exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {required: false, defaultValue: false}),
+    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {required: false, defaultValue: false}),
+    parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {required: false, defaultValue: false})
   };
   // our only required parameter
   if (!params['accessId']) {
@@ -72,7 +72,7 @@ const fetchAndValidateInput = () => {
   }
   // check access types
   if (!auth.allowedAccessTypes.includes(params['accessType'].toLowerCase())) {
-    throw new Error("access-type must be one of: ['" + auth.allowedAccessTypes.join("', '") + "']");
+    throw new Error(`access-type must be one of: ['${auth.allowedAccessTypes.join("', '")}']`);
   }
   params['accessType'] = params['accessType'].toLowerCase();
 

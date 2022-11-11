@@ -7,12 +7,12 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
     try {
-      let param = akeyless.GetDynamicSecretValue.constructFromObject({
+      const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
         name: akeylessPath
       });
 
-      let dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
+      const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
         core.error(`getDynamicSecretValue Failed: ${error}`);
         core.setFailed(`getDynamicSecretValue Failed: ${error}`);
       });
@@ -21,39 +21,42 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         return;
       }
 
-      // FEATURE: generate separate outputs
-
-      if (generateSeparateOutputs == false) {
+      // toggled by parse-dynamic-secrets
+      if (generateSeparateOutputs === false) {
         // **** Option 1 (DEFAULT BEHAVIOR) ***** //
-        // Export the entire dynamic secret value as one object
-        // User is responsible for parsing out any key/val pairs from final obect
+        // Exports the entire dynamic secret value as one object
 
-        // Switch 1 - set outputs
+        // Switch 1 -
+        // set outputs
         if (exportSecretsToOutputs) {
           // obscure values in visible output and logs
           core.setSecret(dynamicSecret);
+
+          // KEY TAKAWAY: Set the output using the entire dynamic secret object
           core.setOutput(variableName, dynamicSecret);
         }
 
-        // Switch 2 - export env variables
+        // Switch 2 -
+        // export env variables
         if (exportSecretsToEnvironment) {
-          let toEnvironment = dynamicSecret;
-          if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-            toEnvironment = JSON.stringify(dynamicSecret);
-          }
+          const toEnvironment = dynamicSecret;
+          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
+          //   toEnvironment = JSON.stringify(dynamicSecret);
+          // }
           // obscure values in visible output and logs
           core.setSecret(toEnvironment);
 
+          // KEY TAKAWAY: Set the output using the entire dynamic secret object
           // export to environment
           core.exportVariable(variableName, toEnvironment);
         }
       } else {
-        // **** Option 2 (FEATURE REQUEST 11) ***** //
+        // **** Option 2 (parse-secrets =true) ***** //
         // Generate separate output/env vars for each value in the dynamic secret
 
-        for (let key in dynamicSecret) {
+        for (const key in dynamicSecret) {
           // get the value for the key
-          let value = dynamicSecret[key];
+          const value = dynamicSecret[key];
 
           // obscure value in visible output and logs
           core.setSecret(value);
@@ -95,14 +98,14 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
-    let name = akeylessPath;
+    const name = akeylessPath;
 
-    let param = akeyless.GetSecretValue.constructFromObject({
+    const param = akeyless.GetSecretValue.constructFromObject({
       token: akeylessToken,
       names: [name]
     });
 
-    let staticSecret = await api.getSecretValue(param).catch(error => {
+    const staticSecret = await api.getSecretValue(param).catch(error => {
       core.error(`getSecretValue Failed: ${error}`);
       core.setFailed(`getSecretValue Failed: ${error}`);
     });

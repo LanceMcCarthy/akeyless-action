@@ -8,7 +8,7 @@ on:
 jobs:
   fetch_aws_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Fetch AWS dynamic secrets
+    name: Fetch AWS dynamic secrets (pre-parsed)
     permissions:
       id-token: write
       contents: read
@@ -24,7 +24,7 @@ jobs:
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/test-grib":""}'
-        separate-dynamic-secrets: true
+        parse-dynamic-secrets: true
         
     - name: Verify Outputs
       run: |
@@ -48,7 +48,7 @@ jobs:
 
   fetch_sql_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Fetch SQL dynamic secrets
+    name: Fetch SQL dynamic secrets (pre-parsed)
     permissions:
       id-token: write
       contents: read
@@ -59,12 +59,12 @@ jobs:
         fetch-depth: 0
 
     - name: Fetch dynamic secrets from AKeyless ('SQL' PREFIX)
-      id: sql-dyn-secrets
+      id: sql-secrets
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}'
-        separate-dynamic-secrets: true
+        parse-dynamic-secrets: true
         
     - name: Verify Vars
       run: |
@@ -75,7 +75,7 @@ jobs:
 
     - name: Verify Outputs
       run: |
-        echo "ID: ${{ steps.sql-dyn-secrets.outputs.SQL_id }}" 
-        echo "USER: ${{ steps.sql-dyn-secrets.outputs.SQL_user }}" 
-        echo "TTL_IN_MINUTES: ${{ steps.sql-dyn-secrets.outputs.SQL_ttl_in_minutes }}" 
-        echo "PASSWORD: ${{ steps.sql-dyn-secrets.outputs.SQL_password }}"
+        echo "ID: ${{ steps.sql-secrets.outputs.SQL_id }}" 
+        echo "USER: ${{ steps.sql-secrets.outputs.SQL_user }}" 
+        echo "TTL_IN_MINUTES: ${{ steps.sql-secrets.outputs.SQL_ttl_in_minutes }}" 
+        echo "PASSWORD: ${{ steps.sql-secrets.outputs.SQL_password }}"

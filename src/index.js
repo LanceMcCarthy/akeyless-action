@@ -8,7 +8,7 @@ const input = require('./input');
 async function run() {
   core.debug('Fetching input');
 
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, separateDynamicSecrets} =
+  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets} =
     input.fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
@@ -60,7 +60,7 @@ async function run() {
     core.debug(`Dynamic Secrets: Fetching!`);
 
     try {
-      await secrets.exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, separateDynamicSecrets);
+      await secrets.exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets);
     } catch (error) {
       core.error(`Failed to fetch dynamic secrets: ${error}`);
       core.setFailed(`Failed to fetch dynamic secrets: ${error}`);
