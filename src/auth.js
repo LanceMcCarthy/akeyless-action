@@ -34,6 +34,7 @@ async function jwtLogin(apiUrl, accessId) {
     action_fail(`Failed to login to AKeyless: ${error.message}`);
   }
 }
+
 async function awsIamLogin(apiUrl, accessId) {
   api = akeylessApi.api(apiUrl);
   let cloudId = undefined;
@@ -65,6 +66,7 @@ const login = {
   jwt: jwtLogin,
   aws_iam: awsIamLogin
 };
+
 const allowedAccessTypes = Object.keys(login);
 
 async function akeylessLogin(accessId, accessType, apiUrl) {

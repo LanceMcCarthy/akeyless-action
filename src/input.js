@@ -10,7 +10,8 @@ const stringInputs = {
 
 const boolInputs = {
   exportSecretsToOutputs: 'export-secrets-to-outputs',
-  exportSecretsToEnvironment: 'export-secrets-to-environment'
+  exportSecretsToEnvironment: 'export-secrets-to-environment',
+  separateDynamicSecrets: 'separate-dynamic-secrets'
 };
 
 const dictInputs = {

@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const akeylessApi = require('./akeyless_api');
 const akeyless = require('akeyless');
 
-async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, separateValues) {
+async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
@@ -17,54 +17,57 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${error}`);
       });
 
-      if (dynamicSecret === undefined) {
+      if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
       }
 
-      // Feature Request #11
-      if (separateValues == false) {
-        // **** Condition 1 (DEFAULT BEHAVIOR) ***** //
-        // Just export the entire dynamic secret value as one object
-        // the user can parsw the object in the next step in their workflow
+      // FEATURE: generate separate outputs
 
-        // switch 1
+      if (generateSeparateOutputs == false) {
+        // **** Option 1 (DEFAULT BEHAVIOR) ***** //
+        // Export the entire dynamic secret value as one object
+        // User is responsible for parsing out any key/val pairs from final obect
+
+        // Switch 1 - set outputs
         if (exportSecretsToOutputs) {
+          // obscure values in visible output and logs
           core.setSecret(dynamicSecret);
           core.setOutput(variableName, dynamicSecret);
         }
-        // switch 2
+
+        // Switch 2 - export env variables
         if (exportSecretsToEnvironment) {
           let toEnvironment = dynamicSecret;
           if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
             toEnvironment = JSON.stringify(dynamicSecret);
           }
+          // obscure values in visible output and logs
           core.setSecret(toEnvironment);
+
+          // export to environment
           core.exportVariable(variableName, toEnvironment);
         }
       } else {
-        // **** Condition 2 (FEATURE REQUEST 11) ***** //
-        // Generate separate output/env vars for each value
-        // Must be placed behind feature flag because is a breaking change
+        // **** Option 2 (FEATURE REQUEST 11) ***** //
+        // Generate separate output/env vars for each value in the dynamic secret
 
-        // switch 1
         for (let key in dynamicSecret) {
+          // get the value for the key
           let value = dynamicSecret[key];
 
-          // TODO 
-          // uncomment for production
+          // obscure value in visible output and logs
           core.setSecret(value);
 
           // if the user set an output variable name, use it to prefix the output/env var's name
           let finalVarName = variableName;
-          if(variableName === null || variableName.trim() === "") {
+          if (variableName === null || variableName.trim() === '') {
             finalVarName = `${key}`;
-          }
-          else{
+          } else {
             finalVarName = `${variableName}_${key}`;
           }
 
           // Switch 1 - set outputs
-          if(exportSecretsToOutputs) {
+          if (exportSecretsToOutputs) {
             core.setOutput(finalVarName, value);
           }
 
@@ -73,15 +76,16 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             core.exportVariable(finalVarName, value);
           }
 
-          if (dynamicSecret.hasOwnProperty(key)) {
-            console.log(`Property ${key} is NOT from prototype chain`);
-          } else {
-            console.log(`Property ${key} is from prototype chain`);
-          }
+          // Debugging
+          // if (dynamicSecret.hasOwnProperty(key)) {
+          //   core.info(`Property ${key} is NOT from prototype chain`);
+          // } else {
+          //   core.info(`Property ${key} is from prototype chain. contact developer to shate special dynamic secret situation.`);
+          // }
         }
       }
     } catch (error) {
-      core.error(`Failed to export dynamic secrets: ${error}`);
+      //core.error(`Failed to export dynamic secrets: ${error}`);
       core.setFailed(`Failed to export dynamic secrets: ${error}`);
     }
   }
@@ -111,12 +115,12 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
 
     core.setSecret(secretValue);
 
-    // switch 1
+    // Switch 1 - set outputs
     if (exportSecretsToOutputs) {
       core.setOutput(variableName, secretValue);
     }
 
-    // switch 2
+    // Switch 2 - export env variables
     if (exportSecretsToEnvironment) {
       core.exportVariable(variableName, secretValue);
     }
