@@ -22,14 +22,14 @@ const dictInputs = {
 const fetchAndValidateInput = () => {
   const params = {
     accessId: core.getInput('access-id', {required: true}),
-    accessType: core.getInput('access-type', {required: false, defaultValue: 'jwt'}),
-    apiUrl: core.getInput('api-url', {required: false, defaultValue: 'https://api.akeyless.io'}),
+    accessType: core.getInput('access-type'),
+    apiUrl: core.getInput('api-url'),
     producerForAwsAccess: core.getInput('producer-for-aws-access'),
     staticSecrets: core.getInput('static-secrets'),
     dynamicSecrets: core.getInput('dynamic-secrets'),
-    exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {required: false, defaultValue: false}),
-    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {required: false, defaultValue: false}),
-    parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {required: false, defaultValue: false})
+    exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs'),
+    exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment'),
+    parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets')
   };
   // our only required parameter
   if (!params['accessId']) {
