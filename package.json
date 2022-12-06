@@ -1,6 +1,6 @@
 {
   "name": "akeyless-action",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "src/index.js",
   "scripts": {
