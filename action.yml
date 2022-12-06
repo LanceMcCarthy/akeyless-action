@@ -1,6 +1,6 @@
 name: 'AKeyless Integrations'
-description: 'Login and fetch secrets from AKeyless'
-author: "Lance McCarthy, Connor Mancone"
+description: 'Securely fetch and use static and dynamic secrets from AKeyless in your CI workflows.'
+author: "Lance McCarthy and Connor Mancone"
 branding:
   icon: 'unlock'
   color: 'green'
@@ -9,33 +9,33 @@ inputs:
     description: 'The access id of your auth method.'
     required: true
   access-type:
-    description: 'Access type for login (JWT|AWS_IAM|GCP).'
+    description: 'Access type for login (JWT|AWS_IAM).'
     default: 'JWT'
     required: false
   api-url:
-    description: 'API endpoint to login/fetch secrets from.'
+    description: 'The API endpoint to use, defaults to https://api.akeyless.io.'
     default: 'https://api.akeyless.io'
     required: false
   producer-for-aws-access:
-    description: 'Path to an AWS dynamic producer in AKeyless (AWS access will be configured with it).'
+    description: 'Path to an AWS dynamic producer. If provided, AWS credentials will be fetched from it and exported to the environment.'
     default: ''
     required: false
   static-secrets:
-    description: 'Static secrets to fetch from AKeyless (should be a dictionary with the secret path as the key and the destination output/ENV as the value).'
+    description: 'A JSON object as a string, with a list of static secrets to fetch. The key should be the path to the secret and the value should be the name of the environment variable/output to save it to.'
     required: false
   dynamic-secrets:
-    description: 'Dynamic secrets to fetch from AKeyless (should be a dictionary with the secret path as the key and the destination output/ENV as the value).'
+    description: 'A JSON object as a string, with a list of dynamic secrets to fetch. The key should be the path to the secret and the value should be the name of the environment variable/output to save it to.'
     required: false
   export-secrets-to-outputs:
-    description: 'Whether or not to export the extracted secrets to job outputs.'
+    description: 'True/False to denote if static/dynamic secrets should be exported as environment variables..'
     required: false
     default: true
   export-secrets-to-environment:
-    description: 'Whether or not to export the extracted secrets to the environment.'
+    description: 'True/False to denote if static/dynamic secrets should be exported as action outputs.'
     required: false
     default: true
   parse-dynamic-secrets:
-    description: 'Dynamic secrets normally get exported as a single JSON object. This switch will let you get separate output/env variables for each key.'
+    description: 'True/False to denote if dynamic secrets will exported as a single object, or parsed into individual outputs/env variables. Please visit the demos in ci.yml for clarification.'
     required: false
     default: false
 runs:
