@@ -31,6 +31,6 @@
     "eslint-plugin-github": "^4.3.7",
     "eslint-plugin-jest": "^27.0.1",
     "jest": "^27.4.7",
-    "prettier": "2.7.1"
+    "prettier": "2.8.0"
   }
 }
