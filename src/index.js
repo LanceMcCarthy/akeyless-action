@@ -20,8 +20,8 @@ async function run() {
     akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl);
     akeylessToken = akeylessLoginResponse['token'];
   } catch (error) {
-    core.error(`Failed to login to AKeyless: ${error}`);
-    core.setFailed(`Failed to login to AKeyless: ${error}`);
+    core.error(`Failed to login to AKeyless: ${error.message}`);
+    core.setFailed(`Failed to login to AKeyless: ${error.message}`);
     return;
   }
 
@@ -34,8 +34,8 @@ async function run() {
     try {
       await awsAccess.awsLogin(akeylessToken, producerForAwsAccess, apiUrl);
     } catch (error) {
-      core.error(`Failed to fetch AWS producer credentials: ${error}`);
-      core.setFailed(`Failed to fetch AWS producer credentials: ${error}`);
+      core.error(`Failed to fetch AWS producer credentials: ${error.message}`);
+      core.setFailed(`Failed to fetch AWS producer credentials: ${error.message}`);
     }
   } else {
     core.debug(`AWS Access: Skipping because no AWS producer is specified`);
@@ -48,8 +48,8 @@ async function run() {
     try {
       await secrets.exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment);
     } catch (error) {
-      core.error(`Failed to fetch static secrets: ${error}`);
-      core.setFailed(`Failed to fetch static secrets: ${error}`);
+      core.error(`Failed to fetch static secrets: ${error.message}`);
+      core.setFailed(`Failed to fetch static secrets: ${error.message}`);
     }
   } else {
     core.debug(`Static Secrets: Skpping step because no static secrets were specified`);
@@ -62,8 +62,8 @@ async function run() {
     try {
       await secrets.exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets);
     } catch (error) {
-      core.error(`Failed to fetch dynamic secrets: ${error}`);
-      core.setFailed(`Failed to fetch dynamic secrets: ${error}`);
+      core.error(`Failed to fetch dynamic secrets: ${error.message}`);
+      core.setFailed(`Failed to fetch dynamic secrets: ${error.message}`);
     }
   } else {
     core.debug(`Dynamic Secrets: Skipping step because no dynamic secrets were specified`);
