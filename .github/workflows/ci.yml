@@ -104,10 +104,10 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/test-grib":""}' # no prefix on output names
+        dynamic-secrets: '{"/DevTools/test-grib":""}' # no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
-    - name: Verify Job Outputs
+    - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
         echo "access_key_id: ${{ steps.fetch-secrets.outputs.access_key_id }}"
         echo "id: ${{ steps.fetch-secrets.outputs.id }}"
@@ -117,7 +117,7 @@ jobs:
         echo "type: ${{ steps.fetch-secrets.outputs.type }}"
         echo "user: ${{ steps.fetch-secrets.outputs.user }}"
 
-    - name: Verify Environment Variables
+    - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
         echo "access_key_id: ${{ env.access_key_id }}"
         echo "id: ${{ env.id }}"
@@ -144,10 +144,10 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/test-grib":"AWS"}' # applies "AWS_" prefix on output names
+        dynamic-secrets: '{"/DevTools/test-grib":"AWS"}' # applies "AWS_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
-    - name: Verify Job Outputs with Prefix
+    - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
         echo "access_key_id: ${{ steps.fetch-secrets.outputs.AWS_access_key_id }}"
         echo "id: ${{ steps.fetch-secrets.outputs-prefixed.AWS_id }}"
@@ -157,7 +157,7 @@ jobs:
         echo "type: ${{ steps.fetch-secrets.outputs.AWS_type }}"
         echo "user: ${{ steps.fetch-secrets.outputs.AWS_user }}"
 
-    - name: Verify Environment Variables with Prefix
+    - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
         echo "access_key_id: ${{ env.AWS_access_key_id }}"
         echo "id: ${{ env.AWS_id }}"
@@ -238,28 +238,22 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/test-grib":""}' # no prefix on output names
+        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
-    - name: Verify Job Outputs
+    - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
-        echo "access_key_id: ${{ steps.fetch-secrets.outputs.access_key_id }}"
-        echo "id: ${{ steps.fetch-secrets.outputs.id }}"
-        echo "secret_access_key: ${{ steps.fetch-secrets.outputs.secret_access_key }}"
-        echo "security_token: ${{ steps.fetch-secrets.outputs.security_token }}"
-        echo "ttl_in_minutes: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}"
-        echo "type: ${{ steps.fetch-secrets.outputs.type }}"
-        echo "user: ${{ steps.fetch-secrets.outputs.user }}"
+        echo "ID: ${{ steps.fetch-secrets.outputs.id }}" 
+        echo "USER: ${{ steps.fetch-secrets.outputs.user }}" 
+        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}" 
+        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.password }}"
 
-    - name: Verify Environment Variables
+    - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
-        echo "access_key_id: ${{ env.access_key_id }}"
-        echo "id: ${{ env.id }}"
-        echo "secret_access_key: ${{ env.secret_access_key }}"
-        echo "security_token: ${{ env.security_token }}"
-        echo "ttl_in_minutes: ${{ env.ttl_in_minutes }}"
-        echo "type: ${{ env.type }}"
-        echo "user: ${{ env.user }}"
+        echo "ID: ${{ env.id }}"
+        echo "USER: ${{ env.user }}"
+        echo "TTL_IN_MINUTES: ${{ env.ttl_in_minutes }}"
+        echo "PASSWORD: ${{ env.password }}"
 
   sql_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
@@ -278,17 +272,17 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}' #applies "SQL_" prefix to output
+        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}' #applies "SQL_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
-    - name: Verify Job Outputs with Prefix
+    - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
         echo "ID: ${{ steps.fetch-secrets.outputs.SQL_id }}" 
         echo "USER: ${{ steps.fetch-secrets.outputs.SQL_user }}" 
         echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.SQL_ttl_in_minutes }}" 
         echo "PASSWORD: ${{ steps.fetch-secrets.outputs.SQL_password }}"
 
-    - name: Verify Environment Variables with Prefix
+    - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
         echo "ID: ${{ env.SQL_id }}"
         echo "USER: ${{ env.SQL_user }}"
