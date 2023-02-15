@@ -13,8 +13,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       });
 
       const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
-        core.error(`getDynamicSecretValue Failed: ${error}`);
-        core.setFailed(`getDynamicSecretValue Failed: ${error}`);
+        core.error(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
+        core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
       if (dynamicSecret === null || dynamicSecret === undefined) {
@@ -88,8 +88,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         }
       }
     } catch (error) {
-      //core.error(`Failed to export dynamic secrets: ${error}`);
-      core.setFailed(`Failed to export dynamic secrets: ${error}`);
+      core.error(`Failed to export dynamic secrets: ${JSON.stringify(error)}`);
+      core.setFailed(`Failed to export dynamic secrets: ${JSON.stringify(error)}`);
     }
   }
 }
@@ -106,8 +106,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
     });
 
     const staticSecret = await api.getSecretValue(param).catch(error => {
-      core.error(`getSecretValue Failed: ${error}`);
-      core.setFailed(`getSecretValue Failed: ${error}`);
+      core.error(`getSecretValue Failed: ${JSON.stringify(error)}`);
+      core.setFailed(`getSecretValue Failed: ${JSON.stringify(error)}`);
     });
 
     if (staticSecret === undefined) {
