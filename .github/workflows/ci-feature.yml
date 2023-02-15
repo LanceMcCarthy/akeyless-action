@@ -56,7 +56,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/github-secret":"github_dynamic_secret"}'
+        dynamic-secrets: '{"/DevTools/github-secrets":"github_dynamic_secret"}'
 
     - name: Verify Job Outputs
       run: |
