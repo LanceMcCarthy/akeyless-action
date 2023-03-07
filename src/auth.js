@@ -40,7 +40,7 @@ async function awsIamLogin(apiUrl, accessId) {
   let cloudId = undefined;
 
   try {
-    cloudId = await akeylessCloudId();
+    cloudId = await akeylessCloudId.getCloudId('aws_iam');
   } catch (error) {
     action_fail(`Failed to fetch cloud id: ${error.message}`);
   }
