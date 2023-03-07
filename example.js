@@ -1,29 +1,5 @@
-# akeyless-js-cloud-id
-
-Akeyless CloudId Provider
-
-The purpose of this package is to exteact the required "cloudid" to authenticate to akeyless using cloud authorization providers.
-
-For more information, please visit [https://akeyless.io](https://akeyless.io)
-
-
-## Requirements
-Using the cloudid provider requires:
-
-Nodejs version 14.0.0 or higher.
-
-## Installation
-```
-npm install akeyless
-npm install akeyless-cloud-id
-```
-
-## Getting Started
-Please follow the installation instruction and execute the following Javascript code:
-
-```js
 const akeyless = require('akeyless')
-var akeylessCloud = require('akeyless-cloud-id')
+var akeylessCloud = require('.')
 
 
 const AkeylessClient = new akeyless.ApiClient();
@@ -51,14 +27,9 @@ async function getSecret(key, opts) {
 async function getSecretWithCloudId() {
     const accessType = "azure_ad"
     const cloudId = await akeylessCloud.getCloudId(accessType)
-    const opts = { 'access-id': "p-xxxxxxxxxxxx", 'access-type': accessType, 'cloud-id': cloudId }
-    const secret = await getSecret("my-secret", opts)    
+    const optsAws = { 'access-id': "p-xxxxxxxxxxxx", 'access-type': accessType, 'cloud-id': cloudId }
+    const secret = await getSecret("my-secret", optsAws)    
     console.log(secret)
 }
     
 getSecretWithCloudId()
-
-```
-
-Author
-support@akeyless.io
