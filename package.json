@@ -1,13 +1,14 @@
 {
   "name": "akeyless-action",
-  "version": "3.3.4",
+  "version": "3.3.5",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "src/index.js",
   "scripts": {
+    "restore": "install",
     "format": "prettier --write **/*.js",
     "lint": "eslint **/*.js",
     "test": "jest",
-    "precommit": "npm run format && npm run lint && npm run test"
+    "precommit": "npm run restore && npm run format && npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
