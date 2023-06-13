@@ -1,6 +1,7 @@
 name: 'CI New Feature Tests'
 
 on:
+  workflow_dispatch:
   push:
     branches:
     - 'feature/*'
