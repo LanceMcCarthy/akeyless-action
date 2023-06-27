@@ -1,10 +1,10 @@
 {
   "name": "akeyless-action",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "src/index.js",
   "scripts": {
-    "restore": "install",
+    "restore": "npm install",
     "format": "prettier --write **/*.js",
     "lint": "eslint **/*.js",
     "test": "jest",
