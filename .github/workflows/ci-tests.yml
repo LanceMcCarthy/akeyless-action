@@ -320,8 +320,8 @@ jobs:
     - name: Verify Job Outputs using jq
       run: |
         echo "Your job output secret is ${{ steps.fetch-secrets.outputs.my_dynamic_secret }}"
-        echo "Manually parsed UPDATED:" 
-        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.updated'
+        echo "Manually parsed UPDATED_AT:" 
+        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.updated_at'
         echo "Manually parsed CERT:" 
         echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.cert'
         echo "Manually parsed PRIVATE_KEY:" 
@@ -330,8 +330,8 @@ jobs:
     - name: Verify Environment Variables using jq
       run: |
         echo "Your environment secret is ${{ env.my_dynamic_secret }}"
-        echo "Manually parsed UPDATED:"
-        echo '${{ env.my_dynamic_secret }}' | jq '.updated'
+        echo "Manually parsed UPDATED_AT:"
+        echo '${{ env.my_dynamic_secret }}' | jq '.updated_at'
         echo "Manually parsed CERT:"
         echo '${{ env.my_dynamic_secret }}' | jq '.cert'
         echo "Manually parsed PRIVATE_KEY:"
@@ -344,7 +344,7 @@ jobs:
     
     - name: EXTRA (part 2) - Verify EXTRA 1's Exported Variables
       run: |
-        echo "AKEYLESS_updated = ${{ env.AKEYLESS_updated }}"
+        echo "AKEYLESS_updated_at = ${{ env.AKEYLESS_updated_at }}"
         echo "AKEYLESS_cert = ${{ env.AKEYLESS_cert }}"
         echo "AKEYLESS_private_key = ${{ env.AKEYLESS_private_key }}"
 
@@ -371,13 +371,13 @@ jobs:
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
-        echo "UPDATED: ${{ steps.fetch-secrets.outputs.updated }}" 
+        echo "UPDATED_AT: ${{ steps.fetch-secrets.outputs.updated_at }}" 
         echo "CERT: ${{ steps.fetch-secrets.outputs.cert }}" 
         echo "PRIVATE_KEY: ${{ steps.fetch-secrets.outputs.private_key }}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
-        echo "UPDATED: ${{ env.updated }}"
+        echo "UPDATED_AT: ${{ env.updated_at }}"
         echo "CERT: ${{ env.cert }}"
         echo "PRIVATE_KEY: ${{ env.private_key }}"
 
@@ -404,12 +404,12 @@ jobs:
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
-        echo "UPDATED: ${{ steps.fetch-secrets.outputs.WEB_updated }}" 
+        echo "UPDATED_AT: ${{ steps.fetch-secrets.outputs.WEB_updated_at }}" 
         echo "CERT: ${{ steps.fetch-secrets.outputs.WEB_cert }}" 
         echo "PRIVATE_KEY: ${{ steps.fetch-secrets.outputs.WEB_private_key }}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
-        echo "UPDATED: ${{ env.WEB_updated }}"
+        echo "UPDATED_AT: ${{ env.WEB_updated_at }}"
         echo "CERT: ${{ env.WEB_cert }}"
         echo "PRIVATE_KEY: ${{ env.WEB_private_key }}"
