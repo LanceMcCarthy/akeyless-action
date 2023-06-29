@@ -24,7 +24,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:

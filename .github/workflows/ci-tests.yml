@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch static secrets from AKeyless
+    - name: Fetch static secret from AKeyless
       id: fetch-secrets
       uses: ./
       with:
@@ -56,7 +56,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -112,7 +112,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -147,7 +147,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -187,7 +187,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -238,7 +238,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -271,7 +271,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -312,7 +312,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch custom producer dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -343,7 +343,7 @@ jobs:
   # Option 2 - Use 'parse-dynamic-secrets: true' to automatically parse the JSON string into individual outputs
   custom_producer_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
-    name: Fetch custom producer dynamic secrets (parsed)
+    name: Custom producer dynamic secrets (parsed)
     permissions:
       id-token: write
       contents: read
@@ -353,7 +353,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch custom producer dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -372,7 +372,7 @@ jobs:
   # Option 3 - This is the same as Option 2, but with a prefix
   custom_producer_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
-    name: Fetch custom producer dynamic secrets (parsed with prefix)
+    name: Customustom producer dynamic secrets (parsed with prefix)
     permissions:
       id-token: write
       contents: read
@@ -382,7 +382,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch custom producer dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:

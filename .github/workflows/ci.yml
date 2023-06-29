@@ -23,7 +23,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch static secrets from AKeyless
+    - name: Fetch static secret from AKeyless
       id: fetch-secrets
       uses: ./
       with:
@@ -36,7 +36,7 @@ jobs:
     - name: Verify Environment Variables
       run: echo "Your environment secret is ${{ env.my_static_secret }}"
 
-      
+
 ##########################################################
 ########### GitHub Dynamic Secrets example #############
 ##########################################################
@@ -54,7 +54,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -105,7 +105,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -138,7 +138,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch GitHub dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -201,7 +201,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -257,7 +257,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
@@ -292,7 +292,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Fetch SQL Server dynamic secrets from Akleyless
+    - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
       with:
