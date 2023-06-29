@@ -41,6 +41,8 @@ jobs:
 ########## SQL Server Dynamic Secrets example ############
 ##########################################################
 
+# Note: This an Azure SQL Server target
+
   # Option 1 - the default behavior gets the secret as a JSON string, it's the consumer's responsibility to parse it
   sql_dynamic_secrets:
     runs-on: ubuntu-latest
@@ -293,9 +295,9 @@ jobs:
 ###########################################################
 ######## Custom producer Dynamic Secrets example ##########
 ###########################################################
-  # IMPORTANT - This is known as a custom web target, or custom producer
-  # The source code for the custom web target is at https://github.com/LanceMcCarthy/akeyless-web-target
-  # The API's code is in https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
+
+  # Note: This is for a custom producer, see https://docs.akeyless.io/docs/custom-producer
+  # The source code for the demo custom producer can be found here https://github.com/LanceMcCarthy/akeyless-web-target and actual API code is in https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
 
   # Option 1 - the default behavior gets the secret as a JSON string, it's the consumer's responsibility to parse it
   custom_producer_dynamic_secrets:
