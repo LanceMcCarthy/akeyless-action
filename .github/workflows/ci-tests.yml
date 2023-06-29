@@ -59,7 +59,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"my_dynamic_secret"}'
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":"my_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
       run: |
@@ -115,7 +115,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":""}' #no prefix, all output fields are dynamically parsed from source
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
@@ -150,7 +150,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/az-sqlsrvsecret":"SQL"}' #applies "SQL_" prefix to dynamically parsed output names
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":"SQL"}' #applies "SQL_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
