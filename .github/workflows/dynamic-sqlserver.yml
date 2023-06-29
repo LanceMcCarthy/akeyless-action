@@ -1,23 +1,20 @@
-name: 'CI Tests'
+name: 'MSSQL Dynamic Secrets'
+# Docs => https://docs.akeyless.io/docs/create-dynamic-secret-to-sql-db
 
 on:
   workflow_dispatch:
   push:
-    branches: ['tests/*']
+    branches: ['main']
+    paths-ignore:
+      - 'README.md'
 
 jobs:
-
-###########################################################
-######## Custom producer Dynamic Secrets example ##########
-###########################################################
-
-  # Note: This is for a custom producer, see https://docs.akeyless.io/docs/custom-producer
-  # The source code for the demo custom producer can be found here https://github.com/LanceMcCarthy/akeyless-web-target and actual API code is in https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
-
+  ##########
   # Option 1 - the default behavior gets the secret as a JSON string, it's the consumer's responsibility to parse it
-  custom_producer_dynamic_secrets:
+  ##########
+  sql_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Custom producer dynamic secrets (default)
+    name: SQL dynamic secrets (default)
     permissions:
       id-token: write
       contents: read
@@ -32,17 +29,29 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/custom-web-producer":"my_dynamic_secret"}'
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":"my_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
       run: |
         echo "Your job output secret is ${{ steps.fetch-secrets.outputs.my_dynamic_secret }}"
-        echo "Manually parsed PASSWORD:" 
+        echo "Manually parsed ID:" 
+        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.id'
+        echo "Manually parsed USER:" 
+        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.user'
+        echo "Manually parsed TTL_IN_MINUTES:" 
+        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.ttl_in_minutes'
+        echo "Manually parsed PASSWORD:"
         echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.password'
 
     - name: Verify Environment Variables using jq
       run: |
         echo "Your environment secret is ${{ env.my_dynamic_secret }}"
+        echo "Manually parsed ID:"
+        echo '${{ env.my_dynamic_secret }}' | jq '.id'
+        echo "Manually parsed USER:"
+        echo '${{ env.my_dynamic_secret }}' | jq '.user'
+        echo "Manually parsed TTL_IN_MINUTES:"
+        echo '${{ env.my_dynamic_secret }}' | jq '.ttl_in_minutes'
         echo "Manually parsed PASSWORD:"
         echo '${{ env.my_dynamic_secret }}' | jq '.password'
 
@@ -53,12 +62,17 @@ jobs:
     
     - name: EXTRA (part 2) - Verify EXTRA 1's Exported Variables
       run: |
+        echo "AKEYLESS_id = ${{ env.AKEYLESS_id }}"
+        echo "AKEYLESS_user = ${{ env.AKEYLESS_user }}"
         echo "AKEYLESS_password = ${{ env.AKEYLESS_password }}"
+        echo "AKEYLESS_ttl_in_minutes = ${{ env.AKEYLESS_ttl_in_minutes }}"
 
+  ##########
   # Option 2 - Use 'parse-dynamic-secrets: true' to automatically parse the JSON string into individual outputs
-  custom_producer_dynamic_secrets_parsed:
+  ##########
+  sql_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
-    name: Custom producer dynamic secrets (parsed)
+    name: SQL dynamic secrets (parsed)
     permissions:
       id-token: write
       contents: read
@@ -73,21 +87,29 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/custom-web-producer":""}' #no prefix, all output fields are dynamically parsed from source
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
-        echo "UPDATED_AT: ${{ steps.fetch-secrets.outputs.password }}"
+        echo "ID: ${{ steps.fetch-secrets.outputs.id }}" 
+        echo "USER: ${{ steps.fetch-secrets.outputs.user }}" 
+        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}" 
+        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.password }}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
+        echo "ID: ${{ env.id }}"
+        echo "USER: ${{ env.user }}"
+        echo "TTL_IN_MINUTES: ${{ env.ttl_in_minutes }}"
         echo "PASSWORD: ${{ env.password }}"
 
+  ##########
   # Option 3 - This is the same as Option 2, but with a prefix
-  custom_producer_dynamic_secrets_prefixed:
+  ##########
+  sql_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
-    name: Customustom producer dynamic secrets (parsed with prefix)
+    name: SQL dynamic secrets (parsed with prefix)
     permissions:
       id-token: write
       contents: read
@@ -102,13 +124,19 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/custom-web-producer":"WEB"}' #applies "WEB_" prefix to dynamically parsed output names
+        dynamic-secrets: '{"/DevTools/az-dvlup-sqlsrvsecret":"SQL"}' #applies "SQL_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
-        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.WEB_password }}"
+        echo "ID: ${{ steps.fetch-secrets.outputs.SQL_id }}" 
+        echo "USER: ${{ steps.fetch-secrets.outputs.SQL_user }}" 
+        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.SQL_ttl_in_minutes }}" 
+        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.SQL_password }}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
-        echo "PASSWORD: ${{ env.WEB_password }}"
+        echo "ID: ${{ env.SQL_id }}"
+        echo "USER: ${{ env.SQL_user }}"
+        echo "TTL_IN_MINUTES: ${{ env.SQL_ttl_in_minutes }}"
+        echo "PASSWORD: ${{ env.SQL_password }}"

@@ -1,20 +1,18 @@
-name: 'CI Tests'
+name: 'Custom Producer Dynamic Secrets'
+# Docs => https://docs.akeyless.io/docs/custom-producer
+# Custom Producer API source code => https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
 
 on:
   workflow_dispatch:
   push:
-    branches: ['tests/*']
+    branches: ['main']
+    paths-ignore:
+      - 'README.md'
 
 jobs:
-
-###########################################################
-######## Custom producer Dynamic Secrets example ##########
-###########################################################
-
-  # Note: This is for a custom producer, see https://docs.akeyless.io/docs/custom-producer
-  # The source code for the demo custom producer can be found here https://github.com/LanceMcCarthy/akeyless-web-target and actual API code is in https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
-
+  ##########
   # Option 1 - the default behavior gets the secret as a JSON string, it's the consumer's responsibility to parse it
+  ##########
   custom_producer_dynamic_secrets:
     runs-on: ubuntu-latest
     name: Custom producer dynamic secrets (default)
@@ -55,7 +53,9 @@ jobs:
       run: |
         echo "AKEYLESS_password = ${{ env.AKEYLESS_password }}"
 
+  ##########
   # Option 2 - Use 'parse-dynamic-secrets: true' to automatically parse the JSON string into individual outputs
+  ##########
   custom_producer_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
     name: Custom producer dynamic secrets (parsed)
@@ -84,7 +84,9 @@ jobs:
       run: |
         echo "PASSWORD: ${{ env.password }}"
 
+  ##########
   # Option 3 - This is the same as Option 2, but with a prefix
+  ##########
   custom_producer_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
     name: Customustom producer dynamic secrets (parsed with prefix)

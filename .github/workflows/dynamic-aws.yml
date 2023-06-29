@@ -1,0 +1,50 @@
+name: 'AWS Dynamic Secrets'
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: ['main']
+  #   paths-ignore:
+  #     - 'README.md'
+
+jobs:
+  aws_dynamic_secrets:
+    runs-on: ubuntu-latest
+    name: AWS dynamic secrets (default)
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secrets from Akleyless
+      id: fetch-secrets
+      uses: ./
+      with:
+        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        dynamic-secrets: '{"/DevTools/my-aws-secrets":""}' # no prefix, all output fields are dynamically parsed from source
+        parse-dynamic-secrets: true
+
+    - name: Verify Job Outputs (to known field names, pre-parsed)
+      run: |
+        echo "access_key_id: ${{ steps.fetch-secrets.outputs.access_key_id }}"
+        echo "id: ${{ steps.fetch-secrets.outputs.id }}"
+        echo "secret_access_key: ${{ steps.fetch-secrets.outputs.secret_access_key }}"
+        echo "security_token: ${{ steps.fetch-secrets.outputs.security_token }}"
+        echo "ttl_in_minutes: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}"
+        echo "type: ${{ steps.fetch-secrets.outputs.type }}"
+        echo "user: ${{ steps.fetch-secrets.outputs.user }}"
+
+    - name: Verify Environment Variables (to known field names, pre-parsed)
+      run: |
+        echo "ID: ${{ env.access_key_id }}"
+        echo "access_key_id: ${{ env.access_key_id }}"
+        echo "id: ${{ env.id }}"
+        echo "secret_access_key: ${{ env.secret_access_key }}"
+        echo "security_token: ${{ env.security_token }}"
+        echo "ttl_in_minutes: ${{ env.ttl_in_minutes }}"
+        echo "type: ${{ env.type }}"
+        echo "user: ${{ env.user }}"
