@@ -4,7 +4,11 @@ This action will login to AKeyless using JWT or IAM authentication and then fetc
 
 | Workflow | Status |
 |----------|--------|
-| `main` | [![CI Main](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/ci.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/ci.yml) |
+| Static Secrets | [![Static](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/static-secrets.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/static-secrets.yml) |
+| SQL Server Dynamic Secrets | [![Static](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-sqlserver.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-sqlserver.yml) |
+| GitHub Dynamic Secrets | [![Static](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-github.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-github.yml) |
+| Custom Producer Dynamic Secrets | [![Static](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-custom.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-custom.yml) |
+| AWS Dynamic Secrets | [![Static](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-aws.yml/badge.svg)](https://github.com/LanceMcCarthy/akeyless-action/actions/workflows/dynamic-aws.yml) |
 
 ### Inputs
 
@@ -56,16 +60,22 @@ See the [parsed dynamic secrets](#parsed-dynamic-secrets) example for a better e
 - [AKeyless GitHub Action](#akeyless-github-action)
     - [Inputs](#inputs)
     - [Outputs](#outputs)
-  - [Job Permissions Requirement](#job-permissions-requirement)
+        - [Default Outputs](#default-outputs)
+        - [Parsed Outputs](#parsed-outputs)
+  - [Table of Contents](#table-of-contents)
+    - [Job Permissions Requirement](#job-permissions-requirement)
   - [Examples](#examples)
     - [Live Demos](#live-demos)
     - [Static Secrets Demo](#static-secrets-demo)
-    - [Dynamic Secrets](#dynamic-secrets-demos)
+    - [Dynamic Secrets Demos](#dynamic-secrets-demos)
+      - [Default Output](#default-output)
+      - [Parsed Output](#parsed-output)
+        - [Using a Prefix](#using-a-prefix)
   - [AKeyless Setup](#akeyless-setup)
     - [Authentication Methods](#authentication-methods)
     - [Setting up JWT Auth](#setting-up-jwt-auth)
-  - [Feature Requests & Issues](#feature-requests--issues)
-  - [Breaking changes](#breaking-changes)
+  - [Feature Requests \& Issues](#feature-requests--issues)
+  - [Breaking Changes](#breaking-changes)
   
 
 ### Job Permissions Requirement
