@@ -5,7 +5,9 @@ name: 'Custom Producer Dynamic Secrets'
 on:
   workflow_dispatch:
   push:
-    branches: ['main']
+    branches: 
+      - 'custom-api-wip'
+      #- 'main'
     paths-ignore:
       - 'README.md'
 
