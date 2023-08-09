@@ -29,9 +29,9 @@ jobs:
       run: |
        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
        # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret[] | try to_entries[] | [ $n, .value] | '
-       cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' .\hello.txt
-       Write-Output .\hello.txt
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret[] | try to_entries[] | [ $n, .value]'
+       type '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' '${{ github.workspace }}\hello.txt'
+       Write-Output '${{ github.workspace }}\hello.txt'
 
 
     #### Option 1 ####
