@@ -7,7 +7,7 @@ on:
 
 jobs:
   code_sign:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     name: Code Signing
     permissions:
       id-token: write
@@ -37,7 +37,7 @@ jobs:
        echo "ttl_in_minutes: ${{ env.AZURE_AD_TTL_IN_MINUTES }}"
 
        cat '${{ env.AZURE_AD_SECRET }}' -o '${{ github.workspace }}\hello.txt'
-       Get-Content '${{ github.workspace }}\hello.txt'
+       cat '${{ github.workspace }}\hello.txt'
 
        echo '${{ env.AZURE_AD_SECRET }}' | jq -r '.value'
        # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
