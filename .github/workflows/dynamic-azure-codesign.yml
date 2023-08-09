@@ -26,24 +26,23 @@ jobs:
         dynamic-secrets: '{"/DevTools/live-azure-ad":"azure_ad_dynamic_secret"}'
 
     - name: Learn keys
-      run: echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
-      
-    - name: Learn subkeys
-      run: echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret | to_entries|map("AKEYLESS_GITHUB_\(.key|ascii_upcase)=\(.value|tostring)")|.[]'
+      run: |
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret | to_entries[] | [.value] | @tsv'
 
 
     #### Option 1 ####
     # The easiest, just use AzureSignTool
 
-    - name: Install AzureSignTool
-      id: install-signtool
-      run: dotnet tool install --global AzureSignTool 
+    # - name: Install AzureSignTool
+    #   id: install-signtool
+    #   run: dotnet tool install --global AzureSignTool 
 
-      # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
-    - name: Use AzureSignTool
-      id: use-signtool
-      run: |
-        azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '/src/index.js'
+    #   # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
+    # - name: Use AzureSignTool
+    #   id: use-signtool
+    #   run: |
+    #     azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '/src/index.js'
 
 
     #### Option 2 ####
