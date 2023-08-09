@@ -7,7 +7,7 @@ on:
 
 jobs:
   code_sign:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: Code Signing
     permissions:
       id-token: write
@@ -23,7 +23,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":"AZURE_AD"}'
+        dynamic-secrets: '{"/DevTools/live-azure-ad":"azure_ad_dynamic_secret"}'
 
     - name: Learn keys
       run: echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
