@@ -27,21 +27,22 @@ jobs:
 
     - name: Export Secrets to Environment using jq
       run: |
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'to_entries|map("AZURE_AD_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret'
+        # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'to_entries|map("AZURE_AD_\(.key|ascii_upcase)=\(.value)")|.[]' >> $GITHUB_ENV
 
-    - name: Learn keys
-      run: |
-       echo "id: ${{ env.AZURE_AD_ID }}"
-       echo "msg: ${{ env.AZURE_AD_MSG }}"
-       echo "secret: ${{ env.AZURE_AD_SECRET }}"
-       echo "ttl_in_minutes: ${{ env.AZURE_AD_TTL_IN_MINUTES }}"
+    # - name: Learn keys
+    #   run: |
+    #    echo "id: ${{ env.AZURE_AD_ID }}"
+    #    echo "msg: ${{ env.AZURE_AD_MSG }}"
+    #    echo "secret: ${{ env.AZURE_AD_SECRET }}"
+    #    echo "ttl_in_minutes: ${{ env.AZURE_AD_TTL_IN_MINUTES }}"
 
-       cat '${{ env.AZURE_AD_SECRET }}'
+    #    cat '${{ env.AZURE_AD_SECRET }}'
 
-       echo '${{ env.AZURE_AD_SECRET }}' | jq -r '.value'
-       # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-       # cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' -o '${{ github.workspace }}\hello.txt'
-       # Get-Content '${{ github.workspace }}\hello.txt'
+    #    echo '${{ env.AZURE_AD_SECRET }}' | jq -r '.value'
+    #    # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
+    #    # cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' -o '${{ github.workspace }}\hello.txt'
+    #    # Get-Content '${{ github.workspace }}\hello.txt'
 
 
     #### Option 1 ####
