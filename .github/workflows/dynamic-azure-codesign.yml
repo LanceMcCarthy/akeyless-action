@@ -28,7 +28,7 @@ jobs:
     - name: Learn keys
       run: |
        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
-       cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}'
+       echo cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}'
        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret[] try to_entries[] | [ $n, .value] | '
 
