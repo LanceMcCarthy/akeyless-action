@@ -25,13 +25,24 @@ jobs:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"azure_ad_dynamic_secret"}'
 
+    - name: Export Secrets to Environment using jq
+      run: |
+          echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'to_entries|map("AZURE_AD_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+
     - name: Learn keys
       run: |
-       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
-       # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-       echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret[] | try to_entries[] | [ $n, .value]'
-       cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' -o '${{ github.workspace }}\hello.txt'
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_id }}'
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_msg }}'
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_secret }}'
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_ttl }}'
+
+       cat '${{ steps.fetch-secrets.outputs.azure_ad_secret }}' -o '${{ github.workspace }}\hello.txt'
        Get-Content '${{ github.workspace }}\hello.txt'
+
+       echo '${{ steps.fetch-secrets.outputs.azure_ad_secret }}' | jq -r '.value'
+       # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
+       # cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' -o '${{ github.workspace }}\hello.txt'
+       # Get-Content '${{ github.workspace }}\hello.txt'
 
 
     #### Option 1 ####
