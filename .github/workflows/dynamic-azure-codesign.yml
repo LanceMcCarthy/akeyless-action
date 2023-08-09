@@ -8,7 +8,7 @@ on:
 jobs:
   code_sign:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (prefix-parsed)
+    name: Code Signing
     permissions:
       id-token: write
       contents: read
@@ -24,17 +24,12 @@ jobs:
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"AZURE_AD"}'
-        parse-dynamic-secrets: true
-        export-secrets-to-outputs: false
-        export-secrets-to-environment: true
 
-    - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
-      run: |
-        echo "ID: ${{ env.AZURE_AD_id }}"
-        echo "MSG: ${{ env.AZURE_AD_msg }}"
-        echo "TTL_IN_MINUTES: ${{ env.AZURE_AD_ttl_in_minutes }}"
-        echo "SECRET: ${{ env.AZURE_AD_secret }}"
-        echo jq -n 'inputs[] | keys[] | unique' ${{ env.AZURE_AD_secret }}
+    - name: Learn keys
+      run: echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'keys[]'
+      
+    - name: Learn subkeys
+      run: echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret | keys[]'
 
 
     #### Option 1 ####
@@ -48,7 +43,7 @@ jobs:
     - name: Use AzureSignTool
       id: use-signtool
       run: |
-        azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v /src/index.js
+        azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '/src/index.js'
 
 
     #### Option 2 ####
