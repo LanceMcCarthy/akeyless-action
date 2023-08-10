@@ -23,32 +23,48 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
+        dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
+        parse-dynamic-secrets: true
 
     - name: Read Secrets
       run: |
         echo 'ID'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+        echo '${{ env.id }}'
         echo 'TTL_IN_MINUTES'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
+        echo '${{ env.ttl_in_minutes }}'
         echo 'MSG'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+        echo '${{ env.msg }}'
         echo 'SECRET'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.appId'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.displayName'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.keyId'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.secretText'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.tenantId'
+        echo '${{ env.secret }}'
+        echo '${{ env.secret }}' | jq -r '.appId'
+        echo '${{ env.secret }}' | jq -r '.displayName'
+        echo '${{ env.secret }}' | jq -r '.keyId'
+        echo '${{ env.secret }}' | jq -r '.secretText'
+        echo '${{ env.secret }}' | jq -r '.tenantId'
 
-    #### Option 1 ####
-    # The easiest, just use AzureSignTool
+    # - name: Read Secrets
+    #   run: |
+    #     echo 'ID'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+    #     echo 'TTL_IN_MINUTES'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
+    #     echo 'MSG'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+    #     echo 'SECRET'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.appId'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.displayName'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.keyId'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.secretText'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.tenantId'
+
+    # - name: Download File to Sign
+    #   run: Invoke-WebRequest "https://dvlup.blob.core.windows.net/general-app-files/MSIs/MicrosoftStoreServicesSDK.msi" -OutFile '${{ github.workspace }}\MicrosoftStoreServicesSDK.msi'
 
     # - name: Install AzureSignTool
     #   id: install-signtool
     #   run: dotnet tool install --global AzureSignTool 
 
-    #   # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
-    # - name: Use AzureSignTool
+    # - name: Sign File
     #   id: use-signtool
     #   run: |
-    #     azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '${{ github.workspace }}\.github\test_files\ConsoleApp1.exe'
+    #     azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '${{ github.workspace }}\MicrosoftStoreServicesSDK.msi'
