@@ -36,11 +36,11 @@ jobs:
         echo '${{ env.msg }}'
         echo 'SECRET'
         echo '${{ env.secret }}'
-        echo '${{ env.secret.appId }}'
-        echo '${{ env.secret.displayName }}'
-        echo '${{ env.secret.keyId }}'
-        echo '${{ env.secret.secretText }}'
-        echo '${{ env.secret.tenantId }}'
+        echo '${{ env.appId }}'
+        echo '${{ env.displayName }}'
+        echo '${{ env.keyId }}'
+        echo '${{ env.secretText }}'
+        echo '${{ env.tenantId }}'
 
     # - name: Read Secrets
     #   run: |
