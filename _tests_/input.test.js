@@ -15,6 +15,7 @@ test('Input is all good', () => {
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(false);
+  core.getBooleanInput.mockReturnValueOnce(false);
   params = input.fetchAndValidateInput();
 
   expect(params).toEqual({
@@ -26,14 +27,16 @@ test('Input is all good', () => {
     dynamicSecrets: {'/some/dynamic/secret': 'other_key'},
     exportSecretsToOutputs: true,
     exportSecretsToEnvironment: true,
-    parseDynamicSecrets: false
+    parseDynamicSecrets: false,
+    stringifyOutput: false
   });
   expect(core.getInput.mock.calls).toEqual([['access-id', {required: true}], ['access-type'], ['api-url'], ['producer-for-aws-access'], ['static-secrets'], ['dynamic-secrets']]);
 
   expect(core.getBooleanInput.mock.calls).toEqual([
     ['export-secrets-to-outputs', {default: true}],
     ['export-secrets-to-environment', {default: true}],
-    ['parse-dynamic-secrets', {default: false}]
+    ['parse-dynamic-secrets', {default: false}],
+    ['stringify-output', {default: false}]
   ]);
 });
 
@@ -58,6 +61,7 @@ test('invalid access type', () => {
   core.getBooleanInput = jest.fn();
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(true);
+  core.getBooleanInput.mockReturnValueOnce(false);
   core.getBooleanInput.mockReturnValueOnce(false);
   expect(() => {
     input.fetchAndValidateInput();
