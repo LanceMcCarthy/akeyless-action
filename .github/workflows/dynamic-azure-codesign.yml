@@ -23,24 +23,39 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
-        parse-dynamic-secrets: true
+        dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
+        parse-dynamic-secrets: false
 
     - name: Read Secrets
       run: |
         echo 'ID'
-        echo '${{ env.id }}'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
         echo 'TTL_IN_MINUTES'
-        echo '${{ env.ttl_in_minutes }}'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
         echo 'MSG'
-        echo '${{ env.msg }}'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
         echo 'SECRET'
-        echo '${{ env.secret }}'
-        echo '${{ env.appId }}'
-        echo '${{ env.displayName }}'
-        echo '${{ env.keyId }}'
-        echo '${{ env.secretText }}'
-        echo '${{ env.tenantId }}'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.appId'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.displayName'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.keyId'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.secretText'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.tenantId'
+
+    # - name: Read Secrets
+    #   run: |
+    #     echo 'ID'
+    #     echo '${{ env.id }}'
+    #     echo 'TTL_IN_MINUTES'
+    #     echo '${{ env.ttl_in_minutes }}'
+    #     echo 'MSG'
+    #     echo '${{ env.msg }}'
+    #     echo 'SECRET'
+    #     echo '${{ env.secret }}'
+    #     echo '${{ env.secret.appId }}'
+    #     echo '${{ env.secret.displayName }}'
+    #     echo '${{ env.secret.keyId }}'
+    #     echo '${{ env.secret.secretText }}'
+    #     echo '${{ env.secret.tenantId }}'
 
     # - name: Read Secrets
     #   run: |
