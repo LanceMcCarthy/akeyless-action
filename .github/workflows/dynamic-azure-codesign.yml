@@ -29,11 +29,11 @@ jobs:
     - name: Read Secrets
       run: |
         echo 'ID'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
         echo 'TTL_IN_MINUTES'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
         echo 'MSG'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.msg'
         echo 'SECRET'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.appId'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret.displayName'
