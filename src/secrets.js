@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const akeylessApi = require('./akeyless_api');
 const akeyless = require('akeyless');
 
-async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs) {
+async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, stringifyOutput) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
@@ -22,39 +22,51 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       }
 
       // toggled by parse-dynamic-secrets
+      // **** Option 1 (DEFAULT BEHAVIOR) ***** //
+      // Exports the entire dynamic secret value as one object
       if (generateSeparateOutputs === false) {
-        // **** Option 1 (DEFAULT BEHAVIOR) ***** //
-        // Exports the entire dynamic secret value as one object
-
-        // Switch 1 -
-        // set outputs
+        // Switch 1 - set job outputs
         if (exportSecretsToOutputs) {
+          let toOutput = dynamicSecret;
+
+          if (stringifyOutput) {
+            toOutput = JSON.stringify(dynamicSecret);
+          }
+
           // obscure values in visible output and logs
-          core.setSecret(dynamicSecret);
+          core.setSecret(toOutput);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.setOutput(variableName, dynamicSecret);
+          core.setOutput(variableName, toOutput);
         }
 
-        // Switch 2 -
-        // export env variables
+        // Switch 2 - export env variables
         if (exportSecretsToEnvironment) {
           const toEnvironment = dynamicSecret;
-          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-          //   toEnvironment = JSON.stringify(dynamicSecret);
-          // }
+
+          if (stringifyOutput) {
+            toOutput = JSON.stringify(dynamicSecret);
+          }
+
           // obscure values in visible output and logs
           core.setSecret(toEnvironment);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          // export to environment
           core.exportVariable(variableName, toEnvironment);
+
+          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
+          //   toEnvironment = JSON.stringify(dynamicSecret);
+          // }
         }
       } else {
         // **** Option 2 (parse-secrets =true) ***** //
         // Generate separate output/env vars for each value in the dynamic secret
 
         for (const key in dynamicSecret) {
+          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
+          //   toEnvironment = JSON.stringify(dynamicSecret);
+          // }
+
           // get the value for the key
           const value = dynamicSecret[key];
 

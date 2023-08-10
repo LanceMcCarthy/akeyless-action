@@ -38,6 +38,10 @@ inputs:
     description: 'True/False to denote if dynamic secrets will exported as a single object, or parsed into individual outputs/env variables. Please visit the demos in ci.yml for clarification.'
     required: false
     default: false
+  stringify-output:
+    description: 'True/False to determine if unparsed output to be stringified. This is mostly useful when your dynamic secret has multiple layers and you need to process a secret that is nested at a lower level.'
+    required: false
+    default: false
 runs:
   using: 'node16'
   main: 'src/index.js'

@@ -11,7 +11,8 @@ const stringInputs = {
 const boolInputs = {
   exportSecretsToOutputs: 'export-secrets-to-outputs',
   exportSecretsToEnvironment: 'export-secrets-to-environment',
-  parseDynamicSecrets: 'parse-dynamic-secrets'
+  parseDynamicSecrets: 'parse-dynamic-secrets',
+  stringifyOutput: 'stringify-output'
 };
 
 const dictInputs = {
@@ -29,7 +30,8 @@ const fetchAndValidateInput = () => {
     dynamicSecrets: core.getInput('dynamic-secrets'),
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
-    parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false})
+    parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
+    stringifyOutput: core.getBooleanInput('stringify-output', {default: false})
   };
   // our only required parameter
   if (!params['accessId']) {
