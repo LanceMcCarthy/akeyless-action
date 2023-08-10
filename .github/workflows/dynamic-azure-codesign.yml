@@ -23,28 +23,30 @@ jobs:
       uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":"azure_ad_dynamic_secret"}'
+        dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
 
-    - name: Export Secrets to Environment using jq
+    - name: Verify Values (Temporary - only for debugging)
       run: |
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.id'
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.msg'
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret'
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.ttl_in_minutes'
+        echo 'ID'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+        echo 'MSG'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+        echo 'SECRET'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret'
+        echo 'TTL_IN_MINUTES'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
 
-    # - name: Learn keys
-    #   run: |
-    #    echo "id: ${{ env.AZURE_AD_ID }}"
-    #    echo "msg: ${{ env.AZURE_AD_MSG }}"
-    #    echo "secret: ${{ env.AZURE_AD_SECRET }}"
-    #    echo "ttl_in_minutes: ${{ env.AZURE_AD_TTL_IN_MINUTES }}"
 
-    #    cat '${{ env.AZURE_AD_SECRET }}'
+    ###  ARRRRG - Still trying pull apart the '[object, object]' in 
+    - name: Learn keys
+      run: |
+       echo "secret: ${{ env.akelyess_payload_secret }}"
 
-    #    echo '${{ env.AZURE_AD_SECRET }}' | jq -r '.value'
-    #    # echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-    #    # cat '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' -o '${{ github.workspace }}\hello.txt'
-    #    # Get-Content '${{ github.workspace }}\hello.txt'
+       echo '${{ env.akelyess_payload_secret }}' | jq -r '.value'
+
+       # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
+       # cat '${{ steps.fetch-secrets.outputs.akelyess_payload }}' -o '${{ github.workspace }}\hello.txt'
+       # Get-Content '${{ github.workspace }}\hello.txt'
 
 
     #### Option 1 ####
@@ -59,51 +61,3 @@ jobs:
       id: use-signtool
       run: |
         azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '${{ github.workspace }}\.github\test_files\ConsoleApp1.exe'
-
-
-    #### Option 2 ####
-    # Using azure/login@v1 and azure/CLI@v1
-
-    # https://github.com/Azure/login
-    # https://github.com/Azure/cli
-    # - name: Azure Login
-    #   id: azure-cli-login
-    #   uses: azure/login@v1
-    #   with:
-    #        # JSON object with all values https://github.com/Azure/cli#configure-azure-credentials-as-github-secret
-    #       creds: ${{ secrets.AZURE_CREDENTIALS }} 
-    #        # OR individually set values
-    #       client-id: ${{ secrets.AZ_CLIENT_ID }}
-    #       tenant-id: ${{ secrets.AZ_TENANT_ID }}
-    #       subscription-id: ${{ secrets.AZ_SUBSCRIPTION_ID }}
-    
-    # - name: Azure CLI script
-    #   id: azure-cli-fetch-secret
-    #   uses: azure/CLI@v1
-    #   with:
-    #     inlineScript: |
-    #       echo az_secret=$(az keyvault secret show --vault-name MyPrimaryKeyVault --name MYTELERIKACCOUNTUSERNAME --query value --out tsv) >> $GITHUB_ENV
-    
-    # - name: Verify Result
-    #   id: verify-result
-    #   run: |
-    #     echo "${{ env.az_secret }}"
-
-
-    #### Option 3 ####
-    # If you're lucky enough to have Azure Code Signing service, this is a one-shot operation
-
-    # - name: Sign files with Azure Code Signing
-    #   uses: azure/azure-code-signing-action@v0.2.15
-    #   with:
-    #     azure-tenant-id: ${{ env.AZ_TENANT_ID }}
-    #     azure-client-id: ${{ env.AZ_CLIENT_ID }}
-    #     azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-    #     endpoint: https://wus2.codesigning.azure.net/
-    #     code-signing-account-name: vscx-codesigning
-    #     certificate-profile-name: vscx-certificate-profile
-    #     files-folder: ${{ github.workspace }}\src\index.js
-    #     files-folder-filter: js
-    #     file-digest: SHA256
-    #     timestamp-rfc3161: http://timestamp.acs.microsoft.com
-    #     timestamp-digest: SHA256
