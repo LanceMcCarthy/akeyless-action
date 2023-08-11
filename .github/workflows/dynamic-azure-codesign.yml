@@ -26,7 +26,7 @@ jobs:
         dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
         parse-dynamic-secrets: true
 
-    - name: Read Secrets
+    - name: Check Outputs
       run: |
         echo 'ID'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
@@ -40,6 +40,22 @@ jobs:
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
+
+    - name: Check Environment Variables
+      run: |
+        echo 'ID'
+        echo '${{ env.id }}'
+        echo 'TTL_IN_MINUTES'
+        echo '${{ env.ttl_in_minutes }}'
+        echo 'MSG'
+        echo '${{ env.msg }}'
+        echo 'SECRET'
+        echo '${{ env.secret }}'
+        echo '${{ env.secret_appId }}'
+        echo '${{ env.secret_displayName }}'
+        echo '${{ env.secret_keyId }}'
+        echo '${{ env.secret_secretText }}'
+        echo '${{ env.secret_tenantId }}'
 
     # - name: Read Secrets
     #   run: |
