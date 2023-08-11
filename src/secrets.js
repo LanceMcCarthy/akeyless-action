@@ -100,6 +100,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // **** Option 2 (parse-secrets =true) ***** //
         // Generate separate output/env vars for each value in the dynamic secret
 
+        core.info('\u001b[38;2;0;255;255mTraversing Object Tree To Find Secrets');
+
         // Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
         traverse(dynamicSecret);
 
@@ -117,8 +119,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           }
 
           // obscure value in visible output and logs
-          // TODO TEMPORARY UNMASKING
-          //core.setSecret(actualValue);
+          core.setSecret(actualValue);
 
           // Switch 1 - set outputs
           if (exportSecretsToOutputs) {
@@ -130,6 +131,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             core.exportVariable(finalVarName, actualValue);
           }
         }
+
+        core.info('\u001b[38;2;0;255;0mExport Complete');
 
         // for (const key in dynamicSecret) {
         //   const toOutput = dynamicSecret;
