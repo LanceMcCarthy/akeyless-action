@@ -2,6 +2,38 @@ const core = require('@actions/core');
 const akeylessApi = require('./akeyless_api');
 const akeyless = require('akeyless');
 
+let parentKey = '';
+let grandparentKey = '';
+const outputArray = [];
+
+function traverse(jsonObject) {
+  for (const [key, loopValue] of Object.entries(jsonObject)) {
+    let loopKey = key;
+
+    if (Object.hasOwn(jsonObject, key)) {
+      if (loopValue.constructor === Object) {
+        parentKey = loopKey;
+        traverse(jsonObject[loopKey]);
+      } else if (loopValue.constructor === Array) {
+        grandparentKey = loopKey;
+        traverse(jsonObject[loopKey]);
+      } else {
+        if (parentKey) {
+          loopKey = `${parentKey}_${loopKey}`;
+        }
+        if (grandparentKey) {
+          loopKey = `${grandparentKey}_${loopKey}`;
+        }
+
+        const item = {};
+        item[loopKey] = loopValue;
+
+        outputArray.push(item);
+      }
+    }
+  }
+}
+
 async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, stringifyOutput) {
   const api = akeylessApi.api(apiUrl);
 
@@ -30,13 +62,16 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           let toOutput = dynamicSecret;
 
           if (stringifyOutput) {
+            core.info('\u001b[38;2;0;255;255mStringifying Output');
             toOutput = JSON.stringify(dynamicSecret);
           }
 
           // obscure values in visible output and logs
-          core.setSecret(toOutput);
+          // TODO TEMPORARY UNMASKING
+          //core.setSecret(toOutput);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
+          core.info('\u001b[38;2;0;255;0mSetting Output');
           core.setOutput(variableName, toOutput);
         }
 
@@ -45,13 +80,16 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           const toEnvironment = dynamicSecret;
 
           if (stringifyOutput) {
+            core.info('\u001b[38;2;0;255;255mStringifying Environment Variable');
             toOutput = JSON.stringify(dynamicSecret);
           }
 
           // obscure values in visible output and logs
-          core.setSecret(toEnvironment);
+          // TODO TEMPORARY UNMASKING
+          //core.setSecret(toEnvironment);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
+          core.info('\u001b[38;2;0;255;0mSetting Environment Variable');
           core.exportVariable(variableName, toEnvironment);
 
           // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
@@ -62,42 +100,71 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // **** Option 2 (parse-secrets =true) ***** //
         // Generate separate output/env vars for each value in the dynamic secret
 
-        for (const key in dynamicSecret) {
-          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-          //   toEnvironment = JSON.stringify(dynamicSecret);
-          // }
+        // Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
+        traverse(dynamicSecret);
 
-          // get the value for the key
-          const value = dynamicSecret[key];
+        // Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
+        for (const item of outputArray) {
+          const actualKey = Object.keys(item)[0];
+          const actualValue = Object.values(item)[0];
+
+          let finalVarName = variableName;
+
+          if (variableName === null || variableName.trim() === '') {
+            finalVarName = `${actualKey}`;
+          } else {
+            finalVarName = `${variableName}_${actualKey}`;
+          }
 
           // obscure value in visible output and logs
-          core.setSecret(value);
-
-          // if the user set an output variable name, use it to prefix the output/env var's name
-          let finalVarName = variableName;
-          if (variableName === null || variableName.trim() === '') {
-            finalVarName = `${key}`;
-          } else {
-            finalVarName = `${variableName}_${key}`;
-          }
+          // TODO TEMPORARY UNMASKING
+          //core.setSecret(actualValue);
 
           // Switch 1 - set outputs
           if (exportSecretsToOutputs) {
-            core.setOutput(finalVarName, value);
+            core.setOutput(finalVarName, actualValue);
           }
 
           // Switch 2 - export env variables
           if (exportSecretsToEnvironment) {
-            core.exportVariable(finalVarName, value);
+            core.exportVariable(finalVarName, actualValue);
           }
-
-          // Debugging
-          // if (dynamicSecret.hasOwnProperty(key)) {
-          //   core.info(`Property ${key} is NOT from prototype chain`);
-          // } else {
-          //   core.info(`Property ${key} is from prototype chain. contact developer to shate special dynamic secret situation.`);
-          // }
         }
+
+        // for (const key in dynamicSecret) {
+        //   const toOutput = dynamicSecret;
+
+        //   // get the value for the key
+        //   const value = toOutput[key];
+
+        //   // obscure value in visible output and logs
+        //   core.setSecret(value);
+
+        //   // if the user set an output variable name, use it to prefix the output/env var's name
+        //   let finalVarName = variableName;
+        //   if (variableName === null || variableName.trim() === '') {
+        //     finalVarName = `${key}`;
+        //   } else {
+        //     finalVarName = `${variableName}_${key}`;
+        //   }
+
+        //   // Switch 1 - set outputs
+        //   if (exportSecretsToOutputs) {
+        //     core.setOutput(finalVarName, value);
+        //   }
+
+        //   // Switch 2 - export env variables
+        //   if (exportSecretsToEnvironment) {
+        //     core.exportVariable(finalVarName, value);
+        //   }
+
+        //   // Debugging
+        //   // if (toOutput.hasOwnProperty(key)) {
+        //   //   core.info(`Property ${key} is NOT from prototype chain`);
+        //   // } else {
+        //   //   core.info(`Property ${key} is from prototype chain. contact developer to share special dynamic secret situation.`);
+        //   // }
+        // }
       }
     } catch (error) {
       core.error(`Failed to export dynamic secrets: ${JSON.stringify(error)}`);
