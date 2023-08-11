@@ -24,8 +24,22 @@ jobs:
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
-        parse-dynamic-secrets: false
-        stringify-output: true
+        parse-dynamic-secrets: true
+
+    - name: Read Secrets
+      run: |
+        echo 'ID'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
+        echo 'TTL_IN_MINUTES'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
+        echo 'MSG'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.msg'
+        echo 'SECRET'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_appId'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_displayName'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
 
     # - name: Read Secrets
     #   run: |
@@ -58,21 +72,21 @@ jobs:
     #     echo '${{ env.secret.secretText }}'
     #     echo '${{ env.secret.tenantId }}'
 
-    - name: Read Secrets
-      run: |
-        echo 'ID'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
-        echo 'TTL_IN_MINUTES'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
-        echo 'MSG'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
-        echo 'SECRET'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.appId'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.displayName'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.keyId'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.secretText'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.tenantId'
+    # - name: Read Secrets
+    #   run: |
+    #     echo 'ID'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+    #     echo 'TTL_IN_MINUTES'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
+    #     echo 'MSG'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+    #     echo 'SECRET'
+    #     echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret'
+    #     # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.appId'
+    #     # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.displayName'
+    #     # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.keyId'
+    #     # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.secretText'
+    #     # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret.tenantId'
 
     # - name: Download File to Sign
     #   run: Invoke-WebRequest "https://dvlup.blob.core.windows.net/general-app-files/MSIs/MicrosoftStoreServicesSDK.msi" -OutFile '${{ github.workspace }}\MicrosoftStoreServicesSDK.msi'
