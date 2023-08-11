@@ -53,54 +53,49 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         return;
       }
 
-      // toggled by parse-dynamic-secrets
+      // toggled by "parse-dynamic-secrets: false
       // **** Option 1 (DEFAULT BEHAVIOR) ***** //
       // Exports the entire dynamic secret value as one object
       if (generateSeparateOutputs === false) {
-        // Switch 1 - set job outputs
-        if (exportSecretsToOutputs) {
-          let toOutput = dynamicSecret;
+        core.info('\u001b[38;2;0;255;255mAutomatic Parsing Disabled - Exporting Entire Secret');
 
-          if (stringifyOutput) {
-            core.info('\u001b[38;2;0;255;255mStringifying Output');
+        let toOutput = dynamicSecret;
+
+        if (stringifyOutput) {
+          core.info('\u001b[38;2;255;255;0mStringifying Output');
+
+          if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
             toOutput = JSON.stringify(dynamicSecret);
           }
+        }
 
+        // - Switch 1 -
+        // set job outputs
+        if (exportSecretsToOutputs) {
           // obscure values in visible output and logs
-          // TODO TEMPORARY UNMASKING
-          //core.setSecret(toOutput);
+          //core.setSecret(toOutput);   // !!! TEMPORARY COMMENT !!!
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.info('\u001b[38;2;0;255;0mSetting Output');
+          core.info('\u001b[38;2;0;255;0mSetting output with with entire secret');
           core.setOutput(variableName, toOutput);
         }
 
-        // Switch 2 - export env variables
+        // - Switch 2 -
+        // export env variables
         if (exportSecretsToEnvironment) {
-          const toEnvironment = dynamicSecret;
-
-          if (stringifyOutput) {
-            core.info('\u001b[38;2;0;255;255mStringifying Environment Variable');
-            toOutput = JSON.stringify(dynamicSecret);
-          }
-
           // obscure values in visible output and logs
-          // TODO TEMPORARY UNMASKING
-          //core.setSecret(toEnvironment);
+          //core.setSecret(toOutput);   // !!! TEMPORARY COMMENT !!!
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.info('\u001b[38;2;0;255;0mSetting Environment Variable');
-          core.exportVariable(variableName, toEnvironment);
-
-          // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-          //   toEnvironment = JSON.stringify(dynamicSecret);
-          // }
+          core.info('\u001b[38;2;255;255;0mSetting an environment variable with entire secret');
+          core.exportVariable(variableName, toOutput);
         }
       } else {
-        // **** Option 2 (parse-secrets =true) ***** //
+        // toggled by "parse-dynamic-secrets: true
+        // **** Option 2 - automatic object parser **** //
         // Generate separate output/env vars for each value in the dynamic secret
 
-        core.info('\u001b[38;2;0;255;255mTraversing Object Tree To Find Secrets');
+        core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Traversing Object Tree To Find Secrets');
 
         // Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
         traverse(dynamicSecret);
@@ -109,6 +104,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         for (const item of outputArray) {
           const actualKey = Object.keys(item)[0];
           const actualValue = Object.values(item)[0];
+
+          core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue} `);
 
           let finalVarName = variableName;
 
@@ -119,7 +116,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           }
 
           // obscure value in visible output and logs
-          core.setSecret(actualValue);
+          //core.setSecret(actualValue);  // !!! TEMPORARY COMMENT !!!
 
           // Switch 1 - set outputs
           if (exportSecretsToOutputs) {
@@ -200,12 +197,14 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
 
     core.setSecret(secretValue);
 
-    // Switch 1 - set outputs
+    // - Switch 1 -
+    // set outputs
     if (exportSecretsToOutputs) {
       core.setOutput(variableName, secretValue);
     }
 
-    // Switch 2 - export env variables
+    // - Switch 2 -
+    // export env variables
     if (exportSecretsToEnvironment) {
       core.exportVariable(variableName, secretValue);
     }
