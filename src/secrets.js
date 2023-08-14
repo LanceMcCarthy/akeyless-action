@@ -34,13 +34,13 @@ const akeyless = require('akeyless');
 //   }
 // }
 
-function exportValue(actualKey, actualValue, exportSecretsToOutputs, exportSecretsToEnvironment) {
-  let finalVarName = variableName;
+function exportValue(actualKey, actualValue, keyPrefix, exportSecretsToOutputs, exportSecretsToEnvironment) {
+  let finalVarName = keyPrefix;
 
-  if (variableName === null || variableName.trim() === '') {
+  if (keyPrefix === null || keyPrefix.trim() === '') {
     finalVarName = `${actualKey}`;
   } else {
-    finalVarName = `${variableName}_${actualKey}`;
+    finalVarName = `${keyPrefix}_${actualKey}`;
   }
 
   // obscure value in visible output and logs
@@ -135,10 +135,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
               const subkeyValue = value[subkey];
               core.info(`\u001b[38;2;255;255;0mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`);
 
-              exportValue(subkey, subkeyValue, exportSecretsToOutputs, exportSecretsToEnvironment);
+              exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
             }
           } else {
-            exportValue(key, value, exportSecretsToOutputs, exportSecretsToEnvironment);
+            exportValue(key, value, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           }
         }
 
@@ -252,7 +252,19 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
 
     core.setSecret(secretValue);
 
-    exportValue(name, secretValue, exportSecretsToOutputs, exportSecretsToEnvironment);
+    exportValue(name, secretValue, null, exportSecretsToOutputs, exportSecretsToEnvironment);
+
+    // // - Switch 1 -
+    // // set outputs
+    // if (exportSecretsToOutputs) {
+    //   core.setOutput(variableName, secretValue);
+    // }
+
+    // // - Switch 2 -
+    // // export env variables
+    // if (exportSecretsToEnvironment) {
+    //   core.exportVariable(variableName, secretValue);
+    // }
   }
 }
 
