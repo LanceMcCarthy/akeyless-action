@@ -50,7 +50,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
+      // core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
       core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret)}`);
       
       if (dynamicSecret === null || dynamicSecret === undefined) {
