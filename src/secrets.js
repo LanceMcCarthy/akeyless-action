@@ -38,14 +38,14 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
-    core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeylessPath: ${akeylessPath}, variableName: ${variableName} `);
+    //core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeylessPath: ${akeylessPath}, variableName: ${variableName} `);
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
         name: akeylessPath
       });
 
-      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeyless param: ${param}`);
+      //core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeyless param: ${param}`);
 
       const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
         core.error(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
@@ -115,8 +115,23 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           const actualKey = Object.keys(item)[0];
           let actualValue = Object.values(item)[0];
 
-          if (actualKey === 'secret' && stringifyOutput) {
-            actualValue = JSON.stringify(actualValue);
+          // At this point, actualValue for 'secret' equals [ Object, object ]
+          if (actualKey === 'secret') {
+            core.info(`\u001b[38;2;255;0;0mKEY IS ${actualKey}`);
+
+            for (const [secretKey, secretKeyValue] of Object.entries(actualValue)) {
+              core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - KEY IS 'secret' - secretKey: ${secretKey}, secretKeyValue: ${secretKeyValue} `);
+            }
+
+             const appId = actualValue["appId"];
+             const displayName = actualValue["displayName"];
+             const keyId = actualValue["keyId"];
+             const secretText = actualValue["secretText"];
+             const tenantId = actualValue["tenantId"];
+
+            actualValue = `{ appId: ${appId}, displayName: ${displayName}, keyId: ${keyId}, secretText: ${secretText}, tenantId: ${tenantId} }`;
+
+            
           }
 
           core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue} `);
