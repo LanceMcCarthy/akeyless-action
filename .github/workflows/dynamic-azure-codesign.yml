@@ -1,9 +1,15 @@
-name: 'Azure Code Sign'
+name: 'AzureSignTool & Dynamic Secret'
 # Docs => https://docs.akeyless.io/docs/azure-ad-dynamic-secrets
 # Using AzureSignTool https://learn.microsoft.com/en-us/windows/msix/desktop/cicd-keyvault
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - aad-tests
+    paths:
+      - 'src/**/*'
+      - '.github/workflows/dynamic-azure-codesign.yml'
 
 jobs:
   code_sign:
@@ -13,52 +19,64 @@ jobs:
       id-token: write
       contents: read
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
-    - name: Fetch dynamic secret from Akleyless
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
-        parse-dynamic-secrets: true
+      - name: Fetch static secret from AKeyless
+        id: fetch-static-secrets
+        uses: ./
+        with:
+          access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+          static-secrets: '{"/DevTools/my-static-secret":"my_static_secret"}'
 
-    - name: Check Outputs
-      run: |
-        echo 'ENTIRE OUTPUT'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}'
-        echo 'ID'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
-        echo 'TTL_IN_MINUTES'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
-        echo 'MSG'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.msg'
-        echo 'SECRET'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_appId'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_displayName'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
-        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
+      - name: Verify Static Secret Job Outputs
+        run: echo "Your output secret is ${{ steps.fetch-static-secrets.outputs.my_static_secret }}"
 
-    - name: Check Environment Variables
-      run: |
-        echo 'ID'
-        echo '${{ env.id }}'
-        echo 'TTL_IN_MINUTES'
-        echo '${{ env.ttl_in_minutes }}'
-        echo 'MSG'
-        echo '${{ env.msg }}'
-        echo 'SECRET'
-        echo '${{ env.secret }}'
-        # echo '${{ env.secret_appId }}'
-        # echo '${{ env.secret_displayName }}'
-        # echo '${{ env.secret_keyId }}'
-        # echo '${{ env.secret_secretText }}'
-        # echo '${{ env.secret_tenantId }}'
+      - name: Verify Static Secret Environment Variables
+        run: echo "Your environment secret is ${{ env.my_static_secret }}"
+      - name: Fetch dynamic secret from Akleyless
+        id: fetch-secrets
+        uses: ./
+        with:
+          access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+          dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
+          parse-dynamic-secrets: true
+
+      - name: Check Outputs
+        run: |
+          echo 'ENTIRE OUTPUT'
+          echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}'
+          echo 'ID'
+          echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
+          echo 'TTL_IN_MINUTES'
+          echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
+          echo 'MSG'
+          echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.msg'
+          echo 'SECRET'
+          echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret'
+          # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_appId'
+          # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_displayName'
+          # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
+          # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
+          # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
+
+      - name: Check Environment Variables
+        run: |
+          echo 'ID'
+          echo '${{ env.id }}'
+          echo 'TTL_IN_MINUTES'
+          echo '${{ env.ttl_in_minutes }}'
+          echo 'MSG'
+          echo '${{ env.msg }}'
+          echo 'SECRET'
+          echo '${{ env.secret }}'
+          # echo '${{ env.secret_appId }}'
+          # echo '${{ env.secret_displayName }}'
+          # echo '${{ env.secret_keyId }}'
+          # echo '${{ env.secret_secretText }}'
+          # echo '${{ env.secret_tenantId }}'
 
     # - name: Read Secrets
     #   run: |
@@ -112,7 +130,7 @@ jobs:
 
     # - name: Install AzureSignTool
     #   id: install-signtool
-    #   run: dotnet tool install --global AzureSignTool 
+    #   run: dotnet tool install --global AzureSignTool
 
     # - name: Sign File
     #   id: use-signtool
