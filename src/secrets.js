@@ -38,16 +38,21 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
+    core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeylessPath: ${akeylessPath}, variableName: ${variableName} `);
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
         name: akeylessPath
       });
 
+      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeyless param: ${param}`);
+
       const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
         core.error(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
+
+      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
 
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
