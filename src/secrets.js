@@ -2,37 +2,37 @@ const core = require('@actions/core');
 const akeylessApi = require('./akeyless_api');
 const akeyless = require('akeyless');
 
-// let parentKey = '';
-// let grandparentKey = '';
-// const outputArray = [];
+let parentKey = '';
+let grandparentKey = '';
+let outputArray = [];
 
-// function traverse(jsonObject) {
-//   for (const [key, loopValue] of Object.entries(jsonObject)) {
-//     let loopKey = key;
+function traverse(jsonObject) {
+  for (const [key, loopValue] of Object.entries(jsonObject)) {
+    let loopKey = key;
 
-//     if (Object.hasOwn(jsonObject, key)) {
-//       if (loopValue.constructor === Object) {
-//         parentKey = loopKey;
-//         traverse(jsonObject[loopKey]);
-//       } else if (loopValue.constructor === Array) {
-//         grandparentKey = loopKey;
-//         traverse(jsonObject[loopKey]);
-//       } else {
-//         if (parentKey) {
-//           loopKey = `${parentKey}_${loopKey}`;
-//         }
-//         if (grandparentKey) {
-//           loopKey = `${grandparentKey}_${loopKey}`;
-//         }
+    if (Object.hasOwn(jsonObject, key)) {
+      if (loopValue.constructor === Object) {
+        parentKey = loopKey;
+        traverse(jsonObject[loopKey]);
+      } else if (loopValue.constructor === Array) {
+        grandparentKey = loopKey;
+        traverse(jsonObject[loopKey]);
+      } else {
+        if (parentKey) {
+          loopKey = `${parentKey}_${loopKey}`;
+        }
+        if (grandparentKey) {
+          loopKey = `${grandparentKey}_${loopKey}`;
+        }
 
-//         const item = {};
-//         item[loopKey] = loopValue;
+        const item = {};
+        item[loopKey] = loopValue;
 
-//         outputArray.push(item);
-//       }
-//     }
-//   }
-// }
+        outputArray.push(item);
+      }
+    }
+  }
+}
 
 function exportValue(actualKey, actualValue, keyPrefix, exportSecretsToOutputs, exportSecretsToEnvironment) {
   let finalVarName = keyPrefix;
@@ -60,6 +60,8 @@ function exportValue(actualKey, actualValue, keyPrefix, exportSecretsToOutputs, 
 async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, stringifyOutput) {
   const api = akeylessApi.api(apiUrl);
 
+  core.info('\u001b[38;2;147;232;70mFetching Dynamic Secret...');
+
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
@@ -83,7 +85,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       // **** Option 1 (DEFAULT BEHAVIOR) ***** //
       // Exports the entire dynamic secret value as one object
       if (generateSeparateOutputs === false) {
-        core.info('\u001b[38;2;0;255;255mAutomatic Parsing Disabled - Exporting Entire Secret');
+        core.info('\u001b[38;2;0;255;255mAutomatic Parsing Disabled - Exporting entire secret...');
 
         let toOutput = dynamicSecret;
 
@@ -95,123 +97,68 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           }
         }
 
-        // - Switch 1 -
-        // set job outputs
-        if (exportSecretsToOutputs) {
-          // obscure values in visible output and logs
-          //core.setSecret(toOutput);   // !!! TEMPORARY COMMENT !!!
-
-          // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.info('\u001b[38;2;0;255;0mSetting output with with entire secret');
-          core.setOutput(variableName, toOutput);
-        }
-
-        // - Switch 2 -
-        // export env variables
-        if (exportSecretsToEnvironment) {
-          // obscure values in visible output and logs
-          //core.setSecret(toOutput);   // !!! TEMPORARY COMMENT !!!
-
-          // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.info('\u001b[38;2;255;255;0mSetting an environment variable with entire secret');
-          core.exportVariable(variableName, toOutput);
-        }
+        exportValue(variableName, toOutput, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
       } else {
         // toggled by "parse-dynamic-secrets: true
         // **** Option 2 - automatic object parser **** //
         // Generate separate output/env vars for each value in the dynamic secret
-        core.info('\u001b[38;2;0;255;255mIterating over dynamic secret:');
+        core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Iterating over dynamic secret...');
 
-        for (const key in dynamicSecret) {
-          const value = dynamicSecret[key];
+        // NEW APPROACH - FLattens out all subproperties, including arrays.
 
-          core.info(`\u001b[38;2;133;238;144mKEY: ${key}, VALUE: ${value}`);
+        // Step 1 - Deep traversal to find all key/value pairs and create an array with unique keys for each value.
+        // To avoid key conflicts in deep traverals, the parent's key is used to prefix the subkey. (e.g. "grandparent_parent_key: 1234")
+        traverse(dynamicSecret);
 
-          // DEBUG Doing additional test logic for 'secret' key's value
-          if (key === 'secret') {
-            core.info(`\u001b[38;2;255;80;200mIterating over 'secret' object's keys:`);
+        // Step 2 - Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
+        for (const item of outputArray) {
+          const actualKey = Object.keys(item)[0];
+          const actualValue = Object.values(item)[0];
 
-            for (const subkey in value) {
-              const subkeyValue = value[subkey];
-              core.info(`\u001b[38;2;255;255;0mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`);
+          core.info(`\u001b[38;2;133;238;144mKEY: ${actualKey}, VALUE: ${actualValue}`);
+
+          // AKEYLESS TROUBLESHOOTING IF/ELSE
+          if (actualKey === 'secret') {
+            // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
+            core.info(`\u001b[38;2;232;191;70mIterating over 'secret' object's keys:`); // #E8BF46
+
+            for (const subkey in actualValue) {
+              const subkeyValue = actualValue[subkey];
+
+              core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
 
               exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
             }
           } else {
+            // all other keys work as expected
             exportValue(key, value, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           }
         }
 
-        // NEW APPROACH
+        outputArray = [];
 
-        // Step 1 - Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
-        //traverse(dynamicSecret);
+        // ORIGINAL APPROACH - Does not do recursive flattening
+        // for (const key in dynamicSecret) {
+        //   const value = dynamicSecret[key];
 
-        // Step 2 - Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
-        // for (const item of outputArray) {
-        //   const actualKey = Object.keys(item)[0];
-        //   let actualValue = Object.values(item)[0];
+        //   core.info(`\u001b[38;2;133;238;144mKEY: ${key}, VALUE: ${value}`);
 
-        //   // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
-        //   if (actualKey === 'secret') {
-        //     core.info(`\u001b[38;2;255;80;80mSECRET`);
-        //     core.info(`\u001b[38;2;255;80;80mRESULT - secret (raw): ${actualValue}`);
-        //     core.info(`\u001b[38;2;255;80;80mRESULT - secret (stringified): ${JSON.stringify(actualValue)}`);
+        //   // DEBUG Doing additional test logic for 'secret' key's value
+        //   if (key === 'secret') {
+        //     core.info(`\u001b[38;2;255;80;200mIterating over 'secret' object's keys:`);
 
-        //   } else{
-        //     core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue}`);
-        //   }
+        //     for (const subkey in value) {
+        //       const subkeyValue = value[subkey];
+        //       core.info(`\u001b[38;2;255;255;0mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`);
 
-        //   let finalVarName = variableName;
-
-        //   if (variableName === null || variableName.trim() === '') {
-        //     finalVarName = `${actualKey}`;
+        //       exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+        //     }
         //   } else {
-        //     finalVarName = `${variableName}_${actualKey}`;
-        //   }
-
-        //   // obscure value in visible output and logs
-        //   //core.setSecret(actualValue);  // !!! TEMPORARY COMMENT !!!
-
-        //   // Switch 1 - set outputs
-        //   if (exportSecretsToOutputs) {
-        //     core.setOutput(finalVarName, actualValue);
-        //   }
-
-        //   // Switch 2 - export env variables
-        //   if (exportSecretsToEnvironment) {
-        //     core.exportVariable(finalVarName, actualValue);
+        //     exportValue(key, value, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
         //   }
         // }
 
-        core.info('\u001b[38;2;0;255;0mExport Complete');
-
-        // for (const key in dynamicSecret) {
-        //   const toOutput = dynamicSecret;
-
-        //   // get the value for the key
-        //   const value = toOutput[key];
-
-        //   // obscure value in visible output and logs
-        //   core.setSecret(value);
-
-        //   // if the user set an output variable name, use it to prefix the output/env var's name
-        //   let finalVarName = variableName;
-        //   if (variableName === null || variableName.trim() === '') {
-        //     finalVarName = `${key}`;
-        //   } else {
-        //     finalVarName = `${variableName}_${key}`;
-        //   }
-
-        //   // Switch 1 - set outputs
-        //   if (exportSecretsToOutputs) {
-        //     core.setOutput(finalVarName, value);
-        //   }
-
-        //   // Switch 2 - export env variables
-        //   if (exportSecretsToEnvironment) {
-        //     core.exportVariable(finalVarName, value);
-        //   }
+        core.info('\u001b[38;2;147;232;70mExport Complete!'); // ##93E846
 
         //   // Debugging
         //   // if (toOutput.hasOwnProperty(key)) {
@@ -230,6 +177,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
 async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment) {
   const api = akeylessApi.api(apiUrl);
+
+  core.info('\u001b[38;2;147;232;70mFetching Static Secret...');
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
     const name = akeylessPath;
@@ -250,21 +199,22 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
 
     const secretValue = staticSecret[name];
 
+    // Hides value in GH Actions logs
     core.setSecret(secretValue);
 
-    exportValue(name, secretValue, null, exportSecretsToOutputs, exportSecretsToEnvironment);
+    // - Switch 1 -
+    // set outputs
+    if (exportSecretsToOutputs) {
+      core.setOutput(variableName, secretValue);
+    }
 
-    // // - Switch 1 -
-    // // set outputs
-    // if (exportSecretsToOutputs) {
-    //   core.setOutput(variableName, secretValue);
-    // }
+    // - Switch 2 -
+    // export env variables
+    if (exportSecretsToEnvironment) {
+      core.exportVariable(variableName, secretValue);
+    }
 
-    // // - Switch 2 -
-    // // export env variables
-    // if (exportSecretsToEnvironment) {
-    //   core.exportVariable(variableName, secretValue);
-    // }
+    core.info('\u001b[38;2;147;232;70mExport Complete!');
   }
 }
 
