@@ -100,6 +100,17 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // Generate separate output/env vars for each value in the dynamic secret
         core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Traversing Object Tree To Find Secrets');
 
+         for (const key in dynamicSecret) {
+          if(key === "secret"){
+            const value = dynamicSecret[key];
+            core.info(`\u001b[38;2;255;80;200mChecking `);
+            for(const [secretKey, secretValue] of Object.entries(value)){
+              core.info(`\u001b[38;2;133;238;144m${secretKey}: ${secretValue}`);
+            }
+          }
+        }
+
+
         // Step 1 - Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
         traverse(dynamicSecret);
 
@@ -113,6 +124,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             core.info(`\u001b[38;2;255;80;80mSECRET`);
             core.info(`\u001b[38;2;255;80;80mRESULT - secret (raw): ${actualValue}`);
             core.info(`\u001b[38;2;255;80;80mRESULT - secret (stringified): ${JSON.stringify(actualValue)}`);
+
+            
           } else{
             core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue}`);
           }
