@@ -38,26 +38,19 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
-    //core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeylessPath: ${akeylessPath}, variableName: ${variableName} `);
+    
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
         name: akeylessPath
       });
 
-      //core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - akeyless param: ${param}`);
-
       const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
         core.error(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-        let debugoutput = JSON.stringify(dynamicSecret);
-        core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - stringified dynamicSecret: ${debugoutput}`);
-      } else {
-        core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
-      }
+      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
       
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
@@ -117,21 +110,18 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
           // At this point, actualValue for 'secret' equals [ Object, object ]
           if (actualKey === 'secret') {
-            core.info(`\u001b[38;2;255;0;0mKEY IS ${actualKey}`);
+            core.info(`\u001b[38;2;255;80;80mSECRET iteration`);
+            //core.info(`\u001b[38;2;255;80;80mKeyValue: actualValue: ${actualValue} `);
 
-            for (const [secretKey, secretKeyValue] of Object.entries(actualValue)) {
-              core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - KEY IS 'secret' - secretKey: ${secretKey}, secretKeyValue: ${secretKeyValue} `);
-            }
+            // for (const [secretKey, secretKeyValue] of Object.entries(actualValue)) {
+            //   core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - KEY IS 'secret' - secretKey: ${secretKey}, secretKeyValue: ${secretKeyValue} `);
+            // }
 
-             const appId = actualValue["appId"];
-             const displayName = actualValue["displayName"];
-             const keyId = actualValue["keyId"];
-             const secretText = actualValue["secretText"];
-             const tenantId = actualValue["tenantId"];
-
-            actualValue = `{ appId: ${appId}, displayName: ${displayName}, keyId: ${keyId}, secretText: ${secretText}, tenantId: ${tenantId} }`;
-
-            
+            //  const appId = actualValue["appId"];
+            //  const displayName = actualValue["displayName"];
+            //  const keyId = actualValue["keyId"];
+            //  const secretText = actualValue["secretText"];
+            //  const tenantId = actualValue["tenantId"];
           }
 
           core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue} `);
