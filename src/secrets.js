@@ -50,7 +50,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
+      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
+      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret)}`);
       
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
@@ -97,35 +98,25 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // toggled by "parse-dynamic-secrets: true
         // **** Option 2 - automatic object parser **** //
         // Generate separate output/env vars for each value in the dynamic secret
-
         core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Traversing Object Tree To Find Secrets');
 
-        // Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
+        // Step 1 - Deep traversal to find all key/valir pairs and create an array with unique keys for each value.
         traverse(dynamicSecret);
 
-        // Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
+        // Step 2 - Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
         for (const item of outputArray) {
           const actualKey = Object.keys(item)[0];
           let actualValue = Object.values(item)[0];
 
-          // At this point, actualValue for 'secret' equals [ Object, object ]
+          // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
           if (actualKey === 'secret') {
-            core.info(`\u001b[38;2;255;80;80mSECRET iteration`);
-            //core.info(`\u001b[38;2;255;80;80mKeyValue: actualValue: ${actualValue} `);
-
-            // for (const [secretKey, secretKeyValue] of Object.entries(actualValue)) {
-            //   core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - KEY IS 'secret' - secretKey: ${secretKey}, secretKeyValue: ${secretKeyValue} `);
-            // }
-
-            //  const appId = actualValue["appId"];
-            //  const displayName = actualValue["displayName"];
-            //  const keyId = actualValue["keyId"];
-            //  const secretText = actualValue["secretText"];
-            //  const tenantId = actualValue["tenantId"];
+            core.info(`\u001b[38;2;255;80;80mSECRET`);
+            core.info(`\u001b[38;2;255;80;80mRESULT - secret (raw): ${actualValue}`);
+            core.info(`\u001b[38;2;255;80;80mRESULT - secret (stringified): ${JSON.stringify(actualValue)}`);
+          } else{
+            core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue}`);
           }
-
-          core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue} `);
-
+          
           let finalVarName = variableName;
 
           if (variableName === null || variableName.trim() === '') {
