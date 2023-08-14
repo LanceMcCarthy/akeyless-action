@@ -24,10 +24,12 @@ jobs:
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
-        parse-dynamic-secrets: true
+        parse-dynamic-secrets: false
 
     - name: Check Outputs
       run: |
+        echo 'ENTIRE OUTPUT'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}'
         echo 'ID'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.id'
         echo 'TTL_IN_MINUTES'
@@ -35,11 +37,12 @@ jobs:
         echo 'MSG'
         echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.msg'
         echo 'SECRET'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_appId'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_displayName'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
+        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret'
+        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_appId'
+        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_displayName'
+        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_keyId'
+        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_secretText'
+        # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq '.secret_tenantId'
 
     - name: Check Environment Variables
       run: |
@@ -51,11 +54,11 @@ jobs:
         echo '${{ env.msg }}'
         echo 'SECRET'
         echo '${{ env.secret }}'
-        echo '${{ env.secret_appId }}'
-        echo '${{ env.secret_displayName }}'
-        echo '${{ env.secret_keyId }}'
-        echo '${{ env.secret_secretText }}'
-        echo '${{ env.secret_tenantId }}'
+        # echo '${{ env.secret_appId }}'
+        # echo '${{ env.secret_displayName }}'
+        # echo '${{ env.secret_keyId }}'
+        # echo '${{ env.secret_secretText }}'
+        # echo '${{ env.secret_tenantId }}'
 
     # - name: Read Secrets
     #   run: |
