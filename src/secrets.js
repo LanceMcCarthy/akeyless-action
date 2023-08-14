@@ -103,7 +103,11 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // Iterate over the unique pairs and send to GitHub Actions environment variables and outputs
         for (const item of outputArray) {
           const actualKey = Object.keys(item)[0];
-          const actualValue = Object.values(item)[0];
+          let actualValue = Object.values(item)[0];
+
+          if (actualKey === 'secret' && stringifyOutput) {
+            actualValue = JSON.stringify(actualValue);
+          }
 
           core.info(`\u001b[38;2;133;238;144mTEMPDEBUG - actualKey: ${actualKey}, actualValue: ${actualValue} `);
 
