@@ -81,8 +81,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         return;
       }
 
+      // ******************************************** //
+      // ******* Option 1 (DEFAULT BEHAVIOR) ******** //
+      // ******************************************** //
       // toggled by "parse-dynamic-secrets: false
-      // **** Option 1 (DEFAULT BEHAVIOR) ***** //
       // Exports the entire dynamic secret value as one object
       if (generateSeparateOutputs === false) {
         core.info('\u001b[38;2;0;255;255mAutomatic Parsing Disabled - Exporting entire secret...');
@@ -99,8 +101,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
         exportValue(variableName, toOutput, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
       } else {
-        // toggled by "parse-dynamic-secrets: true
+        // ******************************************** //
         // **** Option 2 - automatic object parser **** //
+        // ******************************************** //
+        // toggled by "parse-dynamic-secrets: true
         // Generate separate output/env vars for each value in the dynamic secret
         core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Iterating over dynamic secret...');
 
@@ -131,7 +135,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             }
           } else {
             // all other keys work as expected
-            exportValue(key, value, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           }
         }
 
