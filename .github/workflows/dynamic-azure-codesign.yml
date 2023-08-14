@@ -25,6 +25,7 @@ jobs:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
         parse-dynamic-secrets: true
+        stringify-output: true
 
     - name: Check Outputs
       run: |
