@@ -103,7 +103,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
          for (const key in dynamicSecret) {
           if(key === "secret"){
             const value = dynamicSecret[key];
-            core.info(`\u001b[38;2;255;80;200mChecking `);
+            core.info(`\u001b[38;2;255;80;200mChecking Object.entries(value) for the secret value`);
+
             for(const [secretKey, secretValue] of Object.entries(value)){
               core.info(`\u001b[38;2;133;238;144m${secretKey}: ${secretValue}`);
             }
