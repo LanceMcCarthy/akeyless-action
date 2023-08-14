@@ -52,8 +52,13 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
-
+      if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
+        let debugoutput = JSON.stringify(dynamicSecret);
+        core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - stringified dynamicSecret: ${debugoutput}`);
+      } else {
+        core.info(`\u001b[38;2;255;0;0mTEMPDEBUG - dynamicSecret: ${dynamicSecret}`);
+      }
+      
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
       }
