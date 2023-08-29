@@ -8,6 +8,8 @@ on:
       - main
     paths:
       - 'src/**/*'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/dynamic-azure-ad.yml'
 
 jobs:

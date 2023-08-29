@@ -1,5 +1,5 @@
-# This workflow is to run tests for features, invesatigations or anything that shouldn't be done on main
-name: 'Ongoing work'
+# This workflow is to run tests for features, investigations or anything that shouldn't be done on main
+name: 'Teste'
 
 on:
   workflow_dispatch:
@@ -10,7 +10,10 @@ on:
     - 'issues/*'
     paths:
       - 'src/**/*'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/ci-work.yml'
+
 jobs:
   ##############################
   ########## Option 1 ########## 
