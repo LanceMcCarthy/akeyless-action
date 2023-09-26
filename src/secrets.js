@@ -43,8 +43,10 @@ function exportValue(actualKey, actualValue, keyPrefix, exportSecretsToOutputs, 
     finalVarName = `${keyPrefix}_${actualKey}`;
   }
 
-  // obscure value in visible output and logs
-  //core.setSecret(actualValue);  // !!! TEMPORARY COMMENT !!!
+  // !!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!! //
+  
+  // REMOVE THIS COMMENT BEFORE PUBLISHING
+  //core.setSecret(actualValue);
 
   // Switch 1 - set outputs
   if (exportSecretsToOutputs) {
@@ -122,9 +124,9 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           core.info(`\u001b[38;2;133;238;144mKEY: ${actualKey}, VALUE: ${actualValue}`);
 
           // AKEYLESS TROUBLESHOOTING IF/ELSE
-          if (actualKey === 'secret') {
+          if (actualKey === 'secret' || actualKey === 'id') {
             // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
-            core.info(`\u001b[38;2;232;191;70mChecking the value of 'secret':`); // #E8BF46
+            core.info(`\u001b[38;2;232;191;70mChecking the value of ${actualKey}:`); // #E8BF46
 
             // for (const subkey in actualValue) {
             //   const subkeyValue = actualValue[subkey];
@@ -134,13 +136,15 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             //   exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
             // }
 
-            // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
-            //   toOutput = JSON.stringify(dynamicSecret);
-            // }
+            if (actualValue.constructor === Array || actualValue.constructor === Object) {
+              let stringifiedValue = JSON.stringify(actualValue);
+              exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            }
+            else{
+              exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            }
 
-            //let stringified = JSON.stringify(actualValue);
-
-            exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            
           } else {
             // all other keys work as expected
             exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
