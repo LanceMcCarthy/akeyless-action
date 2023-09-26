@@ -36,6 +36,8 @@ jobs:
 
       # - name: Verify Static Secret Env Value
       #   run: echo "Your environment secret is ${{ env.my_static_secret }}"
+      
+  # PREFIXED TESTS
 
       - name: Prefixed, Unparsed
         id: job-one
@@ -46,7 +48,7 @@ jobs:
           parse-dynamic-secrets: false
           export-secrets-to-environment: false
 
-      - name: Check Output
+      - name: Verify Outputs
         run: |
           echo 'ENTIRE OUTPUT'
           echo '${{ steps.job-one.outputs.aad_payload }}'
@@ -56,86 +58,89 @@ jobs:
         uses: ./
         with:
           access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-          dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
+          dynamic-secrets: '{"/DevTools/live-azure-ad":"aad_payload"}'
           parse-dynamic-secrets: true
           export-secrets-to-environment: false
 
-      - name: Check Outputs
+      - name: Verify Outputs
         run: |
           echo 'ENTIRE OUTPUT'
-          echo '${{ steps.job-two.outputs.akelyess_payload }}'
+          echo '${{ steps.job-two.outputs.aad_payload }}'
           echo 'ID'
-          echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.id'
+          echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.id'
           echo 'TTL_IN_MINUTES'
-          echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
+          echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.ttl_in_minutes'
           echo 'MSG'
-          echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.msg'
+          echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.msg'
           echo 'SECRET'
-          echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret'
-          # echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret_appId'
-          # echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret_displayName'
-          # echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret_keyId'
-          # echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret_secretText'
-          # echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret_tenantId'
+          echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret'
+          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_appId'
+          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_displayName'
+          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_keyId'
+          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_secretText'
+          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_tenantId'
 
     # - name: Read Secrets
     #   run: |
     #     echo 'ID'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.id'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.id'
     #     echo 'TTL_IN_MINUTES'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.ttl_in_minutes'
     #     echo 'MSG'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.msg'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.msg'
     #     echo 'SECRET'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret.appId'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret.displayName'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret.keyId'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret.secretText'
-    #     echo '${{ steps.job-two.outputs.akelyess_payload }}' | jq '.secret.tenantId'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret.appId'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret.displayName'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret.keyId'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret.secretText'
+    #     echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret.tenantId'
 
-      - name: Unprefixed, Unparsed
-        id: job-three
-        uses: ./
-        with:
-          access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-          dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
-          parse-dynamic-secrets: false
-          export-secrets-to-environment: false
 
-      - name: Verify Outputs
-        run: |
-          echo 'ENTIRE OUTPUT'
-          echo '${{ steps.job-three.outputs.akelyess_payload }}'
-          echo 'ID'
-          echo '${{ steps.job-three.outputs.akelyess_payload }}' | jq '.id'
-          echo 'TTL_IN_MINUTES'
-          echo '${{ steps.job-three.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
-          echo 'MSG'
-          echo '${{ steps.job-three.outputs.akelyess_payload }}' | jq '.msg'
-          echo 'SECRET'
-          echo '${{ steps.job-three.outputs.akelyess_payload }}' | jq '.secret'
+  # UNPREFIXED TESTS
 
-      - name: Unprefixed, Parsed
-        id: job-four
-        uses: ./
-        with:
-          access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-          dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
-          parse-dynamic-secrets: true
-          export-secrets-to-environment: false
+      # - name: Unprefixed, Unparsed
+      #   id: job-three
+      #   uses: ./
+      #   with:
+      #     access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+      #     dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
+      #     parse-dynamic-secrets: false
+      #     export-secrets-to-environment: false
 
-      - name: Verify Outputs
-        run: |
-          echo 'ENTIRE OUTPUT'
-          echo '${{ steps.job-four.outputs.akelyess_payload }}'
-          echo 'ID'
-          echo '${{ steps.job-four.outputs.akelyess_payload }}' | jq '.id'
-          echo 'TTL_IN_MINUTES'
-          echo '${{ steps.job-four.outputs.akelyess_payload }}' | jq '.ttl_in_minutes'
-          echo 'MSG'
-          echo '${{ steps.job-four.outputs.akelyess_payload }}' | jq '.msg'
-          echo 'SECRET'
-          echo '${{ steps.job-four.outputs.akelyess_payload }}' | jq '.secret'
+      # - name: Verify Outputs
+      #   run: |
+      #     echo 'ENTIRE OUTPUT'
+      #     echo '${{ steps.job-three.outputs.aad_payload }}'
+      #     echo 'ID'
+      #     echo '${{ steps.job-three.outputs.aad_payload }}' | jq '.id'
+      #     echo 'TTL_IN_MINUTES'
+      #     echo '${{ steps.job-three.outputs.aad_payload }}' | jq '.ttl_in_minutes'
+      #     echo 'MSG'
+      #     echo '${{ steps.job-three.outputs.aad_payload }}' | jq '.msg'
+      #     echo 'SECRET'
+      #     echo '${{ steps.job-three.outputs.aad_payload }}' | jq '.secret'
+
+      # - name: Unprefixed, Parsed
+      #   id: job-four
+      #   uses: ./
+      #   with:
+      #     access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+      #     dynamic-secrets: '{"/DevTools/live-azure-ad":""}'
+      #     parse-dynamic-secrets: true
+      #     export-secrets-to-environment: false
+
+      # - name: Verify Outputs
+      #   run: |
+      #     echo 'ENTIRE OUTPUT'
+      #     echo '${{ steps.job-four.outputs.aad_payload }}'
+      #     echo 'ID'
+      #     echo '${{ steps.job-four.outputs.aad_payload }}' | jq '.id'
+      #     echo 'TTL_IN_MINUTES'
+      #     echo '${{ steps.job-four.outputs.aad_payload }}' | jq '.ttl_in_minutes'
+      #     echo 'MSG'
+      #     echo '${{ steps.job-four.outputs.aad_payload }}' | jq '.msg'
+      #     echo 'SECRET'
+      #     echo '${{ steps.job-four.outputs.aad_payload }}' | jq '.secret'
 
 
     # - name: Download Example File to Sign
