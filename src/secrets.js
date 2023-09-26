@@ -124,15 +124,23 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           // AKEYLESS TROUBLESHOOTING IF/ELSE
           if (actualKey === 'secret') {
             // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
-            core.info(`\u001b[38;2;232;191;70mIterating over 'secret' object's keys:`); // #E8BF46
+            //core.info(`\u001b[38;2;232;191;70mIterating over 'secret' object's keys:`); // #E8BF46
 
-            for (const subkey in actualValue) {
-              const subkeyValue = actualValue[subkey];
+            // for (const subkey in actualValue) {
+            //   const subkeyValue = actualValue[subkey];
 
-              core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
+            //   core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
 
-              exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            }
+            //   exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            // }
+
+            // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
+            //   toOutput = JSON.stringify(dynamicSecret);
+            // }
+
+            let stringified = JSON.stringify(actualValue)
+
+            exportValue(actualKey, stringified, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           } else {
             // all other keys work as expected
             exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
