@@ -160,12 +160,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           //   else{
           //     exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           //   }
-
-            
-          } else {
-            // all other keys work as expected
-            exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-          }
+          // } else {
+          //   // all other keys work as expected
+          //   exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          // }
         }
 
         outputArray = [];
