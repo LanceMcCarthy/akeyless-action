@@ -123,26 +123,43 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
           core.info(`\u001b[38;2;133;238;144mKEY: ${actualKey}, VALUE: ${actualValue}`);
 
-          // AKEYLESS TROUBLESHOOTING IF/ELSE
-          if (actualKey === 'secret' || actualKey === 'id') {
-            // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
-            core.info(`\u001b[38;2;232;191;70mChecking the value of ${actualKey}:`); // #E8BF46
+          // check if the inner value is another json object
+          if(actualValue.constructor === Array || actualValue.constructor === Object){
+            core.info(`\u001b[38;2;232;191;70mChecking the keys of ${actualKey}:`); // #E8BF46
 
-            // for (const subkey in actualValue) {
-            //   const subkeyValue = actualValue[subkey];
+            for (const subkey in actualValue) {
+              const subkeyValue = actualValue[subkey];
 
-            //   core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
+              core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
 
-            //   exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            // }
-
-            if (actualValue.constructor === Array || actualValue.constructor === Object) {
-              let stringifiedValue = JSON.stringify(actualValue);
-              exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+              exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
             }
-            else{
-              exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            }
+
+          } else {
+            // all other keys work as expected
+            exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          }
+
+          // // AKEYLESS TROUBLESHOOTING IF/ELSE
+          // if (actualKey === 'secret' || actualKey === 'id') {
+          //   // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
+          //   core.info(`\u001b[38;2;232;191;70mChecking the keys of ${actualKey}:`); // #E8BF46
+
+          //   for (const subkey in actualValue) {
+          //     const subkeyValue = actualValue[subkey];
+
+          //     core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
+
+          //     exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          //   }
+
+          //   if (actualValue.constructor === Array || actualValue.constructor === Object) {
+          //     let stringifiedValue = JSON.stringify(actualValue);
+          //     exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          //   }
+          //   else{
+          //     exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          //   }
 
             
           } else {
