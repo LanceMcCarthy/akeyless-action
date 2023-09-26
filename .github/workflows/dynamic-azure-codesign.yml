@@ -24,17 +24,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Fetch static secret from AKeyless
-        id: fetch-static-secrets
-        uses: ./
-        with:
-          access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-          static-secrets: '{"/DevTools/my-static-secret":"my_static_secret"}'
+      # - name: Fetch static secret from AKeyless
+      #   id: fetch-static-secrets
+      #   uses: ./
+      #   with:
+      #     access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+      #     static-secrets: '{"/DevTools/my-static-secret":"my_static_secret"}'
 
-      - name: Verify Static Secret Job Outputs
-        run: echo "Your output secret is ${{ steps.fetch-static-secrets.outputs.my_static_secret }}"
+      # - name: Verify Static Secret Job Outputs
+      #   run: echo "Your output secret is ${{ steps.fetch-static-secrets.outputs.my_static_secret }}"
 
-      - name: Verify Static Secret Environment Variables
+      - name: Fetch Azure AD dynamic Secret
         run: echo "Your environment secret is ${{ env.my_static_secret }}"
       - name: Fetch dynamic secret from Akleyless
         id: fetch-secrets
