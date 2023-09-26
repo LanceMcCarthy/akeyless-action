@@ -76,8 +76,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      // core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
-      // core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret)}`);
+      // CHECKING STRAIGHT VALUE FROM AKEYLESS
+      core.info(`\u001b[38;2;255;0;0mPRE-PROCESSING CHECK: STRAIGHT AKEYLESS VALUES`);
+      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
+      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret)}`);
 
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
@@ -123,36 +125,30 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
           core.info(`\u001b[38;2;133;238;144mKEY: ${actualKey}, VALUE: ${actualValue}`);
 
-          // AKEYLESS TROUBLESHOOTING IF/ELSE
-          if (actualKey === 'secret' || actualKey === 'id') {
-            // At this point, actualValue for 'secret' equals "[Object, object]" and not an actual json object
-            core.info(`\u001b[38;2;232;191;70mChecking the keys of ${actualKey}:`); // #E8BF46
-
-            // Options 1 - output each subkey
-            for (const subkey in actualValue) {
-              const subkeyValue = actualValue[subkey];
-
-              core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
-
-              exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          if (actualValue.constructor === Array || actualValue.constructor === Object) {
+              let stringifiedValue = JSON.stringify(actualValue);
+              exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+            }
+            else{
+              exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
             }
 
-            // Option 2 Just output the entire value as usual
-            //exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          // AKEYLESS TROUBLESHOOTING IF/ELSE
+          // if (actualKey === 'secret') {
+          //   // At this point, actualValue for 'secret' equals the string "[Object, object]"
+          //   core.info(`\u001b[38;2;232;191;70mChecking the keys of ${actualKey}:`); // #E8BF46
 
-            // Option 3 - experimenting with array/object constructor detection
-            // if (actualValue.constructor === Array || actualValue.constructor === Object) {
-            //   let stringifiedValue = JSON.stringify(actualValue);
-            //   exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            // }
-            // else{
-            //   exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            // }
+          //   for (const subkey in actualValue) {
+          //     const subkeyValue = actualValue[subkey];
 
-          } else {
-            // all other keys work as expected
-            exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-          }
+          //     core.info(`\u001b[38;2;219;212;77mSUBKEY: ${subkey}, SUBKEYVALUE: ${subkeyValue}`); // #DBD44D
+
+          //     exportValue(subkey, subkeyValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          //   }
+          // } else {
+          //   // all other keys work as expected
+          //   exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          // }
         }
 
         outputArray = [];
