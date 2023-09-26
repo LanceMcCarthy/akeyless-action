@@ -77,9 +77,9 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       });
 
       // CHECKING STRAIGHT VALUE FROM AKEYLESS
-      core.info(`\u001b[38;2;255;0;0mPRE-PROCESSING CHECK: STRAIGHT AKEYLESS VALUES`);
-      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
-      core.info(`\u001b[38;2;255;0;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret)}`);
+      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: STRAIGHT AKEYLESS VALUES`);
+      core.info(`\u001b[38;2;255;255;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
 
       if (dynamicSecret === null || dynamicSecret === undefined) {
         return;
