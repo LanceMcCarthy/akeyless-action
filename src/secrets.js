@@ -138,7 +138,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
             //   toOutput = JSON.stringify(dynamicSecret);
             // }
 
-            let stringified = JSON.stringify(actualValue)
+            let stringified = JSON.parse(actualValue);
 
             exportValue(actualKey, stringified, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
           } else {
