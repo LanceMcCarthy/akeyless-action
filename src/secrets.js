@@ -81,17 +81,10 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
       // This provides [object, Object] which is expected
       core.info(`\u001b[38;2;255;255;0mRESULT RAW: api.getDynamicSecretValue = ${dynamicSecret}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret)}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED WITH REPLACER: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
 
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret ${dynamicSecret.secret}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.appId ${dynamicSecret.secret.appId}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.displayName ${dynamicSecret.secret.displayName}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.keyId ${dynamicSecret.secret.keyId}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.secretText ${dynamicSecret.secret.secretText}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.tenantId ${dynamicSecret.secret.tenantId}`);
-
-
-
+      
       // ******************************************** //
       // ******* Option 1 (DEFAULT BEHAVIOR) ******** //
       // ******************************************** //
@@ -119,7 +112,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // Generate separate output/env vars for each value in the dynamic secret
         core.info('\u001b[38;2;0;255;255mAutomatic Parsing Enabled - Iterating over dynamic secret...');
 
-        // NEW APPROACH - FLattens out all subproperties, including arrays.
+        // NEW APPROACH - Flattens out all subproperties, including arrays.
 
         // Step 1 - Deep traversal to find all key/value pairs and create an array with unique keys for each value.
         // To avoid key conflicts in deep traverals, the parent's key is used to prefix the subkey. (e.g. "grandparent_parent_key: 1234")
@@ -132,15 +125,19 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
           core.info(`\u001b[38;2;133;238;144mKEY: ${actualKey}, VALUE: ${actualValue}`);
 
-          if (actualValue.constructor === Array || actualValue.constructor === Object) {
-              let stringifiedValue = JSON.stringify(actualValue);
-              exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            }
-            else{
-              exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
-            }
+          exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
 
-          // AKEYLESS TROUBLESHOOTING IF/ELSE
+          // AKEYLESS TROUBLESHOOTING - 1
+          // if (actualValue.constructor === Array || actualValue.constructor === Object) {
+          //   let stringifiedValue = JSON.stringify(actualValue);
+          //   exportValue(actualKey, stringifiedValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          // }
+          // else{
+          //   exportValue(actualKey, actualValue, variableName, exportSecretsToOutputs, exportSecretsToEnvironment);
+          // }
+
+          // AKEYLESS TROUBLESHOOTING - 2
+          // Will output the value of every subkey in 'secret'
           // if (actualKey === 'secret') {
           //   // At this point, actualValue for 'secret' equals the string "[Object, object]"
           //   core.info(`\u001b[38;2;232;191;70mChecking the keys of ${actualKey}:`); // #E8BF46
