@@ -46,12 +46,22 @@ jobs:
           access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
           dynamic-secrets: '{"/DevTools/live-azure-ad":"aad_payload"}'
           parse-dynamic-secrets: false
-          export-secrets-to-environment: false
+          export-secrets-to-environment: true
 
       - name: Verify Outputs
         run: |
-          echo 'secret.appId'
-          echo '${{ steps.job-one.outputs.aad_payload.secret.appId }}'
+          echo 'outputs.aad_payload'
+          echo '${{ steps.job-one.outputs.aad_payload }}'
+          echo 'outputs.aad_payload via jq'
+          echo '${{ steps.job-one.outputs.aad_payload }}' | jq '.secret'
+
+      - name: Verify env vars
+        run: |
+          echo 'env.aad_payload'
+          echo '${{ env.aad_payload }}'
+          echo 'env.aad_payload via jq'
+          echo '${{ env.aad_payload }}' | jq '.secret'
+
 
       - name: Prefixed and Parsed
         id: job-two
@@ -74,11 +84,11 @@ jobs:
           echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.msg'
           echo 'SECRET'
           echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret'
-          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_appId'
-          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_displayName'
-          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_keyId'
-          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_secretText'
-          # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_tenantId'
+        # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_appId'
+        # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_displayName'
+        # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_keyId'
+        # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_secretText'
+        # echo '${{ steps.job-two.outputs.aad_payload }}' | jq '.secret_tenantId'
 
     # - name: Read Secrets
     #   run: |
