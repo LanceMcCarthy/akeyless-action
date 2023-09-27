@@ -50,8 +50,8 @@ jobs:
 
       - name: Verify Outputs
         run: |
-          echo 'ENTIRE OUTPUT'
-          echo '${{ steps.job-one.outputs.aad_payload }}'
+          echo 'secret.appId'
+          echo '${{ steps.job-one.outputs.aad_payload.secret.appId }}'
 
       - name: Prefixed and Parsed
         id: job-two
