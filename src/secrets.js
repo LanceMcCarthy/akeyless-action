@@ -79,16 +79,24 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       // START - AKEYLESS SDK TROUBLESHOOTING
 
       // This provides [object, Object] which is expected
-      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (raw value):`);
+      core.info(`\u001b[38;2;225;173;1m-----------PRE-PROCESSING CHECK 1: Akeyless SDK output (raw value)-----------`);
       core.info(`\u001b[38;2;255;255;0mRapi.getDynamicSecretValue = ${dynamicSecret}`);
+      core.info(`\u001b[38;2;225;173;1m------------------------------------------------------------------------------`);
       
       // Problem demonstration 1. 'secret' is a string with a value of "[object, Object]", not a json object
-      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (JSON.stringify):`);
+      core.info(`\u001b[38;2;225;173;1m-----------PRE-PROCESSING CHECK 2: Akeyless SDK output (JSON.stringify)-----------`);
       core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret)}`);
+      core.info(`\u001b[38;2;225;173;1m-----------------------------------------------------------------------------------`);
 
       // Problem demonstration 2. Same as #1, but explicitly uses a replacer to ensure nested objects are parsed
-      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (JSON.stringify with replacer):`);
+      core.info(`\u001b[38;2;225;173;1m-----------PRE-PROCESSING CHECK 3: Akeyless SDK output (JSON.stringify with replacer)-----------`);
       core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
+      core.info(`\u001b[38;2;225;173;1m-------------------------------------------------------------------------------------------------`);
+
+      // Problem demonstration 3. Same as #1, but explicitly stringifies all known keys
+      core.info(`\u001b[38;2;225;173;1m-----------PRE-PROCESSING CHECK 3: Akeyless SDK output (JSON.stringify with keys)-----------`);
+      core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, ['id', 'secret_name', 'secret_key_id', 'msg', 'secret', 'appId', 'displayName', 'keyId', 'secretText', 'tenantId', 'ttl_in_minutes'])}`);
+      core.info(`\u001b[38;2;225;173;1m-------------------------------------------------------------------------------------------------`);
 
       // END - AKEYLESS SDK TROUBLESHOOTING
 
