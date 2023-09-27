@@ -78,12 +78,19 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
       // CHECKING STRAIGHT VALUE FROM AKEYLESS
       core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: STRAIGHT AKEYLESS VALUES`);
-      core.info(`\u001b[38;2;255;255;0mRESULT - api.getDynamicSecretValue (raw): ${dynamicSecret}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT - api.getDynamicSecretValue (stringified): ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
 
-      if (dynamicSecret === null || dynamicSecret === undefined) {
-        return;
-      }
+      // This provides [object, Object] which is expected
+      core.info(`\u001b[38;2;255;255;0mRESULT RAW: api.getDynamicSecretValue = ${dynamicSecret}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
+
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret ${dynamicSecret.secret}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.appId ${dynamicSecret.secret.appId}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.displayName ${dynamicSecret.secret.displayName}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.keyId ${dynamicSecret.secret.keyId}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.secretText ${dynamicSecret.secret.secretText}`);
+      core.info(`\u001b[38;2;255;255;0mRESULT DIRECT: secret.tenantId ${dynamicSecret.secret.tenantId}`);
+
+
 
       // ******************************************** //
       // ******* Option 1 (DEFAULT BEHAVIOR) ******** //
