@@ -76,13 +76,21 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
 
-      // CHECKING STRAIGHT VALUE FROM AKEYLESS
-      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: STRAIGHT AKEYLESS VALUES`);
+      // START - AKEYLESS SDK TROUBLESHOOTING
 
       // This provides [object, Object] which is expected
-      core.info(`\u001b[38;2;255;255;0mRESULT RAW: api.getDynamicSecretValue = ${dynamicSecret}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret)}`);
-      core.info(`\u001b[38;2;255;255;0mRESULT STRINGIFIED WITH REPLACER: api.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
+      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (raw value):`);
+      core.info(`\u001b[38;2;255;255;0mRapi.getDynamicSecretValue = ${dynamicSecret}`);
+      
+      // Problem demonstration 1. 'secret' is a string with a value of "[object, Object]", not a json object
+      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (JSON.stringify):`);
+      core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret)}`);
+
+      // Problem demonstration 2. Same as #1, but explicitly uses a replacer to ensure nested objects are parsed
+      core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK: Akeyless SDK output (JSON.stringify with replacer):`);
+      core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret, function replacer(key, value) { return value})}`);
+
+      // END - AKEYLESS SDK TROUBLESHOOTING
 
       
       // ******************************************** //
