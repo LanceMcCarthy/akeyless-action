@@ -81,8 +81,13 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       // This provides [object, Object] which is expected
       core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK 1: Akeyless SDK output (raw value):`);
       core.info(`\u001b[38;2;255;255;0m(dynamicSecret) = ${dynamicSecret}`);
-      core.info(`\u001b[38;2;255;255;0m(dynamicSecret.secret) = ${dynamicSecret.secret}`);
-      core.info(`\u001b[38;2;255;255;0m(JSON.stringify(dynamicSecret.secret)) = ${JSON.stringify(dynamicSecret.secret)}`);
+
+      let v2 = dynamicSecret.secret;
+      core.info(`\u001b[38;2;255;255;0m(dynamicSecret.secret) = ${v2}`);
+
+      let v3 = JSON.stringify(dynamicSecret.secret);
+      core.info(`\u001b[38;2;255;255;0m(JSON.stringify(dynamicSecret.secret)) = ${v3}`);
+      
       core.info(`\u001b[38;2;225;173;1m-------------------------------------------------------------------------------------------------`);
       
       // // Problem demonstration 1. 'secret' is a string with a value of "[object, Object]", not a json object
