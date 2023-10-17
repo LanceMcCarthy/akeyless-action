@@ -44,7 +44,7 @@ function exportValue(actualKey, actualValue, keyPrefix, exportSecretsToOutputs, 
   }
 
   // !!!!!!!!!!!! IMPORTANT !!!!!!!!!!!!!!! //
-  
+
   // REMOVE THIS COMMENT BEFORE PUBLISHING
   //core.setSecret(actualValue);
 
@@ -85,7 +85,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       core.info(`\u001b[38;2;255;255;0m(JSON.stringify(dynamicSecret.secret)) = ${JSON.stringify(dynamicSecret.secret)}`);
 
       core.info(`\u001b[38;2;225;173;1m-------------------------------------------------------------------------------------------------`);
-      
+
       // Problem demonstration 1. 'secret' is a string with a value of "[object, Object]", not a json object
       core.info(`\u001b[38;2;225;173;1mPRE-PROCESSING CHECK 2: Akeyless SDK output (JSON.stringify):`);
       core.info(`\u001b[38;2;255;255;0mapi.getDynamicSecretValue =  ${JSON.stringify(dynamicSecret)}`);
@@ -103,7 +103,6 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
       // END - AKEYLESS SDK TROUBLESHOOTING
 
-      
       // ******************************************** //
       // ******* Option 1 (DEFAULT BEHAVIOR) ******** //
       // ******************************************** //
