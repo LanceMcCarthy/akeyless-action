@@ -20,8 +20,15 @@ async function run() {
     akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl);
     akeylessToken = akeylessLoginResponse['token'];
   } catch (error) {
-    core.error(`Failed to login to AKeyless: ${JSON.stringify(error)}`);
-    core.setFailed(`Failed to login to AKeyless: ${JSON.stringify(error)}`);
+    let message = `Failed to login to AKeyless: ${JSON.stringify(error)}`;
+    if (message.includes('ACTIONS_ID_TOKEN_REQUEST_URL')) {
+      message += '\nPlease check the GITHUB_TOKEN token permissions for the job. See:';
+      message += '\n* https://github.com/LanceMcCarthy/akeyless-action#job-permissions-requirement';
+      message += '\n* https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idpermissions';
+    }
+
+    core.error(message);
+    core.setFailed(message);
     return;
   }
 
