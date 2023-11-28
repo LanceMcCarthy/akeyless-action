@@ -10,7 +10,7 @@ on:
       - 'src/**/*'
       - 'package.json'
       - 'package-lock.json'
-      - '.github/workflows/dynamic-azure-ad-new.yml'
+      - '.github/workflows/dynamic-azure-ad.yml'
 
 jobs:
   ##############################
@@ -33,7 +33,7 @@ jobs:
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
-      uses: akeyless-community/akeyless-github-action@v1.0.0
+      uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/dvlup-azure":"azure_ad_dynamic_secret"}'
@@ -73,7 +73,7 @@ jobs:
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
-      uses: akeyless-community/akeyless-github-action@v1.0.0
+      uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/dvlup-azure":""}' #no prefix, all output fields are dynamically parsed from source
@@ -115,7 +115,7 @@ jobs:
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
-      uses: akeyless-community/akeyless-github-action@v1.0.0
+      uses: ./
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
         dynamic-secrets: '{"/DevTools/dvlup-azure":"AZURE_AD"}' #applies "AZURE_AD_" prefix to dynamically parsed output names
