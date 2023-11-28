@@ -20,10 +20,13 @@ jobs:
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
-      uses: ./
+      uses: akeyless-community/akeyless-github-action@v1.0.0
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
-        dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
+        dynamic-secrets: |
+          - name: "/DevTools/live-azure-ad"
+            output-name: "akelyess_payload"
+        access-type: jwt
 
     - name: Verify Values (Temporary - only for debugging)
       run: |
@@ -44,9 +47,11 @@ jobs:
 
        echo '${{ env.akelyess_payload_secret }}' | jq -r '.value'
 
-       # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-       # cat '${{ steps.fetch-secrets.outputs.akelyess_payload }}' -o '${{ github.workspace }}\hello.txt'
-       # Get-Content '${{ github.workspace }}\hello.txt'
+       echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
+       
+       cat '${{ steps.fetch-secrets.outputs.akelyess_payload }}' -o '${{ github.workspace }}\hello.txt'
+       
+       Get-Content '${{ github.workspace }}\hello.txt'
 
 
     #### Option 1 ####
