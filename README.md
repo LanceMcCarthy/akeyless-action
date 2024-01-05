@@ -1,5 +1,9 @@
 # AKeyless GitHub Action
 
+> [!TIP]
+> Akeyless now has an action availiable! You can find it here https://github.com/akeyless-community/akeyless-github-action. It has many more authentication mechanisms.
+> Note that I *will* continue to maintain this repo, at least until Akeyless fixing a bug with AAD dynamic secrets.
+
 This action will login to AKeyless using JWT or IAM authentication and then fetch secrets and/or provision AWS access via a dynamic producer.
 
 | Workflow | Status |
