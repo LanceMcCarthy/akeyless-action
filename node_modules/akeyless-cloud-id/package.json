@@ -1,6 +1,6 @@
 {
   "name": "akeyless-cloud-id",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "",
   "main": "cloudid.js",
   "scripts": {
@@ -21,7 +21,7 @@
     "akeyless": "^2.0.15",
     "aws-sdk": "^2.876.0",
     "aws4": "^1.11.0",
-    "axios": "^0.21.1",
+    "axios": "^0.28.0",
     "google-auth-library": "^7.0.3"
   }
 }
