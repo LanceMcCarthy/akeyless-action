@@ -27,11 +27,11 @@ inputs:
     description: 'A JSON object as a string, with a list of dynamic secrets to fetch. The key should be the path to the secret and the value should be the name of the environment variable/output to save it to.'
     required: false
   export-secrets-to-outputs:
-    description: 'True/False to denote if static/dynamic secrets should be exported as environment variables..'
+    description: 'True/False to denote if static/dynamic secrets should be exported as action outputs.'
     required: false
     default: true
   export-secrets-to-environment:
-    description: 'True/False to denote if static/dynamic secrets should be exported as action outputs.'
+    description: 'True/False to denote if static/dynamic secrets should be exported as environment variables.'
     required: false
     default: true
   parse-dynamic-secrets:
