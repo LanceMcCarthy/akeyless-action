@@ -130,7 +130,7 @@ jobs:
     steps:
     - name: Fetch secrets from AKeyless
       id: fetch-secrets
-      uses: LanceMcCarthy/akeyless-action@v3
+      uses: LanceMcCarthy/akeyless-action@v4
       with:
         access-id: auth-method-access-id     # (ex: 'p-iwt13fd19ajd') We recommend storing this as a GitHub Actions secret
         static-secrets: '{"/path/to/static/secret":"my_first_secret","/path/to/another/secret":"my_second_secret"}'
@@ -168,7 +168,7 @@ If you want those secrets as separate environment variables, there's one extra s
     steps:
     - name: Fetch dynamic secrets from AKeyless
       id: fetch-dynamic-secrets
-      uses: LanceMcCarthy/akeyless-action@v3
+      uses: LanceMcCarthy/akeyless-action@v4
       with:
         access-id: ${{ secrets.AKEYLESS_ACCESS_ID }} # Looks like p-fq3afjjxv839
         dynamic-secrets: '{"/path/to/dynamic/aws/secret":"aws_dynamic_secrets"}'
@@ -200,7 +200,7 @@ For example, a SQL server dynamic secret will provide **id**, **user**, **ttl_in
 ```yaml
 - name: Fetch dynamic secrets from AKeyless (NO PREFIX)
   id: get-secrets
-  uses: LanceMcCarthy/akeyless-action@v3
+  uses: LanceMcCarthy/akeyless-action@v4
   with:
     access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
     dynamic-secrets: '{"/DevTools/my-sqlsrv-secret":""}' # no prefix, use an empty string for output var
@@ -234,7 +234,7 @@ For example, using "SQL" for the output path:
 
 ```yaml
 - name: Fetch dynamic secrets from AKeyless ('SQL' prefix)
-  uses: LanceMcCarthy/akeyless-action@v3
+  uses: LanceMcCarthy/akeyless-action@v4
   id: job-name
   with:
     access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
