@@ -82,6 +82,7 @@ exports.run = run;
 if (require.main === module) {
   try {
     core.debug('Starting main run');
+    core.info(`Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they're addressed, this action will automatically inherit those fixes in the next update.`);
     run();
   } catch (error) {
     core.debug(error.stack);

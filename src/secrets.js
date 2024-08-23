@@ -6,6 +6,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
+    core.info(`Requesting ${akeylessPath}...`);
+
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
@@ -18,6 +20,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
       });
 
       if (dynamicSecret === null || dynamicSecret === undefined) {
+        core.info(`Could not fetch ${akeylessPath}. Skipping...`);
+        core.notice(`Notice: ${akeylessPath} was not found in Akeyless. Skipped.`);
         return;
       }
 
@@ -86,6 +90,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
           //   core.info(`Property ${key} is from prototype chain. contact developer to shate special dynamic secret situation.`);
           // }
         }
+
+        core.info(`Successfully exported ${akeylessPath} to ${variableName}.`);
       }
     } catch (error) {
       core.error(`Failed to export dynamic secrets: ${JSON.stringify(error)}`);
@@ -98,6 +104,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
+    core.info(`Requesting ${akeylessPath}...`);
+
     const name = akeylessPath;
 
     const param = akeyless.GetSecretValue.constructFromObject({
@@ -111,6 +119,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
     });
 
     if (staticSecret === undefined) {
+      core.info(`Could not fetch ${akeylessPath}. Skipping...`);
+      core.notice(`Notice: ${akeylessPath} was not found in Akeyless. Skipped.`);
       return;
     }
 
@@ -127,6 +137,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
     if (exportSecretsToEnvironment) {
       core.exportVariable(variableName, secretValue);
     }
+
+    core.info(`Successfully exported ${akeylessPath} to ${variableName}.`);
   }
 }
 
