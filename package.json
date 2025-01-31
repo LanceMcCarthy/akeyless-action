@@ -25,7 +25,7 @@
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
     "akeyless": "^4.3.0",
-    "akeyless-cloud-id": "^2.3.0"
+    "akeyless-cloud-id": "^2.4.0"
   },
   "devDependencies": {
     "eslint": "^9.18.0",
