@@ -10,7 +10,7 @@ function action_fail(message) {
 }
 
 async function jwtLogin(apiUrl, accessId) {
-  api = akeylessApi.api(apiUrl);
+  const api = akeylessApi.api(apiUrl);
   core.debug(apiUrl);
   let githubToken = undefined;
   //const akeylessResponse = undefined;
@@ -36,7 +36,7 @@ async function jwtLogin(apiUrl, accessId) {
 }
 
 async function awsIamLogin(apiUrl, accessId) {
-  api = akeylessApi.api(apiUrl);
+  const api = akeylessApi.api(apiUrl);
   let cloudId = undefined;
 
   try {
