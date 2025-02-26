@@ -21,9 +21,12 @@ module.exports = {
     meta: {
         type: "suggestion",
 
+        defaultOptions: [{ allowElseIf: true }],
+
         docs: {
             description: "Disallow `else` blocks after `return` statements in `if` statements",
             recommended: false,
+            frozen: true,
             url: "https://eslint.org/docs/latest/rules/no-else-return"
         },
 
@@ -31,8 +34,7 @@ module.exports = {
             type: "object",
             properties: {
                 allowElseIf: {
-                    type: "boolean",
-                    default: true
+                    type: "boolean"
                 }
             },
             additionalProperties: false
@@ -46,7 +48,7 @@ module.exports = {
     },
 
     create(context) {
-
+        const [{ allowElseIf }] = context.options;
         const sourceCode = context.sourceCode;
 
         //--------------------------------------------------------------------------
@@ -270,7 +272,7 @@ module.exports = {
         function naiveHasReturn(node) {
             if (node.type === "BlockStatement") {
                 const body = node.body,
-                    lastChildNode = body[body.length - 1];
+                    lastChildNode = body.at(-1);
 
                 return lastChildNode && checkForReturn(lastChildNode);
             }
@@ -388,8 +390,6 @@ module.exports = {
                 displayReport(alternate);
             }
         }
-
-        const allowElseIf = !(context.options[0] && context.options[0].allowElseIf === false);
 
         //--------------------------------------------------------------------------
         // Public API

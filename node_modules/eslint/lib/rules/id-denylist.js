@@ -7,6 +7,12 @@
 "use strict";
 
 //------------------------------------------------------------------------------
+// Requirements
+//------------------------------------------------------------------------------
+
+const astUtils = require("./utils/ast-utils");
+
+//------------------------------------------------------------------------------
 // Helpers
 //------------------------------------------------------------------------------
 
@@ -98,9 +104,12 @@ module.exports = {
     meta: {
         type: "suggestion",
 
+        defaultOptions: [],
+
         docs: {
             description: "Disallow specified identifiers",
             recommended: false,
+            frozen: true,
             url: "https://eslint.org/docs/latest/rules/id-denylist"
         },
 
@@ -118,7 +127,6 @@ module.exports = {
     },
 
     create(context) {
-
         const denyList = new Set(context.options);
         const reportedNodes = new Set();
         const sourceCode = context.sourceCode;
@@ -154,6 +162,12 @@ module.exports = {
          * @returns {boolean} `true` if the node should be checked.
          */
         function shouldCheck(node) {
+
+            // Import attributes are defined by environments, so naming conventions shouldn't apply to them
+            if (astUtils.isImportAttributeKey(node)) {
+                return false;
+            }
+
             const parent = node.parent;
 
             /*

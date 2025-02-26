@@ -14,9 +14,14 @@ module.exports = {
     meta: {
         type: "suggestion",
 
+        defaultOptions: [{
+            ignoreCase: false
+        }],
+
         docs: {
             description: "Require variables within the same declaration block to be sorted",
             recommended: false,
+            frozen: true,
             url: "https://eslint.org/docs/latest/rules/sort-vars"
         },
 
@@ -25,8 +30,7 @@ module.exports = {
                 type: "object",
                 properties: {
                     ignoreCase: {
-                        type: "boolean",
-                        default: false
+                        type: "boolean"
                     }
                 },
                 additionalProperties: false
@@ -41,10 +45,8 @@ module.exports = {
     },
 
     create(context) {
-
-        const configuration = context.options[0] || {},
-            ignoreCase = configuration.ignoreCase || false,
-            sourceCode = context.sourceCode;
+        const [{ ignoreCase }] = context.options;
+        const sourceCode = context.sourceCode;
 
         return {
             VariableDeclaration(node) {
@@ -66,7 +68,7 @@ module.exports = {
                                     return null;
                                 }
                                 return fixer.replaceTextRange(
-                                    [idDeclarations[0].range[0], idDeclarations[idDeclarations.length - 1].range[1]],
+                                    [idDeclarations[0].range[0], idDeclarations.at(-1).range[1]],
                                     idDeclarations
 
                                         // Clone the idDeclarations array to avoid mutating it

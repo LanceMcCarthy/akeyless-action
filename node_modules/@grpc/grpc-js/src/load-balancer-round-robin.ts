@@ -39,6 +39,7 @@ import {
 } from './subchannel-address';
 import { LeafLoadBalancer } from './load-balancer-pick-first';
 import { ChannelOptions } from './channel-options';
+import { ChannelCredentials } from './channel-credentials';
 
 const TRACER_NAME = 'round_robin';
 
@@ -104,12 +105,20 @@ export class RoundRobinLoadBalancer implements LoadBalancer {
 
   constructor(
     private readonly channelControlHelper: ChannelControlHelper,
+    private readonly credentials: ChannelCredentials,
     private readonly options: ChannelOptions
   ) {
     this.childChannelControlHelper = createChildChannelControlHelper(
       channelControlHelper,
       {
         updateState: (connectivityState, picker) => {
+          /* Ensure that name resolution is requested again after active
+           * connections are dropped. This is more aggressive than necessary to
+           * accomplish that, so we are counting on resolvers to have
+           * reasonable rate limits. */
+          if (this.currentState === ConnectivityState.READY && connectivityState !== ConnectivityState.READY) {
+            this.channelControlHelper.requestReresolution();
+          }
           this.calculateAndUpdateState();
         },
       }
@@ -207,6 +216,7 @@ export class RoundRobinLoadBalancer implements LoadBalancer {
         new LeafLoadBalancer(
           endpoint,
           this.childChannelControlHelper,
+          this.credentials,
           this.options
         )
     );

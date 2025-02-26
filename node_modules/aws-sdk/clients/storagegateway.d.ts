@@ -300,19 +300,19 @@ declare class StorageGateway extends Service {
    */
   describeFileSystemAssociations(callback?: (err: AWSError, data: StorageGateway.Types.DescribeFileSystemAssociationsOutput) => void): Request<StorageGateway.Types.DescribeFileSystemAssociationsOutput, AWSError>;
   /**
-   * Returns metadata about a gateway such as its name, network interfaces, configured time zone, and the state (whether the gateway is running or not). To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
+   * Returns metadata about a gateway such as its name, network interfaces, time zone, status, and software version. To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
    */
   describeGatewayInformation(params: StorageGateway.Types.DescribeGatewayInformationInput, callback?: (err: AWSError, data: StorageGateway.Types.DescribeGatewayInformationOutput) => void): Request<StorageGateway.Types.DescribeGatewayInformationOutput, AWSError>;
   /**
-   * Returns metadata about a gateway such as its name, network interfaces, configured time zone, and the state (whether the gateway is running or not). To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
+   * Returns metadata about a gateway such as its name, network interfaces, time zone, status, and software version. To specify which gateway to describe, use the Amazon Resource Name (ARN) of the gateway in your request.
    */
   describeGatewayInformation(callback?: (err: AWSError, data: StorageGateway.Types.DescribeGatewayInformationOutput) => void): Request<StorageGateway.Types.DescribeGatewayInformationOutput, AWSError>;
   /**
-   * Returns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone.
+   * Returns your gateway's maintenance window schedule information, with values for monthly or weekly cadence, specific day and time to begin maintenance, and which types of updates to apply. Time values returned are for the gateway's time zone.
    */
   describeMaintenanceStartTime(params: StorageGateway.Types.DescribeMaintenanceStartTimeInput, callback?: (err: AWSError, data: StorageGateway.Types.DescribeMaintenanceStartTimeOutput) => void): Request<StorageGateway.Types.DescribeMaintenanceStartTimeOutput, AWSError>;
   /**
-   * Returns your gateway's weekly maintenance start time including the day and time of the week. Note that values are in terms of the gateway's time zone.
+   * Returns your gateway's maintenance window schedule information, with values for monthly or weekly cadence, specific day and time to begin maintenance, and which types of updates to apply. Time values returned are for the gateway's time zone.
    */
   describeMaintenanceStartTime(callback?: (err: AWSError, data: StorageGateway.Types.DescribeMaintenanceStartTimeOutput) => void): Request<StorageGateway.Types.DescribeMaintenanceStartTimeOutput, AWSError>;
   /**
@@ -372,11 +372,11 @@ declare class StorageGateway extends Service {
    */
   describeTapeRecoveryPoints(callback?: (err: AWSError, data: StorageGateway.Types.DescribeTapeRecoveryPointsOutput) => void): Request<StorageGateway.Types.DescribeTapeRecoveryPointsOutput, AWSError>;
   /**
-   * Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a TapeARN is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
+   * Returns a description of virtual tapes that correspond to the specified Amazon Resource Names (ARNs). If TapeARN is not specified, returns a description of the virtual tapes associated with the specified gateway. This operation is only supported for the tape gateway type. The operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the Limit field in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of tapes.
    */
   describeTapes(params: StorageGateway.Types.DescribeTapesInput, callback?: (err: AWSError, data: StorageGateway.Types.DescribeTapesOutput) => void): Request<StorageGateway.Types.DescribeTapesOutput, AWSError>;
   /**
-   * Returns a description of the specified Amazon Resource Name (ARN) of virtual tapes. If a TapeARN is not specified, returns a description of all virtual tapes associated with the specified gateway. This operation is only supported in the tape gateway type.
+   * Returns a description of virtual tapes that correspond to the specified Amazon Resource Names (ARNs). If TapeARN is not specified, returns a description of the virtual tapes associated with the specified gateway. This operation is only supported for the tape gateway type. The operation supports pagination. By default, the operation returns a maximum of up to 100 tapes. You can optionally specify the Limit field in the body to limit the number of tapes in the response. If the number of tapes returned in the response is truncated, the response includes a Marker field. You can use this Marker value in your subsequent request to retrieve the next set of tapes.
    */
   describeTapes(callback?: (err: AWSError, data: StorageGateway.Types.DescribeTapesOutput) => void): Request<StorageGateway.Types.DescribeTapesOutput, AWSError>;
   /**
@@ -428,11 +428,11 @@ declare class StorageGateway extends Service {
    */
   disassociateFileSystem(callback?: (err: AWSError, data: StorageGateway.Types.DisassociateFileSystemOutput) => void): Request<StorageGateway.Types.DisassociateFileSystemOutput, AWSError>;
   /**
-   * Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
+   * Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.  Joining a domain creates an Active Directory computer account in the default organizational unit, using the gateway's Gateway ID as the account name (for example, SGW-1234ADE). If your Active Directory environment requires that you pre-stage accounts to facilitate the join domain process, you will need to create this account ahead of time. To create the gateway's computer account in an organizational unit other than the default, you must specify the organizational unit when joining the domain. 
    */
   joinDomain(params: StorageGateway.Types.JoinDomainInput, callback?: (err: AWSError, data: StorageGateway.Types.JoinDomainOutput) => void): Request<StorageGateway.Types.JoinDomainOutput, AWSError>;
   /**
-   * Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.
+   * Adds a file gateway to an Active Directory domain. This operation is only supported for file gateways that support the SMB file protocol.  Joining a domain creates an Active Directory computer account in the default organizational unit, using the gateway's Gateway ID as the account name (for example, SGW-1234ADE). If your Active Directory environment requires that you pre-stage accounts to facilitate the join domain process, you will need to create this account ahead of time. To create the gateway's computer account in an organizational unit other than the default, you must specify the organizational unit when joining the domain. 
    */
   joinDomain(callback?: (err: AWSError, data: StorageGateway.Types.JoinDomainOutput) => void): Request<StorageGateway.Types.JoinDomainOutput, AWSError>;
   /**
@@ -444,11 +444,11 @@ declare class StorageGateway extends Service {
    */
   listAutomaticTapeCreationPolicies(callback?: (err: AWSError, data: StorageGateway.Types.ListAutomaticTapeCreationPoliciesOutput) => void): Request<StorageGateway.Types.ListAutomaticTapeCreationPoliciesOutput, AWSError>;
   /**
-   * Gets a list of the file shares for a specific S3 File Gateway, or the list of file shares that belong to the calling user account. This operation is only supported for S3 File Gateways.
+   * Gets a list of the file shares for a specific S3 File Gateway, or the list of file shares that belong to the calling Amazon Web Services account. This operation is only supported for S3 File Gateways.
    */
   listFileShares(params: StorageGateway.Types.ListFileSharesInput, callback?: (err: AWSError, data: StorageGateway.Types.ListFileSharesOutput) => void): Request<StorageGateway.Types.ListFileSharesOutput, AWSError>;
   /**
-   * Gets a list of the file shares for a specific S3 File Gateway, or the list of file shares that belong to the calling user account. This operation is only supported for S3 File Gateways.
+   * Gets a list of the file shares for a specific S3 File Gateway, or the list of file shares that belong to the calling Amazon Web Services account. This operation is only supported for S3 File Gateways.
    */
   listFileShares(callback?: (err: AWSError, data: StorageGateway.Types.ListFileSharesOutput) => void): Request<StorageGateway.Types.ListFileSharesOutput, AWSError>;
   /**
@@ -524,19 +524,19 @@ declare class StorageGateway extends Service {
    */
   listVolumes(callback?: (err: AWSError, data: StorageGateway.Types.ListVolumesOutput) => void): Request<StorageGateway.Types.ListVolumesOutput, AWSError>;
   /**
-   * Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to S3. Amazon S3. Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or Lambda function. This operation is only supported for S3 File Gateways. For more information, see Getting file upload notification in the Storage Gateway User Guide.
+   * Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to Amazon S3. Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or Lambda function. This operation is only supported for S3 File Gateways. For more information, see Getting file upload notification in the Amazon S3 File Gateway User Guide.
    */
   notifyWhenUploaded(params: StorageGateway.Types.NotifyWhenUploadedInput, callback?: (err: AWSError, data: StorageGateway.Types.NotifyWhenUploadedOutput) => void): Request<StorageGateway.Types.NotifyWhenUploadedOutput, AWSError>;
   /**
-   * Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to S3. Amazon S3. Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or Lambda function. This operation is only supported for S3 File Gateways. For more information, see Getting file upload notification in the Storage Gateway User Guide.
+   * Sends you notification through CloudWatch Events when all files written to your file share have been uploaded to Amazon S3. Storage Gateway can send a notification through Amazon CloudWatch Events when all files written to your file share up to that point in time have been uploaded to Amazon S3. These files include files written to the file share up to the time that you make a request for notification. When the upload is done, Storage Gateway sends you notification through an Amazon CloudWatch Event. You can configure CloudWatch Events to send the notification through event targets such as Amazon SNS or Lambda function. This operation is only supported for S3 File Gateways. For more information, see Getting file upload notification in the Amazon S3 File Gateway User Guide.
    */
   notifyWhenUploaded(callback?: (err: AWSError, data: StorageGateway.Types.NotifyWhenUploadedOutput) => void): Request<StorageGateway.Types.NotifyWhenUploadedOutput, AWSError>;
   /**
-   * Refreshes the cached inventory of objects for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed, or replaced since the gateway last listed the bucket's contents and cached the results. This operation does not import files into the S3 File Gateway cache storage. It only updates the cached inventory to reflect changes in the inventory of the objects in the S3 bucket. This operation is only supported in the S3 File Gateway types. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see Getting notified about file operations in the Storage Gateway User Guide. This operation is Only supported for S3 File Gateways. When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through a CloudWatch event when your RefreshCache operation completes. Throttle limit: This API is asynchronous, so the gateway will accept no more than two refreshes at any time. We recommend using the refresh-complete CloudWatch event notification before issuing additional requests. For more information, see Getting notified about file operations in the Storage Gateway User Guide.    Wait at least 60 seconds between consecutive RefreshCache API requests.   RefreshCache does not evict cache entries if invoked consecutively within 60 seconds of a previous RefreshCache request.   If you invoke the RefreshCache API when two requests are already being processed, any new request will cause an InvalidGatewayRequestException error because too many requests were sent to the server.     The S3 bucket name does not need to be included when entering the list of folders in the FolderList parameter.  For more information, see Getting notified about file operations in the Storage Gateway User Guide.
+   * Refreshes the cached inventory of objects for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed, or replaced since the gateway last listed the bucket's contents and cached the results. This operation does not import files into the S3 File Gateway cache storage. It only updates the cached inventory to reflect changes in the inventory of the objects in the S3 bucket. This operation is only supported in the S3 File Gateway types. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide. This operation is Only supported for S3 File Gateways. When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through a CloudWatch event when your RefreshCache operation completes. Throttle limit: This API is asynchronous, so the gateway will accept no more than two refreshes at any time. We recommend using the refresh-complete CloudWatch event notification before issuing additional requests. For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide.    Wait at least 60 seconds between consecutive RefreshCache API requests.   If you invoke the RefreshCache API when two requests are already being processed, any new request will cause an InvalidGatewayRequestException error because too many requests were sent to the server.     The S3 bucket name does not need to be included when entering the list of folders in the FolderList parameter.  For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide.
    */
   refreshCache(params: StorageGateway.Types.RefreshCacheInput, callback?: (err: AWSError, data: StorageGateway.Types.RefreshCacheOutput) => void): Request<StorageGateway.Types.RefreshCacheOutput, AWSError>;
   /**
-   * Refreshes the cached inventory of objects for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed, or replaced since the gateway last listed the bucket's contents and cached the results. This operation does not import files into the S3 File Gateway cache storage. It only updates the cached inventory to reflect changes in the inventory of the objects in the S3 bucket. This operation is only supported in the S3 File Gateway types. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see Getting notified about file operations in the Storage Gateway User Guide. This operation is Only supported for S3 File Gateways. When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through a CloudWatch event when your RefreshCache operation completes. Throttle limit: This API is asynchronous, so the gateway will accept no more than two refreshes at any time. We recommend using the refresh-complete CloudWatch event notification before issuing additional requests. For more information, see Getting notified about file operations in the Storage Gateway User Guide.    Wait at least 60 seconds between consecutive RefreshCache API requests.   RefreshCache does not evict cache entries if invoked consecutively within 60 seconds of a previous RefreshCache request.   If you invoke the RefreshCache API when two requests are already being processed, any new request will cause an InvalidGatewayRequestException error because too many requests were sent to the server.     The S3 bucket name does not need to be included when entering the list of folders in the FolderList parameter.  For more information, see Getting notified about file operations in the Storage Gateway User Guide.
+   * Refreshes the cached inventory of objects for the specified file share. This operation finds objects in the Amazon S3 bucket that were added, removed, or replaced since the gateway last listed the bucket's contents and cached the results. This operation does not import files into the S3 File Gateway cache storage. It only updates the cached inventory to reflect changes in the inventory of the objects in the S3 bucket. This operation is only supported in the S3 File Gateway types. You can subscribe to be notified through an Amazon CloudWatch event when your RefreshCache operation completes. For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide. This operation is Only supported for S3 File Gateways. When this API is called, it only initiates the refresh operation. When the API call completes and returns a success code, it doesn't necessarily mean that the file refresh has completed. You should use the refresh-complete notification to determine that the operation has completed before you check for new files on the gateway file share. You can subscribe to be notified through a CloudWatch event when your RefreshCache operation completes. Throttle limit: This API is asynchronous, so the gateway will accept no more than two refreshes at any time. We recommend using the refresh-complete CloudWatch event notification before issuing additional requests. For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide.    Wait at least 60 seconds between consecutive RefreshCache API requests.   If you invoke the RefreshCache API when two requests are already being processed, any new request will cause an InvalidGatewayRequestException error because too many requests were sent to the server.     The S3 bucket name does not need to be included when entering the list of folders in the FolderList parameter.  For more information, see Getting notified about file operations in the Amazon S3 File Gateway User Guide.
    */
   refreshCache(callback?: (err: AWSError, data: StorageGateway.Types.RefreshCacheOutput) => void): Request<StorageGateway.Types.RefreshCacheOutput, AWSError>;
   /**
@@ -588,11 +588,11 @@ declare class StorageGateway extends Service {
    */
   setSMBGuestPassword(callback?: (err: AWSError, data: StorageGateway.Types.SetSMBGuestPasswordOutput) => void): Request<StorageGateway.Types.SetSMBGuestPasswordOutput, AWSError>;
   /**
-   * Shuts down a gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request. The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.  If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.  After the gateway is shutdown, you cannot call any other API except StartGateway, DescribeGatewayInformation, and ListGateways. For more information, see ActivateGateway. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.  When you make a shutdown request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to shut down. You can call the DescribeGatewayInformation API to check the status. For more information, see ActivateGateway.  If do not intend to use the gateway again, you must delete the gateway (using DeleteGateway) to no longer pay software charges associated with the gateway.
+   * Shuts down a Tape Gateway or Volume Gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request.  This API action cannot be used to shut down S3 File Gateway or FSx File Gateway.  The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.  If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.  After the gateway is shutdown, you cannot call any other API except StartGateway, DescribeGatewayInformation, and ListGateways. For more information, see ActivateGateway. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.  When you make a shutdown request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to shut down. You can call the DescribeGatewayInformation API to check the status. For more information, see ActivateGateway.  If do not intend to use the gateway again, you must delete the gateway (using DeleteGateway) to no longer pay software charges associated with the gateway.
    */
   shutdownGateway(params: StorageGateway.Types.ShutdownGatewayInput, callback?: (err: AWSError, data: StorageGateway.Types.ShutdownGatewayOutput) => void): Request<StorageGateway.Types.ShutdownGatewayOutput, AWSError>;
   /**
-   * Shuts down a gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request. The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.  If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.  After the gateway is shutdown, you cannot call any other API except StartGateway, DescribeGatewayInformation, and ListGateways. For more information, see ActivateGateway. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.  When you make a shutdown request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to shut down. You can call the DescribeGatewayInformation API to check the status. For more information, see ActivateGateway.  If do not intend to use the gateway again, you must delete the gateway (using DeleteGateway) to no longer pay software charges associated with the gateway.
+   * Shuts down a Tape Gateway or Volume Gateway. To specify which gateway to shut down, use the Amazon Resource Name (ARN) of the gateway in the body of your request.  This API action cannot be used to shut down S3 File Gateway or FSx File Gateway.  The operation shuts down the gateway service component running in the gateway's virtual machine (VM) and not the host VM.  If you want to shut down the VM, it is recommended that you first shut down the gateway component in the VM to avoid unpredictable conditions.  After the gateway is shutdown, you cannot call any other API except StartGateway, DescribeGatewayInformation, and ListGateways. For more information, see ActivateGateway. Your applications cannot read from or write to the gateway's storage volumes, and there are no snapshots taken.  When you make a shutdown request, you will get a 200 OK success response immediately. However, it might take some time for the gateway to shut down. You can call the DescribeGatewayInformation API to check the status. For more information, see ActivateGateway.  If do not intend to use the gateway again, you must delete the gateway (using DeleteGateway) to no longer pay software charges associated with the gateway.
    */
   shutdownGateway(callback?: (err: AWSError, data: StorageGateway.Types.ShutdownGatewayOutput) => void): Request<StorageGateway.Types.ShutdownGatewayOutput, AWSError>;
   /**
@@ -628,11 +628,11 @@ declare class StorageGateway extends Service {
    */
   updateBandwidthRateLimit(callback?: (err: AWSError, data: StorageGateway.Types.UpdateBandwidthRateLimitOutput) => void): Request<StorageGateway.Types.UpdateBandwidthRateLimitOutput, AWSError>;
   /**
-   *  Updates the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have bandwidth rate limit schedules, which means no bandwidth rate limiting is in effect. Use this to initiate or update a gateway's bandwidth rate limit schedule. This operation is supported only for volume, tape and S3 file gateways. FSx file gateways do not support bandwidth rate limits.
+   *  Updates the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have bandwidth rate limit schedules, which means no bandwidth rate limiting is in effect. Use this to initiate or update a gateway's bandwidth rate limit schedule. This operation is supported for volume, tape, and S3 file gateways. S3 file gateways support bandwidth rate limits for upload only. FSx file gateways do not support bandwidth rate limits.
    */
   updateBandwidthRateLimitSchedule(params: StorageGateway.Types.UpdateBandwidthRateLimitScheduleInput, callback?: (err: AWSError, data: StorageGateway.Types.UpdateBandwidthRateLimitScheduleOutput) => void): Request<StorageGateway.Types.UpdateBandwidthRateLimitScheduleOutput, AWSError>;
   /**
-   *  Updates the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have bandwidth rate limit schedules, which means no bandwidth rate limiting is in effect. Use this to initiate or update a gateway's bandwidth rate limit schedule. This operation is supported only for volume, tape and S3 file gateways. FSx file gateways do not support bandwidth rate limits.
+   *  Updates the bandwidth rate limit schedule for a specified gateway. By default, gateways do not have bandwidth rate limit schedules, which means no bandwidth rate limiting is in effect. Use this to initiate or update a gateway's bandwidth rate limit schedule. This operation is supported for volume, tape, and S3 file gateways. S3 file gateways support bandwidth rate limits for upload only. FSx file gateways do not support bandwidth rate limits.
    */
   updateBandwidthRateLimitSchedule(callback?: (err: AWSError, data: StorageGateway.Types.UpdateBandwidthRateLimitScheduleOutput) => void): Request<StorageGateway.Types.UpdateBandwidthRateLimitScheduleOutput, AWSError>;
   /**
@@ -652,11 +652,11 @@ declare class StorageGateway extends Service {
    */
   updateFileSystemAssociation(callback?: (err: AWSError, data: StorageGateway.Types.UpdateFileSystemAssociationOutput) => void): Request<StorageGateway.Types.UpdateFileSystemAssociationOutput, AWSError>;
   /**
-   * Updates a gateway's metadata, which includes the gateway's name and time zone. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.  For gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN. 
+   * Updates a gateway's metadata, which includes the gateway's name, time zone, and metadata cache size. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.  For gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN. 
    */
   updateGatewayInformation(params: StorageGateway.Types.UpdateGatewayInformationInput, callback?: (err: AWSError, data: StorageGateway.Types.UpdateGatewayInformationOutput) => void): Request<StorageGateway.Types.UpdateGatewayInformationOutput, AWSError>;
   /**
-   * Updates a gateway's metadata, which includes the gateway's name and time zone. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.  For gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN. 
+   * Updates a gateway's metadata, which includes the gateway's name, time zone, and metadata cache size. To specify which gateway to update, use the Amazon Resource Name (ARN) of the gateway in your request.  For gateways activated after September 2, 2015, the gateway's ARN contains the gateway ID rather than the gateway name. However, changing the name of the gateway has no effect on the gateway's ARN. 
    */
   updateGatewayInformation(callback?: (err: AWSError, data: StorageGateway.Types.UpdateGatewayInformationOutput) => void): Request<StorageGateway.Types.UpdateGatewayInformationOutput, AWSError>;
   /**
@@ -668,11 +668,11 @@ declare class StorageGateway extends Service {
    */
   updateGatewaySoftwareNow(callback?: (err: AWSError, data: StorageGateway.Types.UpdateGatewaySoftwareNowOutput) => void): Request<StorageGateway.Types.UpdateGatewaySoftwareNowOutput, AWSError>;
   /**
-   * Updates a gateway's weekly maintenance start time information, including day and time of the week. The maintenance time is the time in your gateway's time zone.
+   * Updates a gateway's maintenance window schedule, with settings for monthly or weekly cadence, specific day and time to begin maintenance, and which types of updates to apply. Time configuration uses the gateway's time zone. You can pass values for a complete maintenance schedule, or update policy, or both. Previous values will persist for whichever setting you choose not to modify. If an incomplete or invalid maintenance schedule is passed, the entire request will be rejected with an error and no changes will occur. A complete maintenance schedule must include values for both MinuteOfHour and HourOfDay, and either DayOfMonth or DayOfWeek.  We recommend keeping maintenance updates turned on, except in specific use cases where the brief disruptions caused by updating the gateway could critically impact your deployment. 
    */
   updateMaintenanceStartTime(params: StorageGateway.Types.UpdateMaintenanceStartTimeInput, callback?: (err: AWSError, data: StorageGateway.Types.UpdateMaintenanceStartTimeOutput) => void): Request<StorageGateway.Types.UpdateMaintenanceStartTimeOutput, AWSError>;
   /**
-   * Updates a gateway's weekly maintenance start time information, including day and time of the week. The maintenance time is the time in your gateway's time zone.
+   * Updates a gateway's maintenance window schedule, with settings for monthly or weekly cadence, specific day and time to begin maintenance, and which types of updates to apply. Time configuration uses the gateway's time zone. You can pass values for a complete maintenance schedule, or update policy, or both. Previous values will persist for whichever setting you choose not to modify. If an incomplete or invalid maintenance schedule is passed, the entire request will be rejected with an error and no changes will occur. A complete maintenance schedule must include values for both MinuteOfHour and HourOfDay, and either DayOfMonth or DayOfWeek.  We recommend keeping maintenance updates turned on, except in specific use cases where the brief disruptions caused by updating the gateway could critically impact your deployment. 
    */
   updateMaintenanceStartTime(callback?: (err: AWSError, data: StorageGateway.Types.UpdateMaintenanceStartTimeOutput) => void): Request<StorageGateway.Types.UpdateMaintenanceStartTimeOutput, AWSError>;
   /**
@@ -708,11 +708,11 @@ declare class StorageGateway extends Service {
    */
   updateSMBLocalGroups(callback?: (err: AWSError, data: StorageGateway.Types.UpdateSMBLocalGroupsOutput) => void): Request<StorageGateway.Types.UpdateSMBLocalGroupsOutput, AWSError>;
   /**
-   * Updates the SMB security strategy on a file gateway. This action is only supported in file gateways.  This API is called Security level in the User Guide. A higher security level can affect performance of the gateway. 
+   * Updates the SMB security strategy level for an Amazon S3 file gateway. This action is only supported for Amazon S3 file gateways.  For information about configuring this setting using the Amazon Web Services console, see Setting a security level for your gateway in the Amazon S3 File Gateway User Guide. A higher security strategy level can affect performance of the gateway. 
    */
   updateSMBSecurityStrategy(params: StorageGateway.Types.UpdateSMBSecurityStrategyInput, callback?: (err: AWSError, data: StorageGateway.Types.UpdateSMBSecurityStrategyOutput) => void): Request<StorageGateway.Types.UpdateSMBSecurityStrategyOutput, AWSError>;
   /**
-   * Updates the SMB security strategy on a file gateway. This action is only supported in file gateways.  This API is called Security level in the User Guide. A higher security level can affect performance of the gateway. 
+   * Updates the SMB security strategy level for an Amazon S3 file gateway. This action is only supported for Amazon S3 file gateways.  For information about configuring this setting using the Amazon Web Services console, see Setting a security level for your gateway in the Amazon S3 File Gateway User Guide. A higher security strategy level can affect performance of the gateway. 
    */
   updateSMBSecurityStrategy(callback?: (err: AWSError, data: StorageGateway.Types.UpdateSMBSecurityStrategyOutput) => void): Request<StorageGateway.Types.UpdateSMBSecurityStrategyOutput, AWSError>;
   /**
@@ -743,7 +743,7 @@ declare namespace StorageGateway {
      */
     GatewayName: GatewayName;
     /**
-     * A value that indicates the time zone you want to set for the gateway. The time zone is of the format "GMT-hr:mm" or "GMT+hr:mm". For example, GMT-4:00 indicates the time is 4 hours behind GMT. GMT+2:00 indicates the time is 2 hours ahead of GMT. The time zone is used, for example, for scheduling snapshots and your gateway's maintenance schedule.
+     * A value that indicates the time zone you want to set for the gateway. The time zone is of the format "GMT", "GMT-hr:mm", or "GMT+hr:mm". For example, GMT indicates Greenwich Mean Time without any offset. GMT-4:00 indicates the time is 4 hours behind GMT. GMT+2:00 indicates the time is 2 hours ahead of GMT. The time zone is used, for example, for scheduling snapshots and your gateway's maintenance schedule.
      */
     GatewayTimezone: GatewayTimezone;
     /**
@@ -751,7 +751,7 @@ declare namespace StorageGateway {
      */
     GatewayRegion: RegionId;
     /**
-     * A value that defines the type of gateway to activate. The type specified is critical to all later functions of the gateway and cannot be changed after activation. The default value is CACHED. Valid Values: STORED | CACHED | VTL | VTL_SNOW | FILE_S3 | FILE_FSX_SMB 
+     * A value that defines the type of gateway to activate. The type specified is critical to all later functions of the gateway and cannot be changed after activation. The default value is CACHED. Valid Values: STORED | CACHED | VTL | FILE_S3 | FILE_FSX_SMB 
      */
     GatewayType?: GatewayType;
     /**
@@ -941,6 +941,7 @@ declare namespace StorageGateway {
     Worm?: boolean;
   }
   export type AutomaticTapeCreationRules = AutomaticTapeCreationRule[];
+  export type AutomaticUpdatePolicy = "ALL_VERSIONS"|"EMERGENCY_VERSIONS_ONLY"|string;
   export type AvailabilityMonitorTestStatus = "COMPLETE"|"FAILED"|"PENDING"|string;
   export type BandwidthDownloadRateLimit = number;
   export interface BandwidthRateLimitInterval {
@@ -965,7 +966,7 @@ declare namespace StorageGateway {
      */
     DaysOfWeek: DaysOfWeek;
     /**
-     *  The average upload rate limit component of the bandwidth rate limit interval, in bits per second. This field does not appear in the response if the upload rate limit is not set. 
+     *  The average upload rate limit component of the bandwidth rate limit interval, in bits per second. This field does not appear in the response if the upload rate limit is not set.   For Tape Gateway and Volume Gateway, the minimum value is 51200. For S3 File Gateway and FSx File Gateway, the minimum value is 104857600. 
      */
     AverageUploadRateLimitInBitsPerSec?: BandwidthUploadRateLimit;
     /**
@@ -1853,7 +1854,7 @@ declare namespace StorageGateway {
      */
     CloudWatchLogGroupARN?: CloudWatchLogGroupARN;
     /**
-     * The type of hardware or software platform on which the gateway is running.
+     * The type of hardware or software platform on which the gateway is running.  Tape Gateway is no longer available on Snow Family devices. 
      */
     HostEnvironment?: HostEnvironment;
     /**
@@ -1880,6 +1881,10 @@ declare namespace StorageGateway {
      * A unique identifier for the specific instance of the host platform running the gateway. This value is only available for certain host environments, and its format depends on the host environment type.
      */
     HostEnvironmentId?: HostEnvironmentId;
+    /**
+     * The version number of the software running on the gateway appliance.
+     */
+    SoftwareVersion?: SoftwareVersion;
   }
   export interface DescribeMaintenanceStartTimeInput {
     GatewayARN: GatewayARN;
@@ -1899,13 +1904,17 @@ declare namespace StorageGateway {
      */
     DayOfWeek?: DayOfWeek;
     /**
-     * The day of the month component of the maintenance start time represented as an ordinal number from 1 to 28, where 1 represents the first day of the month and 28 represents the last day of the month.
+     * The day of the month component of the maintenance start time represented as an ordinal number from 1 to 28, where 1 represents the first day of the month. It is not possible to set the maintenance schedule to start on days 29 through 31.
      */
     DayOfMonth?: DayOfMonth;
     /**
      * A value that indicates the time zone that is set for the gateway. The start time and day of week specified should be in the time zone of the gateway.
      */
     Timezone?: GatewayTimezone;
+    /**
+     * A set of variables indicating the software update preferences for the gateway. Includes AutomaticUpdatePolicy field with the following inputs:  ALL_VERSIONS - Enables regular gateway maintenance updates.  EMERGENCY_VERSIONS_ONLY - Disables regular gateway maintenance updates.
+     */
+    SoftwareUpdatePreferences?: SoftwareUpdatePreferences;
   }
   export interface DescribeNFSFileSharesInput {
     /**
@@ -1949,7 +1958,7 @@ declare namespace StorageGateway {
      */
     SMBGuestPasswordSet?: Boolean;
     /**
-     * The type of security strategy that was specified for file gateway.    ClientSpecified: If you use this option, requests are established based on what is negotiated by the client. This option is recommended when you want to maximize compatibility across different clients in your environment. Only supported for S3 File Gateways.    MandatorySigning: If you use this option, file gateway only allows connections from SMBv2 or SMBv3 clients that have signing enabled. This option works with SMB clients on Microsoft Windows Vista, Windows Server 2008 or newer.    MandatoryEncryption: If you use this option, file gateway only allows connections from SMBv3 clients that have encryption enabled. This option is highly recommended for environments that handle sensitive data. This option works with SMB clients on Microsoft Windows 8, Windows Server 2012 or newer.  
+     * The type of security strategy that was specified for file gateway.    ClientSpecified: If you choose this option, requests are established based on what is negotiated by the client. This option is recommended when you want to maximize compatibility across different clients in your environment. Supported only for S3 File Gateway.    MandatorySigning: If you choose this option, File Gateway only allows connections from SMBv2 or SMBv3 clients that have signing turned on. This option works with SMB clients on Microsoft Windows Vista, Windows Server 2008, or later.     MandatoryEncryption: If you choose this option, File Gateway only allows connections from SMBv3 clients that have encryption turned on. Both 256-bit and 128-bit algorithms are allowed. This option is recommended for environments that handle sensitive data. It works with SMB clients on Microsoft Windows 8, Windows Server 2012, or later.    MandatoryEncryptionNoAes128: If you choose this option, File Gateway only allows connections from SMBv3 clients that use 256-bit AES encryption algorithms. 128-bit algorithms are not allowed. This option is recommended for environments that handle sensitive data. It works with SMB clients on Microsoft Windows 8, Windows Server 2012, or later.  
      */
     SMBSecurityStrategy?: SMBSecurityStrategy;
     /**
@@ -2358,13 +2367,21 @@ declare namespace StorageGateway {
      */
     Ec2InstanceRegion?: Ec2InstanceRegion;
     /**
-     * The type of hardware or software platform on which the gateway is running.
+     * The type of hardware or software platform on which the gateway is running.  Tape Gateway is no longer available on Snow Family devices. 
      */
     HostEnvironment?: HostEnvironment;
     /**
      * A unique identifier for the specific instance of the host platform running the gateway. This value is only available for certain host environments, and its format depends on the host environment type.
      */
     HostEnvironmentId?: HostEnvironmentId;
+    /**
+     * Date after which this gateway will not receive software updates for new features and bug fixes.
+     */
+    DeprecationDate?: DeprecationDate;
+    /**
+     * The version number of the software running on the gateway appliance.
+     */
+    SoftwareVersion?: SoftwareVersion;
   }
   export type GatewayName = string;
   export type GatewayNetworkInterfaces = NetworkInterface[];
@@ -2790,7 +2807,7 @@ declare namespace StorageGateway {
      */
     FileShareARN: FileShareARN;
     /**
-     * A comma-separated list of the paths of folders to refresh in the cache. The default is ["/"]. The default refreshes objects and folders at the root of the Amazon S3 bucket. If Recursive is set to true, the entire S3 bucket that the file share has access to is refreshed.
+     * A comma-separated list of the paths of folders to refresh in the cache. The default is ["/"]. The default refreshes objects and folders at the root of the Amazon S3 bucket. If Recursive is set to true, the entire S3 bucket that the file share has access to is refreshed. Do not include / when specifying folder names. For example, you would specify samplefolder rather than samplefolder/.
      */
     FolderList?: FolderList;
     /**
@@ -2957,7 +2974,7 @@ declare namespace StorageGateway {
      */
     GatewayAdmins?: UserList;
   }
-  export type SMBSecurityStrategy = "ClientSpecified"|"MandatorySigning"|"MandatoryEncryption"|string;
+  export type SMBSecurityStrategy = "ClientSpecified"|"MandatorySigning"|"MandatoryEncryption"|"MandatoryEncryptionNoAes128"|string;
   export interface SetLocalConsolePasswordInput {
     GatewayARN: GatewayARN;
     /**
@@ -2989,7 +3006,14 @@ declare namespace StorageGateway {
   }
   export type SnapshotDescription = string;
   export type SnapshotId = string;
+  export interface SoftwareUpdatePreferences {
+    /**
+     * Indicates the automatic update policy for a gateway.  ALL_VERSIONS - Enables regular gateway maintenance updates.  EMERGENCY_VERSIONS_ONLY - Disables regular gateway maintenance updates.
+     */
+    AutomaticUpdatePolicy?: AutomaticUpdatePolicy;
+  }
   export type SoftwareUpdatesEndDate = string;
+  export type SoftwareVersion = string;
   export type Squash = string;
   export interface StartAvailabilityMonitorTestInput {
     GatewayARN: GatewayARN;
@@ -3351,7 +3375,7 @@ declare namespace StorageGateway {
      */
     CloudWatchLogGroupARN?: CloudWatchLogGroupARN;
     /**
-     * Specifies the size of the gateway's metadata cache.
+     * Specifies the size of the gateway's metadata cache. This setting impacts gateway performance and hardware recommendations. For more information, see Performance guidance for gateways with multiple file shares in the Amazon S3 File Gateway User Guide.
      */
     GatewayCapacity?: GatewayCapacity;
   }
@@ -3373,19 +3397,23 @@ declare namespace StorageGateway {
     /**
      * The hour component of the maintenance start time represented as hh, where hh is the hour (00 to 23). The hour of the day is in the time zone of the gateway.
      */
-    HourOfDay: HourOfDay;
+    HourOfDay?: HourOfDay;
     /**
      * The minute component of the maintenance start time represented as mm, where mm is the minute (00 to 59). The minute of the hour is in the time zone of the gateway.
      */
-    MinuteOfHour: MinuteOfHour;
+    MinuteOfHour?: MinuteOfHour;
     /**
-     * The day of the week component of the maintenance start time week represented as an ordinal number from 0 to 6, where 0 represents Sunday and 6 Saturday.
+     * The day of the week component of the maintenance start time week represented as an ordinal number from 0 to 6, where 0 represents Sunday and 6 represents Saturday.
      */
     DayOfWeek?: DayOfWeek;
     /**
-     * The day of the month component of the maintenance start time represented as an ordinal number from 1 to 28, where 1 represents the first day of the month and 28 represents the last day of the month.
+     * The day of the month component of the maintenance start time represented as an ordinal number from 1 to 28, where 1 represents the first day of the month. It is not possible to set the maintenance schedule to start on days 29 through 31.
      */
     DayOfMonth?: DayOfMonth;
+    /**
+     * A set of variables indicating the software update preferences for the gateway. Includes AutomaticUpdatePolicy field with the following inputs:  ALL_VERSIONS - Enables regular gateway maintenance updates.  EMERGENCY_VERSIONS_ONLY - Disables regular gateway maintenance updates.
+     */
+    SoftwareUpdatePreferences?: SoftwareUpdatePreferences;
   }
   export interface UpdateMaintenanceStartTimeOutput {
     GatewayARN?: GatewayARN;
@@ -3565,7 +3593,7 @@ declare namespace StorageGateway {
   export interface UpdateSMBSecurityStrategyInput {
     GatewayARN: GatewayARN;
     /**
-     * Specifies the type of security strategy. ClientSpecified: if you use this option, requests are established based on what is negotiated by the client. This option is recommended when you want to maximize compatibility across different clients in your environment. Supported only in S3 File Gateway. MandatorySigning: if you use this option, file gateway only allows connections from SMBv2 or SMBv3 clients that have signing enabled. This option works with SMB clients on Microsoft Windows Vista, Windows Server 2008 or newer. MandatoryEncryption: if you use this option, file gateway only allows connections from SMBv3 clients that have encryption enabled. This option is highly recommended for environments that handle sensitive data. This option works with SMB clients on Microsoft Windows 8, Windows Server 2012 or newer.
+     * Specifies the type of security strategy.  ClientSpecified: If you choose this option, requests are established based on what is negotiated by the client. This option is recommended when you want to maximize compatibility across different clients in your environment. Supported only for S3 File Gateway.  MandatorySigning: If you choose this option, File Gateway only allows connections from SMBv2 or SMBv3 clients that have signing enabled. This option works with SMB clients on Microsoft Windows Vista, Windows Server 2008 or newer.  MandatoryEncryption: If you choose this option, File Gateway only allows connections from SMBv3 clients that have encryption enabled. This option is recommended for environments that handle sensitive data. This option works with SMB clients on Microsoft Windows 8, Windows Server 2012 or newer.  MandatoryEncryptionNoAes128: If you choose this option, File Gateway only allows connections from SMBv3 clients that use 256-bit AES encryption algorithms. 128-bit algorithms are not allowed. This option is recommended for environments that handle sensitive data. It works with SMB clients on Microsoft Windows 8, Windows Server 2012, or later.
      */
     SMBSecurityStrategy: SMBSecurityStrategy;
   }

@@ -144,7 +144,24 @@ function parse(source, root, options) {
             else
                 target.push([ start = parseId(next()), skip("to", true) ? parseId(next()) : start ]);
         } while (skip(",", true));
-        skip(";");
+        var dummy = {options: undefined};
+        dummy.setOption = function(name, value) {
+          if (this.options === undefined) this.options = {};
+          this.options[name] = value;
+        };
+        ifBlock(
+            dummy,
+            function parseRange_block(token) {
+              /* istanbul ignore else */
+              if (token === "option") {
+                parseOption(dummy, token);  // skip
+                skip(";");
+              } else
+                throw illegal(token);
+            },
+            function parseRange_line() {
+              parseInlineOptions(dummy);  // skip
+            });
     }
 
     function parseNumber(token, insideTryCatch) {
@@ -245,6 +262,10 @@ function parse(source, root, options) {
         /* istanbul ignore if */
         if (!isProto3 && syntax !== "proto2")
             throw illegal(syntax, "syntax");
+
+        // Syntax is needed to understand the meaning of the optional field rule
+        // Otherwise the meaning is ambiguous between proto2 and proto3
+        root.setOption("syntax", syntax);
 
         skip(";");
     }

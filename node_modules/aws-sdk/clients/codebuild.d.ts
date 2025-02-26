@@ -36,6 +36,14 @@ declare class CodeBuild extends Service {
    */
   batchGetBuilds(callback?: (err: AWSError, data: CodeBuild.Types.BatchGetBuildsOutput) => void): Request<CodeBuild.Types.BatchGetBuildsOutput, AWSError>;
   /**
+   * Gets information about one or more compute fleets.
+   */
+  batchGetFleets(params: CodeBuild.Types.BatchGetFleetsInput, callback?: (err: AWSError, data: CodeBuild.Types.BatchGetFleetsOutput) => void): Request<CodeBuild.Types.BatchGetFleetsOutput, AWSError>;
+  /**
+   * Gets information about one or more compute fleets.
+   */
+  batchGetFleets(callback?: (err: AWSError, data: CodeBuild.Types.BatchGetFleetsOutput) => void): Request<CodeBuild.Types.BatchGetFleetsOutput, AWSError>;
+  /**
    * Gets information about one or more build projects.
    */
   batchGetProjects(params: CodeBuild.Types.BatchGetProjectsInput, callback?: (err: AWSError, data: CodeBuild.Types.BatchGetProjectsOutput) => void): Request<CodeBuild.Types.BatchGetProjectsOutput, AWSError>;
@@ -59,6 +67,14 @@ declare class CodeBuild extends Service {
    *  Returns an array of reports. 
    */
   batchGetReports(callback?: (err: AWSError, data: CodeBuild.Types.BatchGetReportsOutput) => void): Request<CodeBuild.Types.BatchGetReportsOutput, AWSError>;
+  /**
+   * Creates a compute fleet.
+   */
+  createFleet(params: CodeBuild.Types.CreateFleetInput, callback?: (err: AWSError, data: CodeBuild.Types.CreateFleetOutput) => void): Request<CodeBuild.Types.CreateFleetOutput, AWSError>;
+  /**
+   * Creates a compute fleet.
+   */
+  createFleet(callback?: (err: AWSError, data: CodeBuild.Types.CreateFleetOutput) => void): Request<CodeBuild.Types.CreateFleetOutput, AWSError>;
   /**
    * Creates a build project.
    */
@@ -91,6 +107,14 @@ declare class CodeBuild extends Service {
    * Deletes a batch build.
    */
   deleteBuildBatch(callback?: (err: AWSError, data: CodeBuild.Types.DeleteBuildBatchOutput) => void): Request<CodeBuild.Types.DeleteBuildBatchOutput, AWSError>;
+  /**
+   * Deletes a compute fleet. When you delete a compute fleet, its builds are not deleted.
+   */
+  deleteFleet(params: CodeBuild.Types.DeleteFleetInput, callback?: (err: AWSError, data: CodeBuild.Types.DeleteFleetOutput) => void): Request<CodeBuild.Types.DeleteFleetOutput, AWSError>;
+  /**
+   * Deletes a compute fleet. When you delete a compute fleet, its builds are not deleted.
+   */
+  deleteFleet(callback?: (err: AWSError, data: CodeBuild.Types.DeleteFleetOutput) => void): Request<CodeBuild.Types.DeleteFleetOutput, AWSError>;
   /**
    *  Deletes a build project. When you delete a project, its builds are not deleted. 
    */
@@ -172,11 +196,11 @@ declare class CodeBuild extends Service {
    */
   getResourcePolicy(callback?: (err: AWSError, data: CodeBuild.Types.GetResourcePolicyOutput) => void): Request<CodeBuild.Types.GetResourcePolicyOutput, AWSError>;
   /**
-   *  Imports the source repository credentials for an CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
+   *  Imports the source repository credentials for an CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, GitLab, GitLab Self Managed, or Bitbucket repository. 
    */
   importSourceCredentials(params: CodeBuild.Types.ImportSourceCredentialsInput, callback?: (err: AWSError, data: CodeBuild.Types.ImportSourceCredentialsOutput) => void): Request<CodeBuild.Types.ImportSourceCredentialsOutput, AWSError>;
   /**
-   *  Imports the source repository credentials for an CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, or Bitbucket repository. 
+   *  Imports the source repository credentials for an CodeBuild project that has its source code stored in a GitHub, GitHub Enterprise, GitLab, GitLab Self Managed, or Bitbucket repository. 
    */
   importSourceCredentials(callback?: (err: AWSError, data: CodeBuild.Types.ImportSourceCredentialsOutput) => void): Request<CodeBuild.Types.ImportSourceCredentialsOutput, AWSError>;
   /**
@@ -227,6 +251,14 @@ declare class CodeBuild extends Service {
    * Gets information about Docker images that are managed by CodeBuild.
    */
   listCuratedEnvironmentImages(callback?: (err: AWSError, data: CodeBuild.Types.ListCuratedEnvironmentImagesOutput) => void): Request<CodeBuild.Types.ListCuratedEnvironmentImagesOutput, AWSError>;
+  /**
+   * Gets a list of compute fleet names with each compute fleet name representing a single compute fleet.
+   */
+  listFleets(params: CodeBuild.Types.ListFleetsInput, callback?: (err: AWSError, data: CodeBuild.Types.ListFleetsOutput) => void): Request<CodeBuild.Types.ListFleetsOutput, AWSError>;
+  /**
+   * Gets a list of compute fleet names with each compute fleet name representing a single compute fleet.
+   */
+  listFleets(callback?: (err: AWSError, data: CodeBuild.Types.ListFleetsOutput) => void): Request<CodeBuild.Types.ListFleetsOutput, AWSError>;
   /**
    * Gets a list of build project names, with each build project name representing a single build project.
    */
@@ -308,11 +340,11 @@ declare class CodeBuild extends Service {
    */
   retryBuildBatch(callback?: (err: AWSError, data: CodeBuild.Types.RetryBuildBatchOutput) => void): Request<CodeBuild.Types.RetryBuildBatchOutput, AWSError>;
   /**
-   * Starts running a build.
+   * Starts running a build with the settings defined in the project. These setting include: how to run a build, where to get the source code, which build environment to use, which build commands to run, and where to store the build output. You can also start a build run by overriding some of the build settings in the project. The overrides only apply for that specific start build request. The settings in the project are unaltered.
    */
   startBuild(params: CodeBuild.Types.StartBuildInput, callback?: (err: AWSError, data: CodeBuild.Types.StartBuildOutput) => void): Request<CodeBuild.Types.StartBuildOutput, AWSError>;
   /**
-   * Starts running a build.
+   * Starts running a build with the settings defined in the project. These setting include: how to run a build, where to get the source code, which build environment to use, which build commands to run, and where to store the build output. You can also start a build run by overriding some of the build settings in the project. The overrides only apply for that specific start build request. The settings in the project are unaltered.
    */
   startBuild(callback?: (err: AWSError, data: CodeBuild.Types.StartBuildOutput) => void): Request<CodeBuild.Types.StartBuildOutput, AWSError>;
   /**
@@ -340,6 +372,14 @@ declare class CodeBuild extends Service {
    */
   stopBuildBatch(callback?: (err: AWSError, data: CodeBuild.Types.StopBuildBatchOutput) => void): Request<CodeBuild.Types.StopBuildBatchOutput, AWSError>;
   /**
+   * Updates a compute fleet.
+   */
+  updateFleet(params: CodeBuild.Types.UpdateFleetInput, callback?: (err: AWSError, data: CodeBuild.Types.UpdateFleetOutput) => void): Request<CodeBuild.Types.UpdateFleetOutput, AWSError>;
+  /**
+   * Updates a compute fleet.
+   */
+  updateFleet(callback?: (err: AWSError, data: CodeBuild.Types.UpdateFleetOutput) => void): Request<CodeBuild.Types.UpdateFleetOutput, AWSError>;
+  /**
    * Changes the settings of a build project.
    */
   updateProject(params: CodeBuild.Types.UpdateProjectInput, callback?: (err: AWSError, data: CodeBuild.Types.UpdateProjectOutput) => void): Request<CodeBuild.Types.UpdateProjectOutput, AWSError>;
@@ -348,11 +388,11 @@ declare class CodeBuild extends Service {
    */
   updateProject(callback?: (err: AWSError, data: CodeBuild.Types.UpdateProjectOutput) => void): Request<CodeBuild.Types.UpdateProjectOutput, AWSError>;
   /**
-   * Changes the public visibility for a project. The project's build results, logs, and artifacts are available to the general public. For more information, see Public build projects in the CodeBuild User Guide.  The following should be kept in mind when making your projects public:   All of a project's build results, logs, and artifacts, including builds that were run when the project was private, are available to the general public.   All build logs and artifacts are available to the public. Environment variables, source code, and other sensitive information may have been output to the build logs and artifacts. You must be careful about what information is output to the build logs. Some best practice are:   Do not store sensitive values, especially Amazon Web Services access key IDs and secret access keys, in environment variables. We recommend that you use an Amazon EC2 Systems Manager Parameter Store or Secrets Manager to store sensitive values.   Follow Best practices for using webhooks in the CodeBuild User Guide to limit which entities can trigger a build, and do not store the buildspec in the project itself, to ensure that your webhooks are as secure as possible.     A malicious user can use public builds to distribute malicious artifacts. We recommend that you review all pull requests to verify that the pull request is a legitimate change. We also recommend that you validate any artifacts with their checksums to make sure that the correct artifacts are being downloaded.   
+   * Changes the public visibility for a project. The project's build results, logs, and artifacts are available to the general public. For more information, see Public build projects in the CodeBuild User Guide.  The following should be kept in mind when making your projects public:   All of a project's build results, logs, and artifacts, including builds that were run when the project was private, are available to the general public.   All build logs and artifacts are available to the public. Environment variables, source code, and other sensitive information may have been output to the build logs and artifacts. You must be careful about what information is output to the build logs. Some best practice are:   Do not store sensitive values in environment variables. We recommend that you use an Amazon EC2 Systems Manager Parameter Store or Secrets Manager to store sensitive values.   Follow Best practices for using webhooks in the CodeBuild User Guide to limit which entities can trigger a build, and do not store the buildspec in the project itself, to ensure that your webhooks are as secure as possible.     A malicious user can use public builds to distribute malicious artifacts. We recommend that you review all pull requests to verify that the pull request is a legitimate change. We also recommend that you validate any artifacts with their checksums to make sure that the correct artifacts are being downloaded.   
    */
   updateProjectVisibility(params: CodeBuild.Types.UpdateProjectVisibilityInput, callback?: (err: AWSError, data: CodeBuild.Types.UpdateProjectVisibilityOutput) => void): Request<CodeBuild.Types.UpdateProjectVisibilityOutput, AWSError>;
   /**
-   * Changes the public visibility for a project. The project's build results, logs, and artifacts are available to the general public. For more information, see Public build projects in the CodeBuild User Guide.  The following should be kept in mind when making your projects public:   All of a project's build results, logs, and artifacts, including builds that were run when the project was private, are available to the general public.   All build logs and artifacts are available to the public. Environment variables, source code, and other sensitive information may have been output to the build logs and artifacts. You must be careful about what information is output to the build logs. Some best practice are:   Do not store sensitive values, especially Amazon Web Services access key IDs and secret access keys, in environment variables. We recommend that you use an Amazon EC2 Systems Manager Parameter Store or Secrets Manager to store sensitive values.   Follow Best practices for using webhooks in the CodeBuild User Guide to limit which entities can trigger a build, and do not store the buildspec in the project itself, to ensure that your webhooks are as secure as possible.     A malicious user can use public builds to distribute malicious artifacts. We recommend that you review all pull requests to verify that the pull request is a legitimate change. We also recommend that you validate any artifacts with their checksums to make sure that the correct artifacts are being downloaded.   
+   * Changes the public visibility for a project. The project's build results, logs, and artifacts are available to the general public. For more information, see Public build projects in the CodeBuild User Guide.  The following should be kept in mind when making your projects public:   All of a project's build results, logs, and artifacts, including builds that were run when the project was private, are available to the general public.   All build logs and artifacts are available to the public. Environment variables, source code, and other sensitive information may have been output to the build logs and artifacts. You must be careful about what information is output to the build logs. Some best practice are:   Do not store sensitive values in environment variables. We recommend that you use an Amazon EC2 Systems Manager Parameter Store or Secrets Manager to store sensitive values.   Follow Best practices for using webhooks in the CodeBuild User Guide to limit which entities can trigger a build, and do not store the buildspec in the project itself, to ensure that your webhooks are as secure as possible.     A malicious user can use public builds to distribute malicious artifacts. We recommend that you review all pull requests to verify that the pull request is a legitimate change. We also recommend that you validate any artifacts with their checksums to make sure that the correct artifacts are being downloaded.   
    */
   updateProjectVisibility(callback?: (err: AWSError, data: CodeBuild.Types.UpdateProjectVisibilityOutput) => void): Request<CodeBuild.Types.UpdateProjectVisibilityOutput, AWSError>;
   /**
@@ -376,7 +416,7 @@ declare namespace CodeBuild {
   export type ArtifactNamespace = "NONE"|"BUILD_ID"|string;
   export type ArtifactPackaging = "NONE"|"ZIP"|string;
   export type ArtifactsType = "CODEPIPELINE"|"S3"|"NO_ARTIFACTS"|string;
-  export type AuthType = "OAUTH"|"BASIC_AUTH"|"PERSONAL_ACCESS_TOKEN"|string;
+  export type AuthType = "OAUTH"|"BASIC_AUTH"|"PERSONAL_ACCESS_TOKEN"|"CODECONNECTIONS"|"SECRETS_MANAGER"|string;
   export interface BatchDeleteBuildsInput {
     /**
      * The IDs of the builds to delete.
@@ -424,6 +464,22 @@ declare namespace CodeBuild {
      * The IDs of builds for which information could not be found.
      */
     buildsNotFound?: BuildIds;
+  }
+  export interface BatchGetFleetsInput {
+    /**
+     * The names or ARNs of the compute fleets.
+     */
+    names: FleetNames;
+  }
+  export interface BatchGetFleetsOutput {
+    /**
+     * Information about the requested compute fleets.
+     */
+    fleets?: Fleets;
+    /**
+     * The names of compute fleets for which information could not be found.
+     */
+    fleetsNotFound?: FleetNames;
   }
   export interface BatchGetProjectsInput {
     /**
@@ -568,7 +624,7 @@ declare namespace CodeBuild {
      */
     logs?: LogsLocation;
     /**
-     * How long, in minutes, for CodeBuild to wait before timing out this build if it does not get marked as completed.
+     * How long, in minutes, from 5 to 2160 (36 hours), for CodeBuild to wait before timing out this build if it does not get marked as completed.
      */
     timeoutInMinutes?: WrapperInt;
     /**
@@ -580,7 +636,7 @@ declare namespace CodeBuild {
      */
     buildComplete?: Boolean;
     /**
-     * The entity that started the build. Valid values include:   If CodePipeline started the build, the pipeline's name (for example, codepipeline/my-demo-pipeline).   If an IAM user started the build, the user's name (for example, MyUserName).   If the Jenkins plugin for CodeBuild started the build, the string CodeBuild-Jenkins-Plugin.  
+     * The entity that started the build. Valid values include:   If CodePipeline started the build, the pipeline's name (for example, codepipeline/my-demo-pipeline).   If a user started the build, the user's name (for example, MyUserName).   If the Jenkins plugin for CodeBuild started the build, the string CodeBuild-Jenkins-Plugin.  
      */
     initiator?: String;
     /**
@@ -722,7 +778,7 @@ declare namespace CodeBuild {
      */
     complete?: Boolean;
     /**
-     * The entity that started the batch build. Valid values include:   If CodePipeline started the build, the pipeline's name (for example, codepipeline/my-demo-pipeline).   If an IAM user started the build, the user's name.   If the Jenkins plugin for CodeBuild started the build, the string CodeBuild-Jenkins-Plugin.  
+     * The entity that started the batch build. Valid values include:   If CodePipeline started the build, the pipeline's name (for example, codepipeline/my-demo-pipeline).   If a user started the build, the user's name.   If the Jenkins plugin for CodeBuild started the build, the string CodeBuild-Jenkins-Plugin.  
      */
     initiator?: String;
     vpcConfig?: VpcConfig;
@@ -880,6 +936,7 @@ declare namespace CodeBuild {
      */
     secondaryArtifacts?: ResolvedSecondaryArtifacts;
   }
+  export type BuildTimeOut = number;
   export type Builds = Build[];
   export type BuildsNotDeleted = BuildNotDeleted[];
   export type CacheMode = "LOCAL_DOCKER_LAYER_CACHE"|"LOCAL_SOURCE_CACHE"|"LOCAL_CUSTOM_CACHE"|string;
@@ -967,8 +1024,53 @@ declare namespace CodeBuild {
     branchesMissed?: NonNegativeInt;
   }
   export type CodeCoverages = CodeCoverage[];
-  export type ComputeType = "BUILD_GENERAL1_SMALL"|"BUILD_GENERAL1_MEDIUM"|"BUILD_GENERAL1_LARGE"|"BUILD_GENERAL1_2XLARGE"|string;
+  export type ComputeType = "BUILD_GENERAL1_SMALL"|"BUILD_GENERAL1_MEDIUM"|"BUILD_GENERAL1_LARGE"|"BUILD_GENERAL1_XLARGE"|"BUILD_GENERAL1_2XLARGE"|"BUILD_LAMBDA_1GB"|"BUILD_LAMBDA_2GB"|"BUILD_LAMBDA_4GB"|"BUILD_LAMBDA_8GB"|"BUILD_LAMBDA_10GB"|string;
   export type ComputeTypesAllowed = NonEmptyString[];
+  export interface CreateFleetInput {
+    /**
+     * The name of the compute fleet.
+     */
+    name: FleetName;
+    /**
+     * The initial number of machines allocated to the ﬂeet, which deﬁnes the number of builds that can run in parallel.
+     */
+    baseCapacity: FleetCapacity;
+    /**
+     * The environment type of the compute fleet.   The environment type ARM_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), EU (Frankfurt), and South America (São Paulo).   The environment type LINUX_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São Paulo), and Asia Pacific (Mumbai).   The environment type LINUX_GPU_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), and Asia Pacific (Sydney).   The environment type MAC_ARM is available for Medium fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), and EU (Frankfurt)   The environment type MAC_ARM is available for Large fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), and Asia Pacific (Sydney).   The environment type WINDOWS_SERVER_2019_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).   The environment type WINDOWS_SERVER_2022_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).   For more information, see Build environment compute types in the CodeBuild user guide.
+     */
+    environmentType: EnvironmentType;
+    /**
+     * Information about the compute resources the compute fleet uses. Available values include:    BUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds.    BUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds.    BUILD_GENERAL1_LARGE: Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_XLARGE: Use up to 70 GB memory and 36 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_2XLARGE: Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.    If you use BUILD_GENERAL1_SMALL:     For environment type LINUX_CONTAINER, you can use up to 3 GB memory and 2 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 16 GB memory, 4 vCPUs, and 1 NVIDIA A10G Tensor Core GPU for builds.    For environment type ARM_CONTAINER, you can use up to 4 GB memory and 2 vCPUs on ARM-based processors for builds.    If you use BUILD_GENERAL1_LARGE:     For environment type LINUX_CONTAINER, you can use up to 15 GB memory and 8 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.    For environment type ARM_CONTAINER, you can use up to 16 GB memory and 8 vCPUs on ARM-based processors for builds.   For more information, see Build environment compute types in the CodeBuild User Guide. 
+     */
+    computeType: ComputeType;
+    /**
+     * The scaling configuration of the compute fleet.
+     */
+    scalingConfiguration?: ScalingConfigurationInput;
+    /**
+     * The compute fleet overflow behavior.   For overflow behavior QUEUE, your overflow builds need to wait on the existing fleet instance to become available.   For overflow behavior ON_DEMAND, your overflow builds run on CodeBuild on-demand.  If you choose to set your overflow behavior to on-demand while creating a VPC-connected fleet, make sure that you add the required VPC permissions to your project service role. For more information, see Example policy statement to allow CodeBuild access to Amazon Web Services services required to create a VPC network interface.   
+     */
+    overflowBehavior?: FleetOverflowBehavior;
+    vpcConfig?: VpcConfig;
+    /**
+     * The Amazon Machine Image (AMI) of the compute fleet.
+     */
+    imageId?: NonEmptyString;
+    /**
+     * The service role associated with the compute fleet. For more information, see  Allow a user to add a permission policy for a fleet service role in the CodeBuild User Guide.
+     */
+    fleetServiceRole?: NonEmptyString;
+    /**
+     * A list of tag key and value pairs associated with this compute fleet. These tags are available for use by Amazon Web Services services that support CodeBuild build project tags.
+     */
+    tags?: TagList;
+  }
+  export interface CreateFleetOutput {
+    /**
+     * Information about the compute fleet
+     */
+    fleet?: Fleet;
+  }
   export interface CreateProjectInput {
     /**
      * The name of the build project.
@@ -987,7 +1089,7 @@ declare namespace CodeBuild {
      */
     secondarySources?: ProjectSources;
     /**
-     * A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:    For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
+     * A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:    For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For GitLab: the commit ID, branch, or Git tag to use.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
      */
     sourceVersion?: String;
     /**
@@ -1015,9 +1117,9 @@ declare namespace CodeBuild {
      */
     serviceRole: NonEmptyString;
     /**
-     * How long, in minutes, from 5 to 480 (8 hours), for CodeBuild to wait before it times out any build that has not been marked as completed. The default is 60 minutes.
+     * How long, in minutes, from 5 to 2160 (36 hours), for CodeBuild to wait before it times out any build that has not been marked as completed. The default is 60 minutes.
      */
-    timeoutInMinutes?: TimeOut;
+    timeoutInMinutes?: BuildTimeOut;
     /**
      * The number of minutes a build is allowed to be queued before it times out. 
      */
@@ -1031,7 +1133,7 @@ declare namespace CodeBuild {
      */
     tags?: TagList;
     /**
-     * VpcConfig enables CodeBuild to access resources in an Amazon VPC.
+     * VpcConfig enables CodeBuild to access resources in an Amazon VPC.  If you're using compute fleets during project creation, do not provide vpcConfig. 
      */
     vpcConfig?: VpcConfig;
     /**
@@ -1102,6 +1204,14 @@ declare namespace CodeBuild {
      * Specifies the type of build this webhook will trigger.
      */
     buildType?: WebhookBuildType;
+    /**
+     * If manualCreation is true, CodeBuild doesn't create a webhook in GitHub and instead returns payloadUrl and secret values for the webhook. The payloadUrl and secret values in the output can be used to manually create a webhook within GitHub.   manualCreation is only available for GitHub webhooks. 
+     */
+    manualCreation?: WrapperBoolean;
+    /**
+     * The scope configuration for global or organization webhooks.  Global or organization webhooks are only available for GitHub and Github Enterprise webhooks. 
+     */
+    scopeConfiguration?: ScopeConfiguration;
   }
   export interface CreateWebhookOutput {
     /**
@@ -1139,6 +1249,14 @@ declare namespace CodeBuild {
      * An array of BuildNotDeleted objects that specify the builds that could not be deleted.
      */
     buildsNotDeleted?: BuildsNotDeleted;
+  }
+  export interface DeleteFleetInput {
+    /**
+     * The ARN of the compute fleet.
+     */
+    arn: NonEmptyString;
+  }
+  export interface DeleteFleetOutput {
   }
   export interface DeleteProjectInput {
     /**
@@ -1301,18 +1419,18 @@ declare namespace CodeBuild {
     languages?: EnvironmentLanguages;
   }
   export type EnvironmentPlatforms = EnvironmentPlatform[];
-  export type EnvironmentType = "WINDOWS_CONTAINER"|"LINUX_CONTAINER"|"LINUX_GPU_CONTAINER"|"ARM_CONTAINER"|"WINDOWS_SERVER_2019_CONTAINER"|string;
+  export type EnvironmentType = "WINDOWS_CONTAINER"|"LINUX_CONTAINER"|"LINUX_GPU_CONTAINER"|"ARM_CONTAINER"|"WINDOWS_SERVER_2019_CONTAINER"|"LINUX_LAMBDA_CONTAINER"|"ARM_LAMBDA_CONTAINER"|"MAC_ARM"|string;
   export interface EnvironmentVariable {
     /**
      * The name or key of the environment variable.
      */
     name: NonEmptyString;
     /**
-     * The value of the environment variable.  We strongly discourage the use of PLAINTEXT environment variables to store sensitive values, especially Amazon Web Services secret key IDs and secret access keys. PLAINTEXT environment variables can be displayed in plain text using the CodeBuild console and the CLI. For sensitive values, we recommend you use an environment variable of type PARAMETER_STORE or SECRETS_MANAGER.  
+     * The value of the environment variable.  We strongly discourage the use of PLAINTEXT environment variables to store sensitive values, especially Amazon Web Services secret key IDs. PLAINTEXT environment variables can be displayed in plain text using the CodeBuild console and the CLI. For sensitive values, we recommend you use an environment variable of type PARAMETER_STORE or SECRETS_MANAGER.  
      */
     value: String;
     /**
-     * The type of environment variable. Valid values include:    PARAMETER_STORE: An environment variable stored in Systems Manager Parameter Store. To learn how to specify a parameter store environment variable, see env/parameter-store in the CodeBuild User Guide.    PLAINTEXT: An environment variable in plain text format. This is the default value.    SECRETS_MANAGER: An environment variable stored in Secrets Manager. To learn how to specify a secrets manager environment variable, see env/secrets-manager in the CodeBuild User Guide.  
+     * The type of environment variable. Valid values include:    PARAMETER_STORE: An environment variable stored in Systems Manager Parameter Store. For environment variables of this type, specify the name of the parameter as the value of the EnvironmentVariable. The parameter value will be substituted for the name at runtime. You can also define Parameter Store environment variables in the buildspec. To learn how to do so, see env/parameter-store in the CodeBuild User Guide.    PLAINTEXT: An environment variable in plain text format. This is the default value.    SECRETS_MANAGER: An environment variable stored in Secrets Manager. For environment variables of this type, specify the name of the secret as the value of the EnvironmentVariable. The secret value will be substituted for the name at runtime. You can also define Secrets Manager environment variables in the buildspec. To learn how to do so, see env/secrets-manager in the CodeBuild User Guide.  
      */
     type?: EnvironmentVariableType;
   }
@@ -1332,6 +1450,90 @@ declare namespace CodeBuild {
   export type FileSystemType = "EFS"|string;
   export type FilterGroup = WebhookFilter[];
   export type FilterGroups = FilterGroup[];
+  export interface Fleet {
+    /**
+     * The ARN of the compute fleet.
+     */
+    arn?: NonEmptyString;
+    /**
+     * The name of the compute fleet.
+     */
+    name?: FleetName;
+    /**
+     * The ID of the compute fleet.
+     */
+    id?: NonEmptyString;
+    /**
+     * The time at which the compute fleet was created.
+     */
+    created?: Timestamp;
+    /**
+     * The time at which the compute fleet was last modified.
+     */
+    lastModified?: Timestamp;
+    /**
+     * The status of the compute fleet.
+     */
+    status?: FleetStatus;
+    /**
+     * The initial number of machines allocated to the compute ﬂeet, which deﬁnes the number of builds that can run in parallel.
+     */
+    baseCapacity?: FleetCapacity;
+    /**
+     * The environment type of the compute fleet.   The environment type ARM_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), EU (Frankfurt), and South America (São Paulo).   The environment type LINUX_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São Paulo), and Asia Pacific (Mumbai).   The environment type LINUX_GPU_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), and Asia Pacific (Sydney).   The environment type MAC_ARM is available for Medium fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), and EU (Frankfurt)   The environment type MAC_ARM is available for Large fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), and Asia Pacific (Sydney).   The environment type WINDOWS_SERVER_2019_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).   The environment type WINDOWS_SERVER_2022_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).   For more information, see Build environment compute types in the CodeBuild user guide.
+     */
+    environmentType?: EnvironmentType;
+    /**
+     * Information about the compute resources the compute fleet uses. Available values include:    BUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds.    BUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds.    BUILD_GENERAL1_LARGE: Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_XLARGE: Use up to 70 GB memory and 36 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_2XLARGE: Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.    If you use BUILD_GENERAL1_SMALL:     For environment type LINUX_CONTAINER, you can use up to 3 GB memory and 2 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 16 GB memory, 4 vCPUs, and 1 NVIDIA A10G Tensor Core GPU for builds.    For environment type ARM_CONTAINER, you can use up to 4 GB memory and 2 vCPUs on ARM-based processors for builds.    If you use BUILD_GENERAL1_LARGE:     For environment type LINUX_CONTAINER, you can use up to 15 GB memory and 8 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.    For environment type ARM_CONTAINER, you can use up to 16 GB memory and 8 vCPUs on ARM-based processors for builds.   For more information, see Build environment compute types in the CodeBuild User Guide. 
+     */
+    computeType?: ComputeType;
+    /**
+     * The scaling configuration of the compute fleet.
+     */
+    scalingConfiguration?: ScalingConfigurationOutput;
+    /**
+     * The compute fleet overflow behavior.   For overflow behavior QUEUE, your overflow builds need to wait on the existing fleet instance to become available.   For overflow behavior ON_DEMAND, your overflow builds run on CodeBuild on-demand.  If you choose to set your overflow behavior to on-demand while creating a VPC-connected fleet, make sure that you add the required VPC permissions to your project service role. For more information, see Example policy statement to allow CodeBuild access to Amazon Web Services services required to create a VPC network interface.   
+     */
+    overflowBehavior?: FleetOverflowBehavior;
+    vpcConfig?: VpcConfig;
+    /**
+     * The Amazon Machine Image (AMI) of the compute fleet.
+     */
+    imageId?: NonEmptyString;
+    /**
+     * The service role associated with the compute fleet. For more information, see  Allow a user to add a permission policy for a fleet service role in the CodeBuild User Guide.
+     */
+    fleetServiceRole?: NonEmptyString;
+    /**
+     * A list of tag key and value pairs associated with this compute fleet. These tags are available for use by Amazon Web Services services that support CodeBuild build project tags.
+     */
+    tags?: TagList;
+  }
+  export type FleetArns = NonEmptyString[];
+  export type FleetCapacity = number;
+  export type FleetContextCode = "CREATE_FAILED"|"UPDATE_FAILED"|"ACTION_REQUIRED"|"PENDING_DELETION"|"INSUFFICIENT_CAPACITY"|string;
+  export type FleetName = string;
+  export type FleetNames = NonEmptyString[];
+  export type FleetOverflowBehavior = "QUEUE"|"ON_DEMAND"|string;
+  export type FleetScalingMetricType = "FLEET_UTILIZATION_RATE"|string;
+  export type FleetScalingType = "TARGET_TRACKING_SCALING"|string;
+  export type FleetSortByType = "NAME"|"CREATED_TIME"|"LAST_MODIFIED_TIME"|string;
+  export interface FleetStatus {
+    /**
+     * The status code of the compute fleet. Valid values include:    CREATING: The compute fleet is being created.    UPDATING: The compute fleet is being updated.    ROTATING: The compute fleet is being rotated.    PENDING_DELETION: The compute fleet is pending deletion.    DELETING: The compute fleet is being deleted.    CREATE_FAILED: The compute fleet has failed to create.    UPDATE_ROLLBACK_FAILED: The compute fleet has failed to update and could not rollback to previous state.    ACTIVE: The compute fleet has succeeded and is active.  
+     */
+    statusCode?: FleetStatusCode;
+    /**
+     * Additional information about a compute fleet. Valid values include:    CREATE_FAILED: The compute fleet has failed to create.    UPDATE_FAILED: The compute fleet has failed to update.  
+     */
+    context?: FleetContextCode;
+    /**
+     * A message associated with the status of a compute fleet.
+     */
+    message?: String;
+  }
+  export type FleetStatusCode = "CREATING"|"UPDATING"|"ROTATING"|"PENDING_DELETION"|"DELETING"|"CREATE_FAILED"|"UPDATE_ROLLBACK_FAILED"|"ACTIVE"|string;
+  export type Fleets = Fleet[];
   export interface GetReportGroupTrendInput {
     /**
      * The ARN of the report group that contains the reports to analyze.
@@ -1384,7 +1586,7 @@ declare namespace CodeBuild {
      */
     username?: NonEmptyString;
     /**
-     *  For GitHub or GitHub Enterprise, this is the personal access token. For Bitbucket, this is the app password. 
+     *  For GitHub or GitHub Enterprise, this is the personal access token. For Bitbucket, this is either the access token or the app password. For the authType CODECONNECTIONS, this is the connectionArn. For the authType SECRETS_MANAGER, this is the secretArn.
      */
     token: SensitiveNonEmptyString;
     /**
@@ -1392,7 +1594,7 @@ declare namespace CodeBuild {
      */
     serverType: ServerType;
     /**
-     *  The type of authentication used to connect to a GitHub, GitHub Enterprise, or Bitbucket repository. An OAUTH connection is not supported by the API and must be created using the CodeBuild console. 
+     *  The type of authentication used to connect to a GitHub, GitHub Enterprise, GitLab, GitLab Self Managed, or Bitbucket repository. An OAUTH connection is not supported by the API and must be created using the CodeBuild console.
      */
     authType: AuthType;
     /**
@@ -1527,6 +1729,34 @@ declare namespace CodeBuild {
      * Information about supported platforms for Docker images that are managed by CodeBuild.
      */
     platforms?: EnvironmentPlatforms;
+  }
+  export interface ListFleetsInput {
+    /**
+     * During a previous call, if there are more than 100 items in the list, only the first 100 items are returned, along with a unique string called a nextToken. To get the next batch of items in the list, call this operation again, adding the next token to the call. To get all of the items in the list, keep calling this operation with each subsequent next token that is returned, until no more next tokens are returned.
+     */
+    nextToken?: SensitiveString;
+    /**
+     * The maximum number of paginated compute fleets returned per response. Use nextToken to iterate pages in the list of returned compute fleets.
+     */
+    maxResults?: PageSize;
+    /**
+     * The order in which to list compute fleets. Valid values include:    ASCENDING: List in ascending order.    DESCENDING: List in descending order.   Use sortBy to specify the criterion to be used to list compute fleet names.
+     */
+    sortOrder?: SortOrderType;
+    /**
+     * The criterion to be used to list compute fleet names. Valid values include:    CREATED_TIME: List based on when each compute fleet was created.    LAST_MODIFIED_TIME: List based on when information about each compute fleet was last changed.    NAME: List based on each compute fleet's name.   Use sortOrder to specify in what order to list the compute fleet names based on the preceding criteria.
+     */
+    sortBy?: FleetSortByType;
+  }
+  export interface ListFleetsOutput {
+    /**
+     * If there are more than 100 items in the list, only the first 100 items are returned, along with a unique string called a nextToken. To get the next batch of items in the list, call this operation again, adding the next token to the call.
+     */
+    nextToken?: String;
+    /**
+     * The list of compute fleet names.
+     */
+    fleets?: FleetArns;
   }
   export interface ListProjectsInput {
     /**
@@ -1725,7 +1955,7 @@ declare namespace CodeBuild {
      */
     streamName?: String;
     /**
-     * The URL to an individual build log in CloudWatch Logs.
+     * The URL to an individual build log in CloudWatch Logs. The log stream is created during the PROVISIONING phase of a build and the deeplink will not be valid until it is created.
      */
     deepLink?: String;
     /**
@@ -1733,7 +1963,7 @@ declare namespace CodeBuild {
      */
     s3DeepLink?: String;
     /**
-     *  The ARN of CloudWatch Logs for a build project. Its format is arn:${Partition}:logs:${Region}:${Account}:log-group:${LogGroupName}:log-stream:${LogStreamName}. For more information, see Resources Defined by CloudWatch Logs. 
+     * The ARN of the CloudWatch Logs stream for a build execution. Its format is arn:${Partition}:logs:${Region}:${Account}:log-group:${LogGroupName}:log-stream:${LogStreamName}. The CloudWatch Logs stream is created during the PROVISIONING phase of a build and the ARN will not be valid until it is created. For more information, see Resources Defined by CloudWatch Logs.
      */
     cloudWatchLogsArn?: String;
     /**
@@ -1797,7 +2027,7 @@ declare namespace CodeBuild {
      */
     secondarySources?: ProjectSources;
     /**
-     * A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:   For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
+     * A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:   For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For GitLab: the commit ID, branch, or Git tag to use.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
      */
     sourceVersion?: String;
     /**
@@ -1825,9 +2055,9 @@ declare namespace CodeBuild {
      */
     serviceRole?: NonEmptyString;
     /**
-     * How long, in minutes, from 5 to 480 (8 hours), for CodeBuild to wait before timing out any related build that did not get marked as completed. The default is 60 minutes.
+     * How long, in minutes, from 5 to 2160 (36 hours), for CodeBuild to wait before timing out any related build that did not get marked as completed. The default is 60 minutes.
      */
-    timeoutInMinutes?: TimeOut;
+    timeoutInMinutes?: BuildTimeOut;
     /**
      * The number of minutes a build is allowed to be queued before it times out. 
      */
@@ -1977,7 +2207,7 @@ declare namespace CodeBuild {
   export type ProjectDescription = string;
   export interface ProjectEnvironment {
     /**
-     * The type of build environment to use for related builds.   The environment type ARM_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Sydney), and EU (Frankfurt).   The environment type LINUX_CONTAINER with compute type build.general1.2xlarge is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), China (Beijing), and China (Ningxia).   The environment type LINUX_GPU_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney) , China (Beijing), and China (Ningxia).     The environment types WINDOWS_CONTAINER and WINDOWS_SERVER_2019_CONTAINER are available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), and EU (Ireland).   For more information, see Build environment compute types in the CodeBuild user guide.
+     * The type of build environment to use for related builds.   The environment type ARM_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Sydney), and EU (Frankfurt).   The environment type LINUX_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney), China (Beijing), and China (Ningxia).   The environment type LINUX_GPU_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Canada (Central), EU (Ireland), EU (London), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Seoul), Asia Pacific (Singapore), Asia Pacific (Sydney) , China (Beijing), and China (Ningxia).     The environment types ARM_LAMBDA_CONTAINER and LINUX_LAMBDA_CONTAINER are available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Mumbai), Asia Pacific (Singapore), Asia Pacific (Sydney), Asia Pacific (Tokyo), EU (Frankfurt), EU (Ireland), and South America (São Paulo).     The environment types WINDOWS_CONTAINER and WINDOWS_SERVER_2019_CONTAINER are available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), and EU (Ireland).    If you're using compute fleets during project creation, type will be ignored.  For more information, see Build environment compute types in the CodeBuild user guide.
      */
     type: EnvironmentType;
     /**
@@ -1985,9 +2215,13 @@ declare namespace CodeBuild {
      */
     image: NonEmptyString;
     /**
-     * Information about the compute resources the build project uses. Available values include:    BUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds.    BUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds.    BUILD_GENERAL1_LARGE: Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_2XLARGE: Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.    If you use BUILD_GENERAL1_LARGE:     For environment type LINUX_CONTAINER, you can use up to 15 GB memory and 8 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.    For environment type ARM_CONTAINER, you can use up to 16 GB memory and 8 vCPUs on ARM-based processors for builds.   For more information, see Build Environment Compute Types in the CodeBuild User Guide. 
+     * Information about the compute resources the build project uses. Available values include:    BUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds.    BUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds.    BUILD_GENERAL1_LARGE: Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_XLARGE: Use up to 70 GB memory and 36 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_2XLARGE: Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.    BUILD_LAMBDA_1GB: Use up to 1 GB memory for builds. Only available for environment type LINUX_LAMBDA_CONTAINER and ARM_LAMBDA_CONTAINER.    BUILD_LAMBDA_2GB: Use up to 2 GB memory for builds. Only available for environment type LINUX_LAMBDA_CONTAINER and ARM_LAMBDA_CONTAINER.    BUILD_LAMBDA_4GB: Use up to 4 GB memory for builds. Only available for environment type LINUX_LAMBDA_CONTAINER and ARM_LAMBDA_CONTAINER.    BUILD_LAMBDA_8GB: Use up to 8 GB memory for builds. Only available for environment type LINUX_LAMBDA_CONTAINER and ARM_LAMBDA_CONTAINER.    BUILD_LAMBDA_10GB: Use up to 10 GB memory for builds. Only available for environment type LINUX_LAMBDA_CONTAINER and ARM_LAMBDA_CONTAINER.    If you use BUILD_GENERAL1_SMALL:     For environment type LINUX_CONTAINER, you can use up to 3 GB memory and 2 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 16 GB memory, 4 vCPUs, and 1 NVIDIA A10G Tensor Core GPU for builds.    For environment type ARM_CONTAINER, you can use up to 4 GB memory and 2 vCPUs on ARM-based processors for builds.    If you use BUILD_GENERAL1_LARGE:     For environment type LINUX_CONTAINER, you can use up to 15 GB memory and 8 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.    For environment type ARM_CONTAINER, you can use up to 16 GB memory and 8 vCPUs on ARM-based processors for builds.    If you're using compute fleets during project creation, computeType will be ignored.  For more information, see Build Environment Compute Types in the CodeBuild User Guide. 
      */
     computeType: ComputeType;
+    /**
+     * A ProjectFleet object to use for this build project.
+     */
+    fleet?: ProjectFleet;
     /**
      * A set of environment variables to make available to builds for this build project.
      */
@@ -2032,17 +2266,23 @@ declare namespace CodeBuild {
     mountOptions?: String;
   }
   export type ProjectFileSystemLocations = ProjectFileSystemLocation[];
+  export interface ProjectFleet {
+    /**
+     * Specifies the compute fleet ARN for the build project.
+     */
+    fleetArn?: String;
+  }
   export type ProjectName = string;
   export type ProjectNames = NonEmptyString[];
   export type ProjectSecondarySourceVersions = ProjectSourceVersion[];
   export type ProjectSortByType = "NAME"|"CREATED_TIME"|"LAST_MODIFIED_TIME"|string;
   export interface ProjectSource {
     /**
-     * The type of repository that contains the source code to be built. Valid values include:    BITBUCKET: The source code is in a Bitbucket repository.    CODECOMMIT: The source code is in an CodeCommit repository.    CODEPIPELINE: The source code settings are specified in the source action of a pipeline in CodePipeline.    GITHUB: The source code is in a GitHub or GitHub Enterprise Cloud repository.    GITHUB_ENTERPRISE: The source code is in a GitHub Enterprise Server repository.    NO_SOURCE: The project does not have input source code.    S3: The source code is in an Amazon S3 bucket.  
+     * The type of repository that contains the source code to be built. Valid values include:    BITBUCKET: The source code is in a Bitbucket repository.    CODECOMMIT: The source code is in an CodeCommit repository.    CODEPIPELINE: The source code settings are specified in the source action of a pipeline in CodePipeline.    GITHUB: The source code is in a GitHub repository.    GITHUB_ENTERPRISE: The source code is in a GitHub Enterprise Server repository.    GITLAB: The source code is in a GitLab repository.    GITLAB_SELF_MANAGED: The source code is in a self-managed GitLab repository.    NO_SOURCE: The project does not have input source code.    S3: The source code is in an Amazon S3 bucket.  
      */
     type: SourceType;
     /**
-     * Information about the location of the source code to be built. Valid values include:   For source code settings that are specified in the source action of a pipeline in CodePipeline, location should not be specified. If it is specified, CodePipeline ignores it. This is because CodePipeline uses the settings in a pipeline's source action instead of this value.   For source code in an CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, https://git-codecommit.&lt;region-ID&gt;.amazonaws.com/v1/repos/&lt;repo-name&gt;).   For source code in an Amazon S3 input bucket, one of the following.    The path to the ZIP file that contains the source code (for example, &lt;bucket-name&gt;/&lt;path&gt;/&lt;object-name&gt;.zip).    The path to the folder that contains the source code (for example, &lt;bucket-name&gt;/&lt;path-to-source-code&gt;/&lt;folder&gt;/).      For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your Amazon Web Services account to your GitHub account. Use the CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub Authorize application page, for Organization access, choose Request access next to each repository you want to allow CodeBuild to have access to, and then choose Authorize application. (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the CodeBuild console.) To instruct CodeBuild to use this connection, in the source object, set the auth object's type value to OAUTH.   For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your Amazon Web Services account to your Bitbucket account. Use the CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket Confirm access to your account page, choose Grant access. (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the CodeBuild console.) To instruct CodeBuild to use this connection, in the source object, set the auth object's type value to OAUTH.    If you specify CODEPIPELINE for the Type property, don't specify this property. For all of the other types, you must specify Location. 
+     * Information about the location of the source code to be built. Valid values include:   For source code settings that are specified in the source action of a pipeline in CodePipeline, location should not be specified. If it is specified, CodePipeline ignores it. This is because CodePipeline uses the settings in a pipeline's source action instead of this value.   For source code in an CodeCommit repository, the HTTPS clone URL to the repository that contains the source code and the buildspec file (for example, https://git-codecommit.&lt;region-ID&gt;.amazonaws.com/v1/repos/&lt;repo-name&gt;).   For source code in an Amazon S3 input bucket, one of the following.    The path to the ZIP file that contains the source code (for example, &lt;bucket-name&gt;/&lt;path&gt;/&lt;object-name&gt;.zip).    The path to the folder that contains the source code (for example, &lt;bucket-name&gt;/&lt;path-to-source-code&gt;/&lt;folder&gt;/).      For source code in a GitHub repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your Amazon Web Services account to your GitHub account. Use the CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitHub, on the GitHub Authorize application page, for Organization access, choose Request access next to each repository you want to allow CodeBuild to have access to, and then choose Authorize application. (After you have connected to your GitHub account, you do not need to finish creating the build project. You can leave the CodeBuild console.) To instruct CodeBuild to use this connection, in the source object, set the auth object's type value to OAUTH.   For source code in an GitLab or self-managed GitLab repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your Amazon Web Services account to your GitLab account. Use the CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with GitLab, on the Connections Authorize application page, choose Authorize. Then on the CodeConnections Create GitLab connection page, choose Connect to GitLab. (After you have connected to your GitLab account, you do not need to finish creating the build project. You can leave the CodeBuild console.) To instruct CodeBuild to override the default connection and use this connection instead, set the auth object's type value to CODECONNECTIONS in the source object.   For source code in a Bitbucket repository, the HTTPS clone URL to the repository that contains the source and the buildspec file. You must connect your Amazon Web Services account to your Bitbucket account. Use the CodeBuild console to start creating a build project. When you use the console to connect (or reconnect) with Bitbucket, on the Bitbucket Confirm access to your account page, choose Grant access. (After you have connected to your Bitbucket account, you do not need to finish creating the build project. You can leave the CodeBuild console.) To instruct CodeBuild to use this connection, in the source object, set the auth object's type value to OAUTH.    If you specify CODEPIPELINE for the Type property, don't specify this property. For all of the other types, you must specify Location. 
      */
     location?: String;
     /**
@@ -2058,11 +2298,11 @@ declare namespace CodeBuild {
      */
     buildspec?: String;
     /**
-     * Information about the authorization settings for CodeBuild to access the source code to be built. This information is for the CodeBuild console's use only. Your code should not get or set this information directly.
+     * Information about the authorization settings for CodeBuild to access the source code to be built.
      */
     auth?: SourceAuth;
     /**
-     *  Set to true to report the status of a build's start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, or Bitbucket. If this is set and you use a different source provider, an invalidInputException is thrown.  To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see Source provider access in the CodeBuild User Guide. The status of a build triggered by a webhook is always reported to your source provider.  If your project's builds are triggered by a webhook, you must push a new commit to the repo for a change to this property to take effect.
+     *  Set to true to report the status of a build's start and finish to your source provider. This option is valid only when your source provider is GitHub, GitHub Enterprise, GitLab, GitLab Self Managed, or Bitbucket. If this is set and you use a different source provider, an invalidInputException is thrown.  To be able to report the build status to the source provider, the user associated with the source provider must have write access to the repo. If the user does not have write access, the build status cannot be updated. For more information, see Source provider access in the CodeBuild User Guide. The status of a build triggered by a webhook is always reported to your source provider.  If your project's builds are triggered by a webhook, you must push a new commit to the repo for a change to this property to take effect.
      */
     reportBuildStatus?: WrapperBoolean;
     /**
@@ -2084,7 +2324,7 @@ declare namespace CodeBuild {
      */
     sourceIdentifier: String;
     /**
-     * The source version for the corresponding source identifier. If specified, must be one of:   For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example, pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.    For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
+     * The source version for the corresponding source identifier. If specified, must be one of:   For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example, pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For GitLab: the commit ID, branch, or Git tag to use.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.    For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
      */
     sourceVersion: String;
   }
@@ -2343,14 +2583,61 @@ declare namespace CodeBuild {
      */
     encryptionDisabled?: WrapperBoolean;
   }
+  export interface ScalingConfigurationInput {
+    /**
+     * The scaling type for a compute fleet.
+     */
+    scalingType?: FleetScalingType;
+    /**
+     * A list of TargetTrackingScalingConfiguration objects.
+     */
+    targetTrackingScalingConfigs?: TargetTrackingScalingConfigurations;
+    /**
+     * The maximum number of instances in the ﬂeet when auto-scaling.
+     */
+    maxCapacity?: FleetCapacity;
+  }
+  export interface ScalingConfigurationOutput {
+    /**
+     * The scaling type for a compute fleet.
+     */
+    scalingType?: FleetScalingType;
+    /**
+     * A list of TargetTrackingScalingConfiguration objects.
+     */
+    targetTrackingScalingConfigs?: TargetTrackingScalingConfigurations;
+    /**
+     * The maximum number of instances in the ﬂeet when auto-scaling.
+     */
+    maxCapacity?: FleetCapacity;
+    /**
+     * The desired number of instances in the ﬂeet when auto-scaling.
+     */
+    desiredCapacity?: FleetCapacity;
+  }
+  export interface ScopeConfiguration {
+    /**
+     * The name of either the enterprise or organization that will send webhook events to CodeBuild, depending on if the webhook is a global or organization webhook respectively.
+     */
+    name: String;
+    /**
+     * The domain of the GitHub Enterprise organization. Note that this parameter is only required if your project's source type is GITHUB_ENTERPRISE
+     */
+    domain?: String;
+    /**
+     * The type of scope for a GitHub webhook.
+     */
+    scope: WebhookScopeType;
+  }
   export type SecurityGroupIds = NonEmptyString[];
   export type SensitiveNonEmptyString = string;
-  export type ServerType = "GITHUB"|"BITBUCKET"|"GITHUB_ENTERPRISE"|string;
+  export type SensitiveString = string;
+  export type ServerType = "GITHUB"|"BITBUCKET"|"GITHUB_ENTERPRISE"|"GITLAB"|"GITLAB_SELF_MANAGED"|string;
   export type SharedResourceSortByType = "ARN"|"MODIFIED_TIME"|string;
   export type SortOrderType = "ASCENDING"|"DESCENDING"|string;
   export interface SourceAuth {
     /**
-     *   This data type is deprecated and is no longer accurate or used.   The authorization type to use. The only valid value is OAUTH, which represents the OAuth authorization type.
+     * The authorization type to use. Valid options are OAUTH, CODECONNECTIONS, or SECRETS_MANAGER.
      */
     type: SourceAuthType;
     /**
@@ -2358,23 +2645,27 @@ declare namespace CodeBuild {
      */
     resource?: String;
   }
-  export type SourceAuthType = "OAUTH"|string;
+  export type SourceAuthType = "OAUTH"|"CODECONNECTIONS"|"SECRETS_MANAGER"|string;
   export interface SourceCredentialsInfo {
     /**
      *  The Amazon Resource Name (ARN) of the token. 
      */
     arn?: NonEmptyString;
     /**
-     *  The type of source provider. The valid options are GITHUB, GITHUB_ENTERPRISE, or BITBUCKET. 
+     *  The type of source provider. The valid options are GITHUB, GITHUB_ENTERPRISE, GITLAB, GITLAB_SELF_MANAGED, or BITBUCKET. 
      */
     serverType?: ServerType;
     /**
-     *  The type of authentication used by the credentials. Valid options are OAUTH, BASIC_AUTH, or PERSONAL_ACCESS_TOKEN. 
+     *  The type of authentication used by the credentials. Valid options are OAUTH, BASIC_AUTH, PERSONAL_ACCESS_TOKEN, CODECONNECTIONS, or SECRETS_MANAGER. 
      */
     authType?: AuthType;
+    /**
+     * The connection ARN if your authType is CODECONNECTIONS or SECRETS_MANAGER.
+     */
+    resource?: String;
   }
   export type SourceCredentialsInfos = SourceCredentialsInfo[];
-  export type SourceType = "CODECOMMIT"|"CODEPIPELINE"|"GITHUB"|"S3"|"BITBUCKET"|"GITHUB_ENTERPRISE"|"NO_SOURCE"|string;
+  export type SourceType = "CODECOMMIT"|"CODEPIPELINE"|"GITHUB"|"GITLAB"|"GITLAB_SELF_MANAGED"|"S3"|"BITBUCKET"|"GITHUB_ENTERPRISE"|"NO_SOURCE"|string;
   export interface StartBuildBatchInput {
     /**
      * The name of the project.
@@ -2467,7 +2758,7 @@ declare namespace CodeBuild {
     /**
      * Overrides the build timeout specified in the batch build project.
      */
-    buildTimeoutInMinutesOverride?: TimeOut;
+    buildTimeoutInMinutesOverride?: BuildTimeOut;
     /**
      * The number of minutes a batch build is allowed to be queued before it times out.
      */
@@ -2521,7 +2812,7 @@ declare namespace CodeBuild {
      */
     secondarySourcesVersionOverride?: ProjectSecondarySourceVersions;
     /**
-     * The version of the build input to be built, for this build only. If not specified, the latest version is used. If specified, the contents depends on the source provider:  CodeCommit  The commit ID, branch, or Git tag to use.  GitHub  The commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.  Bitbucket  The commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.  Amazon S3  The version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the project level, then this sourceVersion (at the build level) takes precedence.  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
+     * The version of the build input to be built, for this build only. If not specified, the latest version is used. If specified, the contents depends on the source provider:  CodeCommit  The commit ID, branch, or Git tag to use.  GitHub  The commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.  GitLab  The commit ID, branch, or Git tag to use.  Bitbucket  The commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.  Amazon S3  The version ID of the object that represents the build input ZIP file to use.   If sourceVersion is specified at the project level, then this sourceVersion (at the build level) takes precedence.  For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
      */
     sourceVersion?: String;
     /**
@@ -2545,7 +2836,7 @@ declare namespace CodeBuild {
      */
     sourceLocationOverride?: String;
     /**
-     * An authorization type for this build that overrides the one defined in the build project. This override applies only if the build project's source is BitBucket or GitHub.
+     * An authorization type for this build that overrides the one defined in the build project. This override applies only if the build project's source is BitBucket, GitHub, GitLab, or GitLab Self Managed.
      */
     sourceAuthOverride?: SourceAuth;
     /**
@@ -2557,7 +2848,7 @@ declare namespace CodeBuild {
      */
     gitSubmodulesConfigOverride?: GitSubmodulesConfig;
     /**
-     * A buildspec file declaration that overrides, for this build only, the latest one already defined in the build project.  If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built-in CODEBUILD_SRC_DIR environment variable, or the path to an S3 bucket. The bucket must be in the same Amazon Web Services Region as the build project. Specify the buildspec file using its ARN (for example, arn:aws:s3:::my-codebuild-sample2/buildspec.yml). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see Buildspec File Name and Storage Location. 
+     * A buildspec file declaration that overrides the latest one defined in the build project, for this build only. The buildspec defined on the project is not changed. If this value is set, it can be either an inline buildspec definition, the path to an alternate buildspec file relative to the value of the built-in CODEBUILD_SRC_DIR environment variable, or the path to an S3 bucket. The bucket must be in the same Amazon Web Services Region as the build project. Specify the buildspec file using its ARN (for example, arn:aws:s3:::my-codebuild-sample2/buildspec.yml). If this value is not provided or is set to an empty string, the source code must contain a buildspec file in its root directory. For more information, see Buildspec File Name and Storage Location.  Since this property allows you to change the build commands that will run in the container, you should note that an IAM principal with the ability to call this API and set this parameter can override the default settings. Moreover, we encourage that you use a trustworthy buildspec location like a file in your source repository or a Amazon S3 bucket. 
      */
     buildspecOverride?: String;
     /**
@@ -2601,9 +2892,9 @@ declare namespace CodeBuild {
      */
     privilegedModeOverride?: WrapperBoolean;
     /**
-     * The number of build timeout minutes, from 5 to 480 (8 hours), that overrides, for this build only, the latest setting already defined in the build project.
+     * The number of build timeout minutes, from 5 to 2160 (36 hours), that overrides, for this build only, the latest setting already defined in the build project.
      */
-    timeoutInMinutesOverride?: TimeOut;
+    timeoutInMinutesOverride?: BuildTimeOut;
     /**
      *  The number of minutes a build is allowed to be queued before it times out. 
      */
@@ -2632,6 +2923,10 @@ declare namespace CodeBuild {
      * Specifies if session debugging is enabled for this build. For more information, see Viewing a running build in Session Manager.
      */
     debugSessionEnabled?: WrapperBoolean;
+    /**
+     * A ProjectFleet object specified for this build that overrides the one defined in the build project.
+     */
+    fleetOverride?: ProjectFleet;
   }
   export interface StartBuildOutput {
     /**
@@ -2674,6 +2969,17 @@ declare namespace CodeBuild {
     value?: ValueInput;
   }
   export type TagList = Tag[];
+  export interface TargetTrackingScalingConfiguration {
+    /**
+     * The metric type to determine auto-scaling.
+     */
+    metricType?: FleetScalingMetricType;
+    /**
+     * The value of metricType when to start scaling.
+     */
+    targetValue?: WrapperDouble;
+  }
+  export type TargetTrackingScalingConfigurations = TargetTrackingScalingConfiguration[];
   export interface TestCase {
     /**
      *  The ARN of the report to which the test case belongs. 
@@ -2735,6 +3041,51 @@ declare namespace CodeBuild {
   }
   export type TimeOut = number;
   export type Timestamp = Date;
+  export interface UpdateFleetInput {
+    /**
+     * The ARN of the compute fleet.
+     */
+    arn: NonEmptyString;
+    /**
+     * The initial number of machines allocated to the compute ﬂeet, which deﬁnes the number of builds that can run in parallel.
+     */
+    baseCapacity?: FleetCapacity;
+    /**
+     * The environment type of the compute fleet.   The environment type ARM_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), Asia Pacific (Mumbai), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), EU (Frankfurt), and South America (São Paulo).   The environment type LINUX_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), Asia Pacific (Singapore), Asia Pacific (Sydney), South America (São Paulo), and Asia Pacific (Mumbai).   The environment type LINUX_GPU_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Tokyo), and Asia Pacific (Sydney).   The environment type MAC_ARM is available for Medium fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), and EU (Frankfurt)   The environment type MAC_ARM is available for Large fleets only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), and Asia Pacific (Sydney).   The environment type WINDOWS_SERVER_2019_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), Asia Pacific (Sydney), Asia Pacific (Tokyo), Asia Pacific (Mumbai) and EU (Ireland).   The environment type WINDOWS_SERVER_2022_CONTAINER is available only in regions US East (N. Virginia), US East (Ohio), US West (Oregon), EU (Ireland), EU (Frankfurt), Asia Pacific (Sydney), Asia Pacific (Singapore), Asia Pacific (Tokyo), South America (São Paulo) and Asia Pacific (Mumbai).   For more information, see Build environment compute types in the CodeBuild user guide.
+     */
+    environmentType?: EnvironmentType;
+    /**
+     * Information about the compute resources the compute fleet uses. Available values include:    BUILD_GENERAL1_SMALL: Use up to 3 GB memory and 2 vCPUs for builds.    BUILD_GENERAL1_MEDIUM: Use up to 7 GB memory and 4 vCPUs for builds.    BUILD_GENERAL1_LARGE: Use up to 16 GB memory and 8 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_XLARGE: Use up to 70 GB memory and 36 vCPUs for builds, depending on your environment type.    BUILD_GENERAL1_2XLARGE: Use up to 145 GB memory, 72 vCPUs, and 824 GB of SSD storage for builds. This compute type supports Docker images up to 100 GB uncompressed.    If you use BUILD_GENERAL1_SMALL:     For environment type LINUX_CONTAINER, you can use up to 3 GB memory and 2 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 16 GB memory, 4 vCPUs, and 1 NVIDIA A10G Tensor Core GPU for builds.    For environment type ARM_CONTAINER, you can use up to 4 GB memory and 2 vCPUs on ARM-based processors for builds.    If you use BUILD_GENERAL1_LARGE:     For environment type LINUX_CONTAINER, you can use up to 15 GB memory and 8 vCPUs for builds.     For environment type LINUX_GPU_CONTAINER, you can use up to 255 GB memory, 32 vCPUs, and 4 NVIDIA Tesla V100 GPUs for builds.    For environment type ARM_CONTAINER, you can use up to 16 GB memory and 8 vCPUs on ARM-based processors for builds.   For more information, see Build environment compute types in the CodeBuild User Guide. 
+     */
+    computeType?: ComputeType;
+    /**
+     * The scaling configuration of the compute fleet.
+     */
+    scalingConfiguration?: ScalingConfigurationInput;
+    /**
+     * The compute fleet overflow behavior.   For overflow behavior QUEUE, your overflow builds need to wait on the existing fleet instance to become available.   For overflow behavior ON_DEMAND, your overflow builds run on CodeBuild on-demand.  If you choose to set your overflow behavior to on-demand while creating a VPC-connected fleet, make sure that you add the required VPC permissions to your project service role. For more information, see Example policy statement to allow CodeBuild access to Amazon Web Services services required to create a VPC network interface.   
+     */
+    overflowBehavior?: FleetOverflowBehavior;
+    vpcConfig?: VpcConfig;
+    /**
+     * The Amazon Machine Image (AMI) of the compute fleet.
+     */
+    imageId?: NonEmptyString;
+    /**
+     * The service role associated with the compute fleet. For more information, see  Allow a user to add a permission policy for a fleet service role in the CodeBuild User Guide.
+     */
+    fleetServiceRole?: NonEmptyString;
+    /**
+     * A list of tag key and value pairs associated with this compute fleet. These tags are available for use by Amazon Web Services services that support CodeBuild build project tags.
+     */
+    tags?: TagList;
+  }
+  export interface UpdateFleetOutput {
+    /**
+     * A Fleet object.
+     */
+    fleet?: Fleet;
+  }
   export interface UpdateProjectInput {
     /**
      * The name of the build project.  You cannot change a build project's name. 
@@ -2753,7 +3104,7 @@ declare namespace CodeBuild {
      */
     secondarySources?: ProjectSources;
     /**
-     *  A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:    For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.    If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).   For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
+     *  A version of the build input to be built for this project. If not specified, the latest version is used. If specified, it must be one of:    For CodeCommit: the commit ID, branch, or Git tag to use.   For GitHub: the commit ID, pull request ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a pull request ID is specified, it must use the format pr/pull-request-ID (for example pr/25). If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For GitLab: the commit ID, branch, or Git tag to use.   For Bitbucket: the commit ID, branch name, or tag name that corresponds to the version of the source code you want to build. If a branch name is specified, the branch's HEAD commit ID is used. If not specified, the default branch's HEAD commit ID is used.   For Amazon S3: the version ID of the object that represents the build input ZIP file to use.    If sourceVersion is specified at the build level, then that version takes precedence over this sourceVersion (at the project level).   For more information, see Source Version Sample with CodeBuild in the CodeBuild User Guide. 
      */
     sourceVersion?: String;
     /**
@@ -2781,9 +3132,9 @@ declare namespace CodeBuild {
      */
     serviceRole?: NonEmptyString;
     /**
-     * The replacement value in minutes, from 5 to 480 (8 hours), for CodeBuild to wait before timing out any related build that did not get marked as completed.
+     * The replacement value in minutes, from 5 to 2160 (36 hours), for CodeBuild to wait before timing out any related build that did not get marked as completed.
      */
-    timeoutInMinutes?: TimeOut;
+    timeoutInMinutes?: BuildTimeOut;
     /**
      *  The number of minutes a build is allowed to be queued before it times out. 
      */
@@ -2935,14 +3286,22 @@ declare namespace CodeBuild {
      */
     buildType?: WebhookBuildType;
     /**
+     * If manualCreation is true, CodeBuild doesn't create a webhook in GitHub and instead returns payloadUrl and secret values for the webhook. The payloadUrl and secret values in the output can be used to manually create a webhook within GitHub.  manualCreation is only available for GitHub webhooks. 
+     */
+    manualCreation?: WrapperBoolean;
+    /**
      * A timestamp that indicates the last time a repository's secret token was modified. 
      */
     lastModifiedSecret?: Timestamp;
+    /**
+     * The scope configuration for global or organization webhooks.  Global or organization webhooks are only available for GitHub and Github Enterprise webhooks. 
+     */
+    scopeConfiguration?: ScopeConfiguration;
   }
   export type WebhookBuildType = "BUILD"|"BUILD_BATCH"|string;
   export interface WebhookFilter {
     /**
-     *  The type of webhook filter. There are six webhook filter types: EVENT, ACTOR_ACCOUNT_ID, HEAD_REF, BASE_REF, FILE_PATH, and COMMIT_MESSAGE.    EVENT    A webhook event triggers a build when the provided pattern matches one of five event types: PUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_REOPENED, and PULL_REQUEST_MERGED. The EVENT patterns are specified as a comma-separated string. For example, PUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED filters all push, pull request created, and pull request updated events.    The PULL_REQUEST_REOPENED works with GitHub and GitHub Enterprise only.     ACTOR_ACCOUNT_ID    A webhook event triggers a build when a GitHub, GitHub Enterprise, or Bitbucket account ID matches the regular expression pattern.    HEAD_REF    A webhook event triggers a build when the head reference matches the regular expression pattern. For example, refs/heads/branch-name and refs/tags/tag-name.   Works with GitHub and GitHub Enterprise push, GitHub and GitHub Enterprise pull request, Bitbucket push, and Bitbucket pull request events.    BASE_REF    A webhook event triggers a build when the base reference matches the regular expression pattern. For example, refs/heads/branch-name.    Works with pull request events only.     FILE_PATH    A webhook triggers a build when the path of a changed file matches the regular expression pattern.    Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.    COMMIT_MESSAGE  A webhook triggers a build when the head commit message matches the regular expression pattern.   Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.    
+     *  The type of webhook filter. There are nine webhook filter types: EVENT, ACTOR_ACCOUNT_ID, HEAD_REF, BASE_REF, FILE_PATH, COMMIT_MESSAGE, TAG_NAME, RELEASE_NAME, and WORKFLOW_NAME.     EVENT     A webhook event triggers a build when the provided pattern matches one of nine event types: PUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED, PULL_REQUEST_CLOSED, PULL_REQUEST_REOPENED, PULL_REQUEST_MERGED, RELEASED, PRERELEASED, and WORKFLOW_JOB_QUEUED. The EVENT patterns are specified as a comma-separated string. For example, PUSH, PULL_REQUEST_CREATED, PULL_REQUEST_UPDATED filters all push, pull request created, and pull request updated events.    Types PULL_REQUEST_REOPENED and WORKFLOW_JOB_QUEUED work with GitHub and GitHub Enterprise only. Types RELEASED and PRERELEASED work with GitHub only.      ACTOR_ACCOUNT_ID    A webhook event triggers a build when a GitHub, GitHub Enterprise, or Bitbucket account ID matches the regular expression pattern.      HEAD_REF    A webhook event triggers a build when the head reference matches the regular expression pattern. For example, refs/heads/branch-name and refs/tags/tag-name.    Works with GitHub and GitHub Enterprise push, GitHub and GitHub Enterprise pull request, Bitbucket push, and Bitbucket pull request events.      BASE_REF    A webhook event triggers a build when the base reference matches the regular expression pattern. For example, refs/heads/branch-name.    Works with pull request events only.       FILE_PATH    A webhook triggers a build when the path of a changed file matches the regular expression pattern.    Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.       COMMIT_MESSAGE   A webhook triggers a build when the head commit message matches the regular expression pattern.   Works with GitHub and Bitbucket events push and pull requests events. Also works with GitHub Enterprise push events, but does not work with GitHub Enterprise pull request events.       TAG_NAME   A webhook triggers a build when the tag name of the release matches the regular expression pattern.   Works with RELEASED and PRERELEASED events only.       RELEASE_NAME   A webhook triggers a build when the release name matches the regular expression pattern.   Works with RELEASED and PRERELEASED events only.       REPOSITORY_NAME   A webhook triggers a build when the repository name matches the regular expression pattern.   Works with GitHub global or organization webhooks only.       WORKFLOW_NAME   A webhook triggers a build when the workflow name matches the regular expression pattern.   Works with WORKFLOW_JOB_QUEUED events only.      
      */
     type: WebhookFilterType;
     /**
@@ -2954,8 +3313,10 @@ declare namespace CodeBuild {
      */
     excludeMatchedPattern?: WrapperBoolean;
   }
-  export type WebhookFilterType = "EVENT"|"BASE_REF"|"HEAD_REF"|"ACTOR_ACCOUNT_ID"|"FILE_PATH"|"COMMIT_MESSAGE"|string;
+  export type WebhookFilterType = "EVENT"|"BASE_REF"|"HEAD_REF"|"ACTOR_ACCOUNT_ID"|"FILE_PATH"|"COMMIT_MESSAGE"|"WORKFLOW_NAME"|"TAG_NAME"|"RELEASE_NAME"|string;
+  export type WebhookScopeType = "GITHUB_ORGANIZATION"|"GITHUB_GLOBAL"|string;
   export type WrapperBoolean = boolean;
+  export type WrapperDouble = number;
   export type WrapperInt = number;
   export type WrapperLong = number;
   /**

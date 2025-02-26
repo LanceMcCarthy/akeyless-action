@@ -863,6 +863,10 @@ declare namespace NetworkManager {
      */
     SegmentName?: ConstrainedString;
     /**
+     * The name of the network function group.
+     */
+    NetworkFunctionGroupName?: NetworkFunctionGroupName;
+    /**
      * The tags associated with the attachment.
      */
     Tags?: TagList;
@@ -871,6 +875,10 @@ declare namespace NetworkManager {
      */
     ProposedSegmentChange?: ProposedSegmentChange;
     /**
+     * Describes a proposed change to a network function group associated with the attachment.
+     */
+    ProposedNetworkFunctionGroupChange?: ProposedNetworkFunctionGroupChange;
+    /**
      * The timestamp when the attachment was created.
      */
     CreatedAt?: DateTime;
@@ -878,7 +886,31 @@ declare namespace NetworkManager {
      * The timestamp when the attachment was last updated.
      */
     UpdatedAt?: DateTime;
+    /**
+     * Describes the error associated with the attachment request.
+     */
+    LastModificationErrors?: AttachmentErrorList;
   }
+  export interface AttachmentError {
+    /**
+     * The error code for the attachment request. 
+     */
+    Code?: AttachmentErrorCode;
+    /**
+     * The message associated with the error code.
+     */
+    Message?: ServerSideString;
+    /**
+     * The ARN of the requested attachment resource.
+     */
+    ResourceArn?: ResourceArn;
+    /**
+     * The ID of the attachment request.
+     */
+    RequestId?: ServerSideString;
+  }
+  export type AttachmentErrorCode = "VPC_NOT_FOUND"|"SUBNET_NOT_FOUND"|"SUBNET_DUPLICATED_IN_AVAILABILITY_ZONE"|"SUBNET_NO_FREE_ADDRESSES"|"SUBNET_UNSUPPORTED_AVAILABILITY_ZONE"|"SUBNET_NO_IPV6_CIDRS"|"VPN_CONNECTION_NOT_FOUND"|"MAXIMUM_NO_ENCAP_LIMIT_EXCEEDED"|string;
+  export type AttachmentErrorList = AttachmentError[];
   export type AttachmentId = string;
   export type AttachmentList = Attachment[];
   export type AttachmentState = "REJECTED"|"PENDING_ATTACHMENT_ACCEPTANCE"|"CREATING"|"FAILED"|"AVAILABLE"|"UPDATING"|"PENDING_NETWORK_UPDATE"|"PENDING_TAG_ACCEPTANCE"|"DELETING"|string;
@@ -903,7 +935,7 @@ declare namespace NetworkManager {
   export type ChangeAction = "ADD"|"MODIFY"|"REMOVE"|string;
   export type ChangeSetState = "PENDING_GENERATION"|"FAILED_GENERATION"|"READY_TO_EXECUTE"|"EXECUTING"|"EXECUTION_SUCCEEDED"|"OUT_OF_DATE"|string;
   export type ChangeStatus = "NOT_STARTED"|"IN_PROGRESS"|"COMPLETE"|"FAILED"|string;
-  export type ChangeType = "CORE_NETWORK_SEGMENT"|"CORE_NETWORK_EDGE"|"ATTACHMENT_MAPPING"|"ATTACHMENT_ROUTE_PROPAGATION"|"ATTACHMENT_ROUTE_STATIC"|"CORE_NETWORK_CONFIGURATION"|"SEGMENTS_CONFIGURATION"|"SEGMENT_ACTIONS_CONFIGURATION"|"ATTACHMENT_POLICIES_CONFIGURATION"|string;
+  export type ChangeType = "CORE_NETWORK_SEGMENT"|"NETWORK_FUNCTION_GROUP"|"CORE_NETWORK_EDGE"|"ATTACHMENT_MAPPING"|"ATTACHMENT_ROUTE_PROPAGATION"|"ATTACHMENT_ROUTE_STATIC"|"CORE_NETWORK_CONFIGURATION"|"SEGMENTS_CONFIGURATION"|"SEGMENT_ACTIONS_CONFIGURATION"|"ATTACHMENT_POLICIES_CONFIGURATION"|string;
   export type ClientToken = string;
   export interface ConnectAttachment {
     /**
@@ -958,6 +990,14 @@ declare namespace NetworkManager {
      * The list of key-value tags associated with the Connect peer.
      */
     Tags?: TagList;
+    /**
+     * The subnet ARN for the Connect peer. This only applies only when the protocol is NO_ENCAP.
+     */
+    SubnetArn?: SubnetArn;
+    /**
+     * Describes the error associated with the attachment request.
+     */
+    LastModificationErrors?: ConnectPeerErrorList;
   }
   export interface ConnectPeerAssociation {
     /**
@@ -1024,6 +1064,26 @@ declare namespace NetworkManager {
      */
     BgpConfigurations?: ConnectPeerBgpConfigurationList;
   }
+  export interface ConnectPeerError {
+    /**
+     * The error code for the Connect peer request.
+     */
+    Code?: ConnectPeerErrorCode;
+    /**
+     * The message associated with the error code.
+     */
+    Message?: ServerSideString;
+    /**
+     * The ARN of the requested Connect peer resource.
+     */
+    ResourceArn?: ResourceArn;
+    /**
+     * The ID of the Connect peer request.
+     */
+    RequestId?: ServerSideString;
+  }
+  export type ConnectPeerErrorCode = "EDGE_LOCATION_NO_FREE_IPS"|"EDGE_LOCATION_PEER_DUPLICATE"|"SUBNET_NOT_FOUND"|"IP_OUTSIDE_SUBNET_CIDR_RANGE"|"INVALID_INSIDE_CIDR_BLOCK"|"NO_ASSOCIATED_CIDR_BLOCK"|string;
+  export type ConnectPeerErrorList = ConnectPeerError[];
   export type ConnectPeerId = string;
   export type ConnectPeerIdList = ConnectPeerId[];
   export type ConnectPeerState = "CREATING"|"FAILED"|"AVAILABLE"|"DELETING"|string;
@@ -1056,6 +1116,10 @@ declare namespace NetworkManager {
      * The list of key-value tags associated with the Connect peer summary.
      */
     Tags?: TagList;
+    /**
+     * The subnet ARN for the Connect peer summary.
+     */
+    SubnetArn?: SubnetArn;
   }
   export type ConnectPeerSummaryList = ConnectPeerSummary[];
   export interface Connection {
@@ -1157,6 +1221,10 @@ declare namespace NetworkManager {
      */
     Segments?: CoreNetworkSegmentList;
     /**
+     * The network function groups associated with a core network.
+     */
+    NetworkFunctionGroups?: CoreNetworkNetworkFunctionGroupList;
+    /**
      * The edges within a core network.
      */
     Edges?: CoreNetworkEdgeList;
@@ -1229,6 +1297,10 @@ declare namespace NetworkManager {
      */
     SegmentName?: ConstrainedString;
     /**
+     * The changed network function group name.
+     */
+    NetworkFunctionGroupName?: ConstrainedString;
+    /**
      * The ID of the attachment if the change event is associated with an attachment. 
      */
     AttachmentId?: AttachmentId;
@@ -1243,6 +1315,10 @@ declare namespace NetworkManager {
      * The names of the segments in a core network.
      */
     SegmentName?: ConstrainedString;
+    /**
+     * The network function group name if the change event is associated with a network function group.
+     */
+    NetworkFunctionGroupName?: ConstrainedString;
     /**
      * The Regions where edges are located in a core network. 
      */
@@ -1267,6 +1343,10 @@ declare namespace NetworkManager {
      * The shared segments for a core network change value. 
      */
     SharedSegments?: ConstrainedStringList;
+    /**
+     * Describes the service insertion action. 
+     */
+    ServiceInsertionActions?: ServiceInsertionActionList;
   }
   export interface CoreNetworkEdge {
     /**
@@ -1284,6 +1364,35 @@ declare namespace NetworkManager {
   }
   export type CoreNetworkEdgeList = CoreNetworkEdge[];
   export type CoreNetworkId = string;
+  export interface CoreNetworkNetworkFunctionGroup {
+    /**
+     * The name of the network function group.
+     */
+    Name?: ConstrainedString;
+    /**
+     * The core network edge locations.
+     */
+    EdgeLocations?: ExternalRegionCodeList;
+    /**
+     * The segments associated with the network function group.
+     */
+    Segments?: ServiceInsertionSegments;
+  }
+  export interface CoreNetworkNetworkFunctionGroupIdentifier {
+    /**
+     * The ID of the core network.
+     */
+    CoreNetworkId?: CoreNetworkId;
+    /**
+     * The network function group name.
+     */
+    NetworkFunctionGroupName?: ConstrainedString;
+    /**
+     * The location for the core network edge.
+     */
+    EdgeLocation?: ExternalRegionCode;
+  }
+  export type CoreNetworkNetworkFunctionGroupList = CoreNetworkNetworkFunctionGroup[];
   export interface CoreNetworkPolicy {
     /**
      * The ID of a core network.
@@ -1461,7 +1570,7 @@ declare namespace NetworkManager {
      */
     ConnectAttachmentId: AttachmentId;
     /**
-     * A Connect peer core network address.
+     * A Connect peer core network address. This only applies only when the protocol is GRE.
      */
     CoreNetworkAddress?: IPAddress;
     /**
@@ -1469,13 +1578,13 @@ declare namespace NetworkManager {
      */
     PeerAddress: IPAddress;
     /**
-     * The Connect peer BGP options.
+     * The Connect peer BGP options. This only applies only when the protocol is GRE.
      */
     BgpOptions?: BgpOptions;
     /**
      * The inside IP addresses used for BGP peering.
      */
-    InsideCidrBlocks: ConstrainedStringList;
+    InsideCidrBlocks?: ConstrainedStringList;
     /**
      * The tags associated with the peer request.
      */
@@ -1484,6 +1593,10 @@ declare namespace NetworkManager {
      * The client token associated with the request.
      */
     ClientToken?: ClientToken;
+    /**
+     * The subnet ARN for the Connect peer. This only applies only when the protocol is NO_ENCAP.
+     */
+    SubnetArn?: SubnetArn;
   }
   export interface CreateConnectPeerResponse {
     /**
@@ -2129,6 +2242,18 @@ declare namespace NetworkManager {
      */
     TransitGatewayConnectPeerAssociation?: TransitGatewayConnectPeerAssociation;
   }
+  export interface EdgeOverride {
+    /**
+     * The list of edge locations.
+     */
+    EdgeSets?: EdgeSetList;
+    /**
+     * The edge that should be used when overriding the current edge order.
+     */
+    UseEdge?: ConstrainedString;
+  }
+  export type EdgeSet = ConstrainedString[];
+  export type EdgeSetList = EdgeSet[];
   export interface ExecuteCoreNetworkChangeSetRequest {
     /**
      * The ID of a core network.
@@ -2457,7 +2582,7 @@ declare namespace NetworkManager {
      */
     GlobalNetworkId: GlobalNetworkId;
     /**
-     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    connection     device     link     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
+     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    attachment     connect-peer     connection     core-network     device     link     peering     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
      */
     ResourceType?: ConstrainedString;
     /**
@@ -2501,7 +2626,7 @@ declare namespace NetworkManager {
      */
     AccountId?: AWSAccountId;
     /**
-     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    connection     device     link     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
+     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    attachment     connect-peer     connection     core-network     device     link     peering     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
      */
     ResourceType?: ConstrainedString;
     /**
@@ -2549,7 +2674,7 @@ declare namespace NetworkManager {
      */
     AccountId?: AWSAccountId;
     /**
-     * The resource type. The following are the supported resource types for Direct Connect:    dxcon - The definition model is Connection.    dx-gateway - The definition model is DirectConnectGateway.    dx-vif - The definition model is VirtualInterface.   The following are the supported resource types for Network Manager:    connection - The definition model is Connection.    device - The definition model is Device.    link - The definition model is Link.    site - The definition model is Site.   The following are the supported resource types for Amazon VPC:    customer-gateway - The definition model is CustomerGateway.    transit-gateway - The definition model is TransitGateway.    transit-gateway-attachment - The definition model is TransitGatewayAttachment.    transit-gateway-connect-peer - The definition model is TransitGatewayConnectPeer.    transit-gateway-route-table - The definition model is TransitGatewayRouteTable.    vpn-connection - The definition model is VpnConnection.  
+     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    attachment     connect-peer     connection     core-network     device     link     peering     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
      */
     ResourceType?: ConstrainedString;
     /**
@@ -2661,7 +2786,7 @@ declare namespace NetworkManager {
      */
     AccountId?: AWSAccountId;
     /**
-     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    connection     device     link     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
+     * The resource type. The following are the supported resource types:    connect-peer     transit-gateway-connect-peer     vpn-connection   
      */
     ResourceType?: ConstrainedString;
     /**
@@ -3143,6 +3268,14 @@ declare namespace NetworkManager {
   }
   export type Long = number;
   export type MaxResults = number;
+  export interface NetworkFunctionGroup {
+    /**
+     * The name of the network function group.
+     */
+    Name?: ConstrainedString;
+  }
+  export type NetworkFunctionGroupList = NetworkFunctionGroup[];
+  export type NetworkFunctionGroupName = string;
   export interface NetworkResource {
     /**
      * The ARN of the gateway.
@@ -3161,7 +3294,7 @@ declare namespace NetworkManager {
      */
     AccountId?: AWSAccountId;
     /**
-     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    connection     device     link     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
+     * The resource type. The following are the supported resource types for Direct Connect:    dxcon     dx-gateway     dx-vif    The following are the supported resource types for Network Manager:    attachment     connect-peer     connection     core-network     device     link     peering     site    The following are the supported resource types for Amazon VPC:    customer-gateway     transit-gateway     transit-gateway-attachment     transit-gateway-connect-peer     transit-gateway-route-table     vpn-connection   
      */
     ResourceType?: ConstrainedString;
     /**
@@ -3263,6 +3396,10 @@ declare namespace NetworkManager {
      * The name of the segment.
      */
     SegmentName?: ConstrainedString;
+    /**
+     * The network function group name associated with the destination.
+     */
+    NetworkFunctionGroupName?: ConstrainedString;
     /**
      * The edge location for the network destination.
      */
@@ -3394,11 +3531,59 @@ declare namespace NetworkManager {
      * The timestamp when the attachment peer was created.
      */
     CreatedAt?: DateTime;
+    /**
+     * Describes the error associated with the Connect peer request.
+     */
+    LastModificationErrors?: PeeringErrorList;
   }
+  export interface PeeringError {
+    /**
+     * The error code for the peering request.
+     */
+    Code?: PeeringErrorCode;
+    /**
+     * The message associated with the error code.
+     */
+    Message?: ServerSideString;
+    /**
+     * The ARN of the requested peering resource.
+     */
+    ResourceArn?: ResourceArn;
+    /**
+     * The ID of the Peering request.
+     */
+    RequestId?: ServerSideString;
+    /**
+     * Provides additional information about missing permissions for the peering error.
+     */
+    MissingPermissionsContext?: PermissionsErrorContext;
+  }
+  export type PeeringErrorCode = "TRANSIT_GATEWAY_NOT_FOUND"|"TRANSIT_GATEWAY_PEERS_LIMIT_EXCEEDED"|"MISSING_PERMISSIONS"|"INTERNAL_ERROR"|"EDGE_LOCATION_PEER_DUPLICATE"|"INVALID_TRANSIT_GATEWAY_STATE"|string;
+  export type PeeringErrorList = PeeringError[];
   export type PeeringId = string;
   export type PeeringList = Peering[];
   export type PeeringState = "CREATING"|"FAILED"|"AVAILABLE"|"DELETING"|string;
   export type PeeringType = "TRANSIT_GATEWAY"|string;
+  export interface PermissionsErrorContext {
+    /**
+     * The missing permissions.
+     */
+    MissingPermission?: ServerSideString;
+  }
+  export interface ProposedNetworkFunctionGroupChange {
+    /**
+     * The list of proposed changes to the key-value tags associated with the network function group.
+     */
+    Tags?: TagList;
+    /**
+     * The proposed new attachment policy rule number for the network function group.
+     */
+    AttachmentPolicyRuleNumber?: Integer;
+    /**
+     * The proposed name change for the network function group name.
+     */
+    NetworkFunctionGroupName?: ConstrainedString;
+  }
   export interface ProposedSegmentChange {
     /**
      * The list of key-value tags that changed for the segment.
@@ -3614,19 +3799,54 @@ declare namespace NetworkManager {
   export type RouteStateList = RouteState[];
   export interface RouteTableIdentifier {
     /**
-     * The ARN of the transit gateway route table.
+     * The ARN of the transit gateway route table for the attachment request. For example, "TransitGatewayRouteTableArn": "arn:aws:ec2:us-west-2:123456789012:transit-gateway-route-table/tgw-rtb-9876543210123456".
      */
     TransitGatewayRouteTableArn?: TransitGatewayRouteTableArn;
     /**
      * The segment edge in a core network.
      */
     CoreNetworkSegmentEdge?: CoreNetworkSegmentEdgeIdentifier;
+    /**
+     * The route table identifier associated with the network function group.
+     */
+    CoreNetworkNetworkFunctionGroup?: CoreNetworkNetworkFunctionGroupIdentifier;
   }
-  export type RouteTableType = "TRANSIT_GATEWAY_ROUTE_TABLE"|"CORE_NETWORK_SEGMENT"|string;
+  export type RouteTableType = "TRANSIT_GATEWAY_ROUTE_TABLE"|"CORE_NETWORK_SEGMENT"|"NETWORK_FUNCTION_GROUP"|string;
   export type RouteType = "PROPAGATED"|"STATIC"|string;
   export type RouteTypeList = RouteType[];
   export type SLRDeploymentStatus = string;
+  export type SegmentActionServiceInsertion = "send-via"|"send-to"|string;
+  export type SendViaMode = "dual-hop"|"single-hop"|string;
   export type ServerSideString = string;
+  export interface ServiceInsertionAction {
+    /**
+     * The action the service insertion takes for traffic. send-via sends east-west traffic between attachments. send-to sends north-south traffic to the security appliance, and then from that to either the Internet or to an on-premesis location. 
+     */
+    Action?: SegmentActionServiceInsertion;
+    /**
+     * Describes the mode packets take for the send-via action. This is not used when the action is send-to. dual-hop packets traverse attachments in both the source to the destination core network edges. This mode requires that an inspection attachment must be present in all Regions of the service insertion-enabled segments. For single-hop, packets traverse a single intermediate inserted attachment. You can use EdgeOverride to specify a specific edge to use. 
+     */
+    Mode?: SendViaMode;
+    /**
+     * The list of destination segments if the service insertion action is send-via.
+     */
+    WhenSentTo?: WhenSentTo;
+    /**
+     * The list of network function groups and any edge overrides for the chosen service insertion action. Used for both send-to or send-via.
+     */
+    Via?: Via;
+  }
+  export type ServiceInsertionActionList = ServiceInsertionAction[];
+  export interface ServiceInsertionSegments {
+    /**
+     * The list of segments associated with the send-via action.
+     */
+    SendVia?: ConstrainedStringList;
+    /**
+     * The list of segments associated with the send-to action.
+     */
+    SendTo?: ConstrainedStringList;
+  }
   export interface Site {
     /**
      * The ID of the site.
@@ -3827,7 +4047,7 @@ declare namespace NetworkManager {
      */
     TransitGatewayRouteTableArn?: TransitGatewayRouteTableArn;
   }
-  export type TunnelProtocol = "GRE"|string;
+  export type TunnelProtocol = "GRE"|"NO_ENCAP"|string;
   export interface UntagResourceRequest {
     /**
      * The Amazon Resource Name (ARN) of the resource.
@@ -4049,6 +4269,16 @@ declare namespace NetworkManager {
      */
     VpcAttachment?: VpcAttachment;
   }
+  export interface Via {
+    /**
+     * The list of network function groups associated with the service insertion action.
+     */
+    NetworkFunctionGroups?: NetworkFunctionGroupList;
+    /**
+     * Describes any edge overrides. An edge override is a specific edge to be used for traffic.
+     */
+    WithEdgeOverrides?: WithEdgeOverridesList;
+  }
   export type VpcArn = string;
   export interface VpcAttachment {
     /**
@@ -4075,6 +4305,14 @@ declare namespace NetworkManager {
     ApplianceModeSupport?: Boolean;
   }
   export type VpnConnectionArn = string;
+  export interface WhenSentTo {
+    /**
+     * The list of destination segments when the service insertion action is send-to.
+     */
+    WhenSentToSegmentsList?: WhenSentToSegmentsList;
+  }
+  export type WhenSentToSegmentsList = ConstrainedString[];
+  export type WithEdgeOverridesList = EdgeOverride[];
   /**
    * A string in YYYY-MM-DD format that represents the latest possible API version that can be used in this service. Specify 'latest' to use the latest possible version.
    */

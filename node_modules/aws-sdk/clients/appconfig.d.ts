@@ -44,59 +44,59 @@ declare class AppConfig extends Service {
    */
   createEnvironment(callback?: (err: AWSError, data: AppConfig.Types.Environment) => void): Request<AppConfig.Types.Environment, AWSError>;
   /**
-   * Creates an AppConfig extension. An extension augments your ability to inject logic or behavior at different points during the AppConfig workflow of creating or deploying a configuration. You can create your own extensions or use the Amazon Web Services authored extensions provided by AppConfig. For most use cases, to create your own extension, you must create an Lambda function to perform any computation and processing defined in the extension. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Creates an AppConfig extension. An extension augments your ability to inject logic or behavior at different points during the AppConfig workflow of creating or deploying a configuration. You can create your own extensions or use the Amazon Web Services authored extensions provided by AppConfig. For an AppConfig extension that uses Lambda, you must create a Lambda function to perform any computation and processing defined in the extension. If you plan to create custom versions of the Amazon Web Services authored notification extensions, you only need to specify an Amazon Resource Name (ARN) in the Uri field for the new extension version.   For a custom EventBridge notification extension, enter the ARN of the EventBridge default events in the Uri field.   For a custom Amazon SNS notification extension, enter the ARN of an Amazon SNS topic in the Uri field.   For a custom Amazon SQS notification extension, enter the ARN of an Amazon SQS message queue in the Uri field.    For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   createExtension(params: AppConfig.Types.CreateExtensionRequest, callback?: (err: AWSError, data: AppConfig.Types.Extension) => void): Request<AppConfig.Types.Extension, AWSError>;
   /**
-   * Creates an AppConfig extension. An extension augments your ability to inject logic or behavior at different points during the AppConfig workflow of creating or deploying a configuration. You can create your own extensions or use the Amazon Web Services authored extensions provided by AppConfig. For most use cases, to create your own extension, you must create an Lambda function to perform any computation and processing defined in the extension. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Creates an AppConfig extension. An extension augments your ability to inject logic or behavior at different points during the AppConfig workflow of creating or deploying a configuration. You can create your own extensions or use the Amazon Web Services authored extensions provided by AppConfig. For an AppConfig extension that uses Lambda, you must create a Lambda function to perform any computation and processing defined in the extension. If you plan to create custom versions of the Amazon Web Services authored notification extensions, you only need to specify an Amazon Resource Name (ARN) in the Uri field for the new extension version.   For a custom EventBridge notification extension, enter the ARN of the EventBridge default events in the Uri field.   For a custom Amazon SNS notification extension, enter the ARN of an Amazon SNS topic in the Uri field.   For a custom Amazon SQS notification extension, enter the ARN of an Amazon SQS message queue in the Uri field.    For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   createExtension(callback?: (err: AWSError, data: AppConfig.Types.Extension) => void): Request<AppConfig.Types.Extension, AWSError>;
   /**
-   * When you create an extension or configure an Amazon Web Services authored extension, you associate the extension with an AppConfig application, environment, or configuration profile. For example, you can choose to run the AppConfig deployment events to Amazon SNS Amazon Web Services authored extension and receive notifications on an Amazon SNS topic anytime a configuration deployment is started for a specific application. Defining which extension to associate with an AppConfig resource is called an extension association. An extension association is a specified relationship between an extension and an AppConfig resource, such as an application or a configuration profile. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * When you create an extension or configure an Amazon Web Services authored extension, you associate the extension with an AppConfig application, environment, or configuration profile. For example, you can choose to run the AppConfig deployment events to Amazon SNS Amazon Web Services authored extension and receive notifications on an Amazon SNS topic anytime a configuration deployment is started for a specific application. Defining which extension to associate with an AppConfig resource is called an extension association. An extension association is a specified relationship between an extension and an AppConfig resource, such as an application or a configuration profile. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   createExtensionAssociation(params: AppConfig.Types.CreateExtensionAssociationRequest, callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
-   * When you create an extension or configure an Amazon Web Services authored extension, you associate the extension with an AppConfig application, environment, or configuration profile. For example, you can choose to run the AppConfig deployment events to Amazon SNS Amazon Web Services authored extension and receive notifications on an Amazon SNS topic anytime a configuration deployment is started for a specific application. Defining which extension to associate with an AppConfig resource is called an extension association. An extension association is a specified relationship between an extension and an AppConfig resource, such as an application or a configuration profile. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * When you create an extension or configure an Amazon Web Services authored extension, you associate the extension with an AppConfig application, environment, or configuration profile. For example, you can choose to run the AppConfig deployment events to Amazon SNS Amazon Web Services authored extension and receive notifications on an Amazon SNS topic anytime a configuration deployment is started for a specific application. Defining which extension to associate with an AppConfig resource is called an extension association. An extension association is a specified relationship between an extension and an AppConfig resource, such as an application or a configuration profile. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   createExtensionAssociation(callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
-   * Creates a new configuration in the AppConfig hosted configuration store.
+   * Creates a new configuration in the AppConfig hosted configuration store. If you're creating a feature flag, we recommend you familiarize yourself with the JSON schema for feature flag data. For more information, see Type reference for AWS.AppConfig.FeatureFlags in the AppConfig User Guide.
    */
   createHostedConfigurationVersion(params: AppConfig.Types.CreateHostedConfigurationVersionRequest, callback?: (err: AWSError, data: AppConfig.Types.HostedConfigurationVersion) => void): Request<AppConfig.Types.HostedConfigurationVersion, AWSError>;
   /**
-   * Creates a new configuration in the AppConfig hosted configuration store.
+   * Creates a new configuration in the AppConfig hosted configuration store. If you're creating a feature flag, we recommend you familiarize yourself with the JSON schema for feature flag data. For more information, see Type reference for AWS.AppConfig.FeatureFlags in the AppConfig User Guide.
    */
   createHostedConfigurationVersion(callback?: (err: AWSError, data: AppConfig.Types.HostedConfigurationVersion) => void): Request<AppConfig.Types.HostedConfigurationVersion, AWSError>;
   /**
-   * Deletes an application. Deleting an application does not delete a configuration from a host.
+   * Deletes an application.
    */
   deleteApplication(params: AppConfig.Types.DeleteApplicationRequest, callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes an application. Deleting an application does not delete a configuration from a host.
+   * Deletes an application.
    */
   deleteApplication(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes a configuration profile. Deleting a configuration profile does not delete a configuration from a host.
+   * Deletes a configuration profile. To prevent users from unintentionally deleting actively-used configuration profiles, enable deletion protection.
    */
   deleteConfigurationProfile(params: AppConfig.Types.DeleteConfigurationProfileRequest, callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes a configuration profile. Deleting a configuration profile does not delete a configuration from a host.
+   * Deletes a configuration profile. To prevent users from unintentionally deleting actively-used configuration profiles, enable deletion protection.
    */
   deleteConfigurationProfile(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes a deployment strategy. Deleting a deployment strategy does not delete a configuration from a host.
+   * Deletes a deployment strategy.
    */
   deleteDeploymentStrategy(params: AppConfig.Types.DeleteDeploymentStrategyRequest, callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes a deployment strategy. Deleting a deployment strategy does not delete a configuration from a host.
+   * Deletes a deployment strategy.
    */
   deleteDeploymentStrategy(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes an environment. Deleting an environment does not delete a configuration from a host.
+   * Deletes an environment. To prevent users from unintentionally deleting actively-used environments, enable deletion protection.
    */
   deleteEnvironment(params: AppConfig.Types.DeleteEnvironmentRequest, callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
-   * Deletes an environment. Deleting an environment does not delete a configuration from a host.
+   * Deletes an environment. To prevent users from unintentionally deleting actively-used environments, enable deletion protection.
    */
   deleteEnvironment(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
@@ -123,6 +123,10 @@ declare class AppConfig extends Service {
    * Deletes a version of a configuration from the AppConfig hosted configuration store.
    */
   deleteHostedConfigurationVersion(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
+  /**
+   * Returns information about the status of the DeletionProtection parameter.
+   */
+  getAccountSettings(callback?: (err: AWSError, data: AppConfig.Types.AccountSettings) => void): Request<AppConfig.Types.AccountSettings, AWSError>;
   /**
    * Retrieves information about an application.
    */
@@ -180,11 +184,11 @@ declare class AppConfig extends Service {
    */
   getExtension(callback?: (err: AWSError, data: AppConfig.Types.Extension) => void): Request<AppConfig.Types.Extension, AWSError>;
   /**
-   * Returns information about an AppConfig extension association. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Returns information about an AppConfig extension association. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   getExtensionAssociation(params: AppConfig.Types.GetExtensionAssociationRequest, callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
-   * Returns information about an AppConfig extension association. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Returns information about an AppConfig extension association. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   getExtensionAssociation(callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
@@ -236,19 +240,19 @@ declare class AppConfig extends Service {
    */
   listEnvironments(callback?: (err: AWSError, data: AppConfig.Types.Environments) => void): Request<AppConfig.Types.Environments, AWSError>;
   /**
-   * Lists all AppConfig extension associations in the account. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Lists all AppConfig extension associations in the account. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   listExtensionAssociations(params: AppConfig.Types.ListExtensionAssociationsRequest, callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociations) => void): Request<AppConfig.Types.ExtensionAssociations, AWSError>;
   /**
-   * Lists all AppConfig extension associations in the account. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Lists all AppConfig extension associations in the account. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   listExtensionAssociations(callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociations) => void): Request<AppConfig.Types.ExtensionAssociations, AWSError>;
   /**
-   * Lists all custom and Amazon Web Services authored AppConfig extensions in the account. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Lists all custom and Amazon Web Services authored AppConfig extensions in the account. For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   listExtensions(params: AppConfig.Types.ListExtensionsRequest, callback?: (err: AWSError, data: AppConfig.Types.Extensions) => void): Request<AppConfig.Types.Extensions, AWSError>;
   /**
-   * Lists all custom and Amazon Web Services authored AppConfig extensions in the account. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Lists all custom and Amazon Web Services authored AppConfig extensions in the account. For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   listExtensions(callback?: (err: AWSError, data: AppConfig.Types.Extensions) => void): Request<AppConfig.Types.Extensions, AWSError>;
   /**
@@ -300,6 +304,14 @@ declare class AppConfig extends Service {
    */
   untagResource(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
   /**
+   * Updates the value of the DeletionProtection parameter.
+   */
+  updateAccountSettings(params: AppConfig.Types.UpdateAccountSettingsRequest, callback?: (err: AWSError, data: AppConfig.Types.AccountSettings) => void): Request<AppConfig.Types.AccountSettings, AWSError>;
+  /**
+   * Updates the value of the DeletionProtection parameter.
+   */
+  updateAccountSettings(callback?: (err: AWSError, data: AppConfig.Types.AccountSettings) => void): Request<AppConfig.Types.AccountSettings, AWSError>;
+  /**
    * Updates an application.
    */
   updateApplication(params: AppConfig.Types.UpdateApplicationRequest, callback?: (err: AWSError, data: AppConfig.Types.Application) => void): Request<AppConfig.Types.Application, AWSError>;
@@ -332,19 +344,19 @@ declare class AppConfig extends Service {
    */
   updateEnvironment(callback?: (err: AWSError, data: AppConfig.Types.Environment) => void): Request<AppConfig.Types.Environment, AWSError>;
   /**
-   * Updates an AppConfig extension. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Updates an AppConfig extension. For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   updateExtension(params: AppConfig.Types.UpdateExtensionRequest, callback?: (err: AWSError, data: AppConfig.Types.Extension) => void): Request<AppConfig.Types.Extension, AWSError>;
   /**
-   * Updates an AppConfig extension. For more information about extensions, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Updates an AppConfig extension. For more information about extensions, see Extending workflows in the AppConfig User Guide.
    */
   updateExtension(callback?: (err: AWSError, data: AppConfig.Types.Extension) => void): Request<AppConfig.Types.Extension, AWSError>;
   /**
-   * Updates an association. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Updates an association. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   updateExtensionAssociation(params: AppConfig.Types.UpdateExtensionAssociationRequest, callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
-   * Updates an association. For more information about extensions and associations, see Working with AppConfig extensions in the AppConfig User Guide.
+   * Updates an association. For more information about extensions and associations, see Extending workflows in the AppConfig User Guide.
    */
   updateExtensionAssociation(callback?: (err: AWSError, data: AppConfig.Types.ExtensionAssociation) => void): Request<AppConfig.Types.ExtensionAssociation, AWSError>;
   /**
@@ -357,6 +369,12 @@ declare class AppConfig extends Service {
   validateConfiguration(callback?: (err: AWSError, data: {}) => void): Request<{}, AWSError>;
 }
 declare namespace AppConfig {
+  export interface AccountSettings {
+    /**
+     * A parameter to configure deletion protection. If enabled, deletion protection prevents a user from deleting a configuration profile or an environment if AppConfig has called either GetLatestConfiguration or for the configuration profile or from the environment during the specified interval. Deletion protection is disabled by default. The default interval for ProtectionPeriodInMinutes is 60.
+     */
+    DeletionProtection?: DeletionProtectionSettings;
+  }
   export interface Action {
     /**
      * The action name.
@@ -503,6 +521,14 @@ declare namespace AppConfig {
      * The type of configurations contained in the profile. AppConfig supports feature flags and freeform configurations. We recommend you create feature flag configurations to enable or disable new features and freeform configurations to distribute configurations to an application. When calling this API, enter one of the following values for Type:  AWS.AppConfig.FeatureFlags   AWS.Freeform 
      */
     Type?: ConfigurationProfileType;
+    /**
+     * The Amazon Resource Name of the Key Management Service key to encrypt new configuration data versions in the AppConfig hosted configuration store. This attribute is only used for hosted configuration types. To encrypt data managed in other configuration stores, see the documentation for how to specify an KMS key for that particular service.
+     */
+    KmsKeyArn?: Arn;
+    /**
+     * The Key Management Service key identifier (key ID, key alias, or key ARN) provided when the resource was created or updated.
+     */
+    KmsKeyIdentifier?: KmsKeyIdentifier;
   }
   export interface ConfigurationProfileSummary {
     /**
@@ -570,7 +596,7 @@ declare namespace AppConfig {
      */
     Description?: Description;
     /**
-     * A URI to locate the configuration. You can specify the following:   For the AppConfig hosted configuration store and for feature flags, specify hosted.   For an Amazon Web Services Systems Manager Parameter Store parameter, specify either the parameter name in the format ssm-parameter://&lt;parameter name&gt; or the ARN.   For an Secrets Manager secret, specify the URI in the following format: secrets-manager://&lt;secret name&gt;.   For an Amazon S3 object, specify the URI in the following format: s3://&lt;bucket&gt;/&lt;objectKey&gt; . Here is an example: s3://my-bucket/my-app/us-east-1/my-config.json    For an SSM document, specify either the document name in the format ssm-document://&lt;document name&gt; or the Amazon Resource Name (ARN).  
+     * A URI to locate the configuration. You can specify the following:   For the AppConfig hosted configuration store and for feature flags, specify hosted.   For an Amazon Web Services Systems Manager Parameter Store parameter, specify either the parameter name in the format ssm-parameter://&lt;parameter name&gt; or the ARN.   For an Amazon Web Services CodePipeline pipeline, specify the URI in the following format: codepipeline://&lt;pipeline name&gt;.   For an Secrets Manager secret, specify the URI in the following format: secretsmanager://&lt;secret name&gt;.   For an Amazon S3 object, specify the URI in the following format: s3://&lt;bucket&gt;/&lt;objectKey&gt; . Here is an example: s3://my-bucket/my-app/us-east-1/my-config.json    For an SSM document, specify either the document name in the format ssm-document://&lt;document name&gt; or the Amazon Resource Name (ARN).  
      */
     LocationUri: Uri;
     /**
@@ -589,6 +615,10 @@ declare namespace AppConfig {
      * The type of configurations contained in the profile. AppConfig supports feature flags and freeform configurations. We recommend you create feature flag configurations to enable or disable new features and freeform configurations to distribute configurations to an application. When calling this API, enter one of the following values for Type:  AWS.AppConfig.FeatureFlags   AWS.Freeform 
      */
     Type?: ConfigurationProfileType;
+    /**
+     * The identifier for an Key Management Service key to encrypt new configuration data versions in the AppConfig hosted configuration store. This attribute is only used for hosted configuration types. The identifier can be an KMS key ID, alias, or the Amazon Resource Name (ARN) of the key ID or alias. To encrypt data managed in other configuration stores, see the documentation for how to specify an KMS key for that particular service.
+     */
+    KmsKeyIdentifier?: KmsKeyIdentifier;
   }
   export interface CreateDeploymentStrategyRequest {
     /**
@@ -672,7 +702,7 @@ declare namespace AppConfig {
     /**
      * A name for the extension. Each extension name in your account must be unique. Extension versions use the same name.
      */
-    Name: Name;
+    Name: ExtensionOrParameterName;
     /**
      * Information about the extension.
      */
@@ -708,7 +738,7 @@ declare namespace AppConfig {
      */
     Description?: Description;
     /**
-     * The content of the configuration or the configuration data.
+     * The configuration data, as bytes.  AppConfig accepts any type of data, including text formats like JSON or TOML, or binary formats like protocol buffers or compressed data. 
      */
     Content: _Blob;
     /**
@@ -739,6 +769,10 @@ declare namespace AppConfig {
      * The ID of the configuration profile you want to delete.
      */
     ConfigurationProfileId: Id;
+    /**
+     * A parameter to configure deletion protection. If enabled, deletion protection prevents a user from deleting a configuration profile if your application has called either GetLatestConfiguration or for the configuration profile during the specified interval.  This parameter supports the following values:    BYPASS: Instructs AppConfig to bypass the deletion protection check and delete a configuration profile even if deletion protection would have otherwise prevented it.     APPLY: Instructs the deletion protection check to run, even if deletion protection is disabled at the account level. APPLY also forces the deletion protection check to run against resources created in the past hour, which are normally excluded from deletion protection checks.     ACCOUNT_DEFAULT: The default setting, which instructs AppConfig to implement the deletion protection value specified in the UpdateAccountSettings API.  
+     */
+    DeletionProtectionCheck?: DeletionProtectionCheck;
   }
   export interface DeleteDeploymentStrategyRequest {
     /**
@@ -748,13 +782,17 @@ declare namespace AppConfig {
   }
   export interface DeleteEnvironmentRequest {
     /**
+     * The ID of the environment that you want to delete.
+     */
+    EnvironmentId: Id;
+    /**
      * The application ID that includes the environment that you want to delete.
      */
     ApplicationId: Id;
     /**
-     * The ID of the environment that you want to delete.
+     * A parameter to configure deletion protection. If enabled, deletion protection prevents a user from deleting an environment if your application called either GetLatestConfiguration or in the environment during the specified interval.  This parameter supports the following values:    BYPASS: Instructs AppConfig to bypass the deletion protection check and delete a configuration profile even if deletion protection would have otherwise prevented it.     APPLY: Instructs the deletion protection check to run, even if deletion protection is disabled at the account level. APPLY also forces the deletion protection check to run against resources created in the past hour, which are normally excluded from deletion protection checks.     ACCOUNT_DEFAULT: The default setting, which instructs AppConfig to implement the deletion protection value specified in the UpdateAccountSettings API.  
      */
-    EnvironmentId: Id;
+    DeletionProtectionCheck?: DeletionProtectionCheck;
   }
   export interface DeleteExtensionAssociationRequest {
     /**
@@ -785,6 +823,18 @@ declare namespace AppConfig {
      * The versions number to delete.
      */
     VersionNumber: Integer;
+  }
+  export type DeletionProtectionCheck = "ACCOUNT_DEFAULT"|"APPLY"|"BYPASS"|string;
+  export type DeletionProtectionDuration = number;
+  export interface DeletionProtectionSettings {
+    /**
+     * A parameter that indicates if deletion protection is enabled or not.
+     */
+    Enabled?: Boolean;
+    /**
+     * The time interval during which AppConfig monitors for calls to GetLatestConfiguration or for a configuration profile or from an environment. AppConfig returns an error if a user calls or for the designated configuration profile or environment. To bypass the error and delete a configuration profile or an environment, specify BYPASS for the DeletionProtectionCheck parameter for either or .
+     */
+    ProtectionPeriodInMinutes?: DeletionProtectionDuration;
   }
   export interface Deployment {
     /**
@@ -868,9 +918,13 @@ declare namespace AppConfig {
      */
     KmsKeyArn?: Arn;
     /**
-     * The KMS key identifier (key ID, key alias, or key ARN). AppConfig uses this ID to encrypt the configuration data using a customer managed key. 
+     * The Key Management Service key identifier (key ID, key alias, or key ARN) provided when the resource was created or updated.
      */
-    KmsKeyIdentifier?: Identifier;
+    KmsKeyIdentifier?: KmsKeyIdentifier;
+    /**
+     * A user-defined label for an AppConfig hosted configuration version.
+     */
+    VersionLabel?: VersionLabel;
   }
   export interface DeploymentEvent {
     /**
@@ -882,7 +936,7 @@ declare namespace AppConfig {
      */
     TriggeredBy?: TriggeredBy;
     /**
-     * A description of the deployment event. Descriptions include, but are not limited to, the user account or the Amazon CloudWatch alarm ARN that initiated a rollback, the percentage of hosts that received the deployment, or in the case of an internal error, a recommendation to attempt a new deployment.
+     * A description of the deployment event. Descriptions include, but are not limited to, the following:   The Amazon Web Services account or the Amazon CloudWatch alarm ARN that initiated a rollback.   The percentage of hosts that received the deployment.   A recommendation to attempt a new deployment (in the case of an internal error).  
      */
     Description?: Description;
     /**
@@ -989,6 +1043,10 @@ declare namespace AppConfig {
      * Time the deployment completed.
      */
     CompletedAt?: Iso8601DateTime;
+    /**
+     * A user-defined label for an AppConfig hosted configuration version.
+     */
+    VersionLabel?: VersionLabel;
   }
   export interface Deployments {
     /**
@@ -1001,6 +1059,8 @@ declare namespace AppConfig {
     NextToken?: NextToken;
   }
   export type Description = string;
+  export type DynamicParameterKey = string;
+  export type DynamicParameterMap = {[key: string]: StringWithLengthBetween1And2048};
   export interface Environment {
     /**
      * The application ID.
@@ -1120,6 +1180,7 @@ declare namespace AppConfig {
      */
     NextToken?: NextToken;
   }
+  export type ExtensionOrParameterName = string;
   export type ExtensionSummaries = ExtensionSummary[];
   export interface ExtensionSummary {
     /**
@@ -1282,6 +1343,10 @@ declare namespace AppConfig {
      * A user-defined label for an AppConfig hosted configuration version.
      */
     VersionLabel?: VersionLabel;
+    /**
+     * The Amazon Resource Name of the Key Management Service key that was used to encrypt this specific version of the configuration data in the AppConfig hosted configuration store.
+     */
+    KmsKeyArn?: Arn;
   }
   export interface HostedConfigurationVersionSummary {
     /**
@@ -1308,6 +1373,10 @@ declare namespace AppConfig {
      * A user-defined label for an AppConfig hosted configuration version.
      */
     VersionLabel?: VersionLabel;
+    /**
+     * The Amazon Resource Name of the Key Management Service key that was used to encrypt this specific version of the configuration data in the AppConfig hosted configuration store.
+     */
+    KmsKeyArn?: Arn;
   }
   export type HostedConfigurationVersionSummaryList = HostedConfigurationVersionSummary[];
   export interface HostedConfigurationVersions {
@@ -1324,6 +1393,8 @@ declare namespace AppConfig {
   export type Identifier = string;
   export type Integer = number;
   export type Iso8601DateTime = Date;
+  export type KmsKeyIdentifier = string;
+  export type KmsKeyIdentifierOrEmpty = string;
   export interface ListApplicationsRequest {
     /**
      * The maximum number of items to return for this call. The call also returns a token that you can specify in a subsequent call to get the next set of results.
@@ -1483,6 +1554,10 @@ declare namespace AppConfig {
      * A parameter value must be specified in the extension association.
      */
     Required?: Boolean;
+    /**
+     * Indicates whether this parameter's value can be supplied at the extension's action point instead of during extension association. Dynamic parameters can't be marked Required.
+     */
+    Dynamic?: Boolean;
   }
   export type ParameterMap = {[key: string]: Parameter};
   export type ParameterValueMap = {[key: string]: StringWithLengthBetween1And2048};
@@ -1514,7 +1589,7 @@ declare namespace AppConfig {
      */
     ConfigurationProfileId: Id;
     /**
-     * The configuration version to deploy. If deploying an AppConfig hosted configuration version, you can specify either the version number or version label.
+     * The configuration version to deploy. If deploying an AppConfig hosted configuration version, you can specify either the version number or version label. For all other configurations, you must specify the version number.
      */
     ConfigurationVersion: Version;
     /**
@@ -1528,7 +1603,11 @@ declare namespace AppConfig {
     /**
      * The KMS key identifier (key ID, key alias, or key ARN). AppConfig uses this ID to encrypt the configuration data using a customer managed key. 
      */
-    KmsKeyIdentifier?: Identifier;
+    KmsKeyIdentifier?: KmsKeyIdentifier;
+    /**
+     * A map of dynamic extension parameter names to values to pass to associated extensions with PRE_START_DEPLOYMENT actions.
+     */
+    DynamicExtensionParameters?: DynamicParameterMap;
   }
   export interface StopDeploymentRequest {
     /**
@@ -1574,6 +1653,12 @@ declare namespace AppConfig {
      */
     TagKeys: TagKeyList;
   }
+  export interface UpdateAccountSettingsRequest {
+    /**
+     * A parameter to configure deletion protection. If enabled, deletion protection prevents a user from deleting a configuration profile or an environment if AppConfig has called either GetLatestConfiguration or for the configuration profile or from the environment during the specified interval. Deletion protection is disabled by default. The default interval for ProtectionPeriodInMinutes is 60.
+     */
+    DeletionProtection?: DeletionProtectionSettings;
+  }
   export interface UpdateApplicationRequest {
     /**
      * The application ID.
@@ -1600,7 +1685,7 @@ declare namespace AppConfig {
     /**
      * The name of the configuration profile.
      */
-    Name?: Name;
+    Name?: LongName;
     /**
      * A description of the configuration profile.
      */
@@ -1613,6 +1698,10 @@ declare namespace AppConfig {
      * A list of methods for validating the configuration.
      */
     Validators?: ValidatorList;
+    /**
+     * The identifier for a Key Management Service key to encrypt new configuration data versions in the AppConfig hosted configuration store. This attribute is only used for hosted configuration types. The identifier can be an KMS key ID, alias, or the Amazon Resource Name (ARN) of the key ID or alias. To encrypt data managed in other configuration stores, see the documentation for how to specify an KMS key for that particular service.
+     */
+    KmsKeyIdentifier?: KmsKeyIdentifierOrEmpty;
   }
   export interface UpdateDeploymentStrategyRequest {
     /**

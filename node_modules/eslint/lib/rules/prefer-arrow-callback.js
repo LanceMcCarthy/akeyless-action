@@ -150,9 +150,12 @@ module.exports = {
     meta: {
         type: "suggestion",
 
+        defaultOptions: [{ allowNamedFunctions: false, allowUnboundThis: true }],
+
         docs: {
             description: "Require using arrow functions for callbacks",
             recommended: false,
+            frozen: true,
             url: "https://eslint.org/docs/latest/rules/prefer-arrow-callback"
         },
 
@@ -161,12 +164,10 @@ module.exports = {
                 type: "object",
                 properties: {
                     allowNamedFunctions: {
-                        type: "boolean",
-                        default: false
+                        type: "boolean"
                     },
                     allowUnboundThis: {
-                        type: "boolean",
-                        default: true
+                        type: "boolean"
                     }
                 },
                 additionalProperties: false
@@ -181,10 +182,7 @@ module.exports = {
     },
 
     create(context) {
-        const options = context.options[0] || {};
-
-        const allowUnboundThis = options.allowUnboundThis !== false; // default to true
-        const allowNamedFunctions = options.allowNamedFunctions;
+        const [{ allowNamedFunctions, allowUnboundThis }] = context.options;
         const sourceCode = context.sourceCode;
 
         /*
@@ -220,7 +218,7 @@ module.exports = {
 
             // If there are below, it cannot replace with arrow functions merely.
             ThisExpression() {
-                const info = stack[stack.length - 1];
+                const info = stack.at(-1);
 
                 if (info) {
                     info.this = true;
@@ -228,7 +226,7 @@ module.exports = {
             },
 
             Super() {
-                const info = stack[stack.length - 1];
+                const info = stack.at(-1);
 
                 if (info) {
                     info.super = true;
@@ -236,7 +234,7 @@ module.exports = {
             },
 
             MetaProperty(node) {
-                const info = stack[stack.length - 1];
+                const info = stack.at(-1);
 
                 if (info && checkMetaProperty(node, "new", "target")) {
                     info.meta = true;

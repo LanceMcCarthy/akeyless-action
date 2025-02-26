@@ -80,9 +80,18 @@ module.exports = {
     meta: {
         type: "suggestion",
 
+        defaultOptions: ["asc", {
+            allowLineSeparatedGroups: false,
+            caseSensitive: true,
+            ignoreComputedKeys: false,
+            minKeys: 2,
+            natural: false
+        }],
+
         docs: {
             description: "Require object keys to be sorted",
             recommended: false,
+            frozen: true,
             url: "https://eslint.org/docs/latest/rules/sort-keys"
         },
 
@@ -94,21 +103,20 @@ module.exports = {
                 type: "object",
                 properties: {
                     caseSensitive: {
-                        type: "boolean",
-                        default: true
+                        type: "boolean"
                     },
                     natural: {
-                        type: "boolean",
-                        default: false
+                        type: "boolean"
                     },
                     minKeys: {
                         type: "integer",
-                        minimum: 2,
-                        default: 2
+                        minimum: 2
                     },
                     allowLineSeparatedGroups: {
-                        type: "boolean",
-                        default: false
+                        type: "boolean"
+                    },
+                    ignoreComputedKeys: {
+                        type: "boolean"
                     }
                 },
                 additionalProperties: false
@@ -121,14 +129,8 @@ module.exports = {
     },
 
     create(context) {
-
-        // Parse options.
-        const order = context.options[0] || "asc";
-        const options = context.options[1];
-        const insensitive = options && options.caseSensitive === false;
-        const natural = options && options.natural;
-        const minKeys = options && options.minKeys;
-        const allowLineSeparatedGroups = options && options.allowLineSeparatedGroups || false;
+        const [order, { caseSensitive, natural, minKeys, allowLineSeparatedGroups, ignoreComputedKeys }] = context.options;
+        const insensitive = !caseSensitive;
         const isValidOrder = isValidOrders[
             order + (insensitive ? "I" : "") + (natural ? "N" : "")
         ];
@@ -163,6 +165,11 @@ module.exports = {
                     return;
                 }
 
+                if (ignoreComputedKeys && node.computed) {
+                    stack.prevName = null; // reset sort
+                    return;
+                }
+
                 const prevName = stack.prevName;
                 const numKeys = stack.numKeys;
                 const thisName = getPropertyName(node);
@@ -185,7 +192,7 @@ module.exports = {
                     });
 
                     // check blank line between the current node and the last token
-                    if (!isBlankLineBetweenNodes && (node.loc.start.line - tokens[tokens.length - 1].loc.end.line > 1)) {
+                    if (!isBlankLineBetweenNodes && (node.loc.start.line - tokens.at(-1).loc.end.line > 1)) {
                         isBlankLineBetweenNodes = true;
                     }
 

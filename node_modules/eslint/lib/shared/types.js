@@ -21,7 +21,7 @@ module.exports = {};
 /**
  * @typedef {Object} ParserOptions
  * @property {EcmaFeatures} [ecmaFeatures] The optional features.
- * @property {3|5|6|7|8|9|10|11|12|13|14|15|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024} [ecmaVersion] The ECMAScript version (or revision number).
+ * @property {3|5|6|7|8|9|10|11|12|13|14|15|16|2015|2016|2017|2018|2019|2020|2021|2022|2023|2024|2025} [ecmaVersion] The ECMAScript version (or revision number).
  * @property {"script"|"module"} [sourceType] The source code type.
  * @property {boolean} [allowReserved] Allowing the use of reserved words as identifiers in ES3.
  */
@@ -146,8 +146,26 @@ module.exports = {};
  */
 
 /**
+ * @typedef {Object} DeprecatedInfo
+ * @property {string} [message] General message presented to the user
+ * @property {string} [url] URL to more information about this deprecation in general
+ * @property {ReplacedByInfo[]} [replacedBy] Potential replacements for the rule
+ * @property {string} [deprecatedSince] Version since the rule is deprecated
+ * @property {?string} [availableUntil] Version until it is available or null if indefinite
+ */
+
+/**
+ * @typedef {Object} ReplacedByInfo
+ * @property {string} [message] General message presented to the user
+ * @property {string} [url] URL to more information about this replacement in general
+ * @property {{ name?: string, url?: string }} [plugin] Use "eslint" for a core rule. Omit if the rule is in the same plugin.
+ * @property {{ name?: string, url?: string }} [rule] Name and information of the replacement rule
+ */
+
+/**
  * @typedef {Object} RuleMeta
- * @property {boolean} [deprecated] If `true` then the rule has been deprecated.
+ * @property {boolean|DeprecatedInfo} [deprecated] If `true` then the rule has been deprecated.
+ * @property {Array} [defaultOptions] Default options for the rule.
  * @property {RuleMetaDocs} docs The document information of the rule.
  * @property {"code"|"whitespace"} [fixable] The autofix type.
  * @property {boolean} [hasSuggestions] If `true` then the rule provides suggestions.
@@ -168,7 +186,7 @@ module.exports = {};
  * @property {Record<string, ConfigData>} [configs] The definition of plugin configs.
  * @property {Record<string, Environment>} [environments] The definition of plugin environments.
  * @property {Record<string, Processor>} [processors] The definition of plugin processors.
- * @property {Record<string, Function | Rule>} [rules] The definition of plugin rules.
+ * @property {Record<string, Rule>} [rules] The definition of plugin rules.
  */
 
 /**
@@ -176,6 +194,7 @@ module.exports = {};
  * @typedef {Object} DeprecatedRuleInfo
  * @property {string} ruleId The rule ID.
  * @property {string[]} replacedBy The rule IDs that replace this deprecated rule.
+ * @property {DeprecatedInfo} [info] The raw deprecated info provided by rule. Unset if `deprecated` is a boolean.
  */
 
 /**
@@ -189,9 +208,43 @@ module.exports = {};
  * @property {number} warningCount Number of warnings for the result.
  * @property {number} fixableErrorCount Number of fixable errors for the result.
  * @property {number} fixableWarningCount Number of fixable warnings for the result.
+ * @property {Stats} [stats] The performance statistics collected with the `stats` flag.
  * @property {string} [source] The source code of the file that was linted.
  * @property {string} [output] The source code of the file that was linted, with as many fixes applied as possible.
  * @property {DeprecatedRuleInfo[]} usedDeprecatedRules The list of used deprecated rules.
+ */
+
+/**
+ * Performance statistics
+ * @typedef {Object} Stats
+ * @property {number} fixPasses The number of times ESLint has applied at least one fix after linting.
+ * @property {Times} times The times spent on (parsing, fixing, linting) a file.
+ */
+
+/**
+ * Performance Times for each ESLint pass
+ * @typedef {Object} Times
+ * @property {TimePass[]} passes Time passes
+ */
+
+/**
+ * @typedef {Object} TimePass
+ * @property {ParseTime} parse The parse object containing all parse time information.
+ * @property {Record<string, RuleTime>} [rules] The rules object containing all lint time information for each rule.
+ * @property {FixTime} fix The parse object containing all fix time information.
+ * @property {number} total The total time that is spent on (parsing, fixing, linting) a file.
+ */
+/**
+ * @typedef {Object} ParseTime
+ * @property {number} total The total time that is spent when parsing a file.
+ */
+/**
+ * @typedef {Object} RuleTime
+ * @property {number} total The total time that is spent on a rule.
+ */
+/**
+ * @typedef {Object} FixTime
+ * @property {number} total The total time that is spent on applying fixes to the code.
  */
 
 /**
@@ -211,6 +264,6 @@ module.exports = {};
  * A formatter function.
  * @callback FormatterFunction
  * @param {LintResult[]} results The list of linting results.
- * @param {{cwd: string, maxWarningsExceeded?: MaxWarningsExceeded, rulesMeta: Record<string, RuleMeta>}} [context] A context object.
+ * @param {{cwd: string, maxWarningsExceeded?: MaxWarningsExceeded, rulesMeta: Record<string, RuleMeta>}} context A context object.
  * @returns {string | Promise<string>} Formatted text.
  */

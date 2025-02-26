@@ -1,21 +1,12 @@
 {
-  "name": "akeyless",
-  "version": "4.3.0",
-  "description": "The_purpose_of_this_application_is_to_provide_access_to_Akeyless_API_",
-  "license": "Unlicense",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "babel src -d dist",
-    "prepack": "npm run build",
-    "test": "mocha --require @babel/register --recursive"
-  },
   "browser": {
     "fs": false
   },
   "dependencies": {
     "@babel/cli": "^7.0.0",
-    "superagent": "3.7.0"
+    "superagent": "^5.3.0"
   },
+  "description": "The purpose of this application is to provide access to Akeyless API.",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
@@ -37,10 +28,25 @@
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "expect.js": "^0.3.1",
-    "mocha": "^5.2.0",
+    "mocha": "^8.0.1",
     "sinon": "^7.2.0"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "license": "Unlicense",
+  "main": "dist/index.js",
+  "name": "akeyless",
+  "overrides": {
+    "minimatch": "^3.0.5"
+  },
+  "resolutions": {
+    "minimatch": "^3.0.5"
+  },
+  "scripts": {
+    "build": "babel src -d dist",
+    "prepare": "npm run build",
+    "test": "mocha --require @babel/register --recursive"
+  },
+  "version": "5.0.0"
 }

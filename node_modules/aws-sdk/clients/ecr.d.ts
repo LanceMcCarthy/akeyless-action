@@ -53,11 +53,11 @@ declare class ECR extends Service {
    */
   completeLayerUpload(callback?: (err: AWSError, data: ECR.Types.CompleteLayerUploadResponse) => void): Request<ECR.Types.CompleteLayerUploadResponse, AWSError>;
   /**
-   * Creates a pull through cache rule. A pull through cache rule provides a way to cache images from an external public registry in your Amazon ECR private registry.
+   * Creates a pull through cache rule. A pull through cache rule provides a way to cache images from an upstream registry source in your Amazon ECR private registry. For more information, see Using pull through cache rules in the Amazon Elastic Container Registry User Guide.
    */
   createPullThroughCacheRule(params: ECR.Types.CreatePullThroughCacheRuleRequest, callback?: (err: AWSError, data: ECR.Types.CreatePullThroughCacheRuleResponse) => void): Request<ECR.Types.CreatePullThroughCacheRuleResponse, AWSError>;
   /**
-   * Creates a pull through cache rule. A pull through cache rule provides a way to cache images from an external public registry in your Amazon ECR private registry.
+   * Creates a pull through cache rule. A pull through cache rule provides a way to cache images from an upstream registry source in your Amazon ECR private registry. For more information, see Using pull through cache rules in the Amazon Elastic Container Registry User Guide.
    */
   createPullThroughCacheRule(callback?: (err: AWSError, data: ECR.Types.CreatePullThroughCacheRuleResponse) => void): Request<ECR.Types.CreatePullThroughCacheRuleResponse, AWSError>;
   /**
@@ -68,6 +68,14 @@ declare class ECR extends Service {
    * Creates a repository. For more information, see Amazon ECR repositories in the Amazon Elastic Container Registry User Guide.
    */
   createRepository(callback?: (err: AWSError, data: ECR.Types.CreateRepositoryResponse) => void): Request<ECR.Types.CreateRepositoryResponse, AWSError>;
+  /**
+   * Creates a repository creation template. This template is used to define the settings for repositories created by Amazon ECR on your behalf. For example, repositories created through pull through cache actions. For more information, see Private repository creation templates in the Amazon Elastic Container Registry User Guide.
+   */
+  createRepositoryCreationTemplate(params: ECR.Types.CreateRepositoryCreationTemplateRequest, callback?: (err: AWSError, data: ECR.Types.CreateRepositoryCreationTemplateResponse) => void): Request<ECR.Types.CreateRepositoryCreationTemplateResponse, AWSError>;
+  /**
+   * Creates a repository creation template. This template is used to define the settings for repositories created by Amazon ECR on your behalf. For example, repositories created through pull through cache actions. For more information, see Private repository creation templates in the Amazon Elastic Container Registry User Guide.
+   */
+  createRepositoryCreationTemplate(callback?: (err: AWSError, data: ECR.Types.CreateRepositoryCreationTemplateResponse) => void): Request<ECR.Types.CreateRepositoryCreationTemplateResponse, AWSError>;
   /**
    * Deletes the lifecycle policy associated with the specified repository.
    */
@@ -93,13 +101,21 @@ declare class ECR extends Service {
    */
   deleteRegistryPolicy(callback?: (err: AWSError, data: ECR.Types.DeleteRegistryPolicyResponse) => void): Request<ECR.Types.DeleteRegistryPolicyResponse, AWSError>;
   /**
-   * Deletes a repository. If the repository contains images, you must either delete all images in the repository or use the force option to delete the repository.
+   * Deletes a repository. If the repository isn't empty, you must either delete the contents of the repository or use the force option to delete the repository and have Amazon ECR delete all of its contents on your behalf.
    */
   deleteRepository(params: ECR.Types.DeleteRepositoryRequest, callback?: (err: AWSError, data: ECR.Types.DeleteRepositoryResponse) => void): Request<ECR.Types.DeleteRepositoryResponse, AWSError>;
   /**
-   * Deletes a repository. If the repository contains images, you must either delete all images in the repository or use the force option to delete the repository.
+   * Deletes a repository. If the repository isn't empty, you must either delete the contents of the repository or use the force option to delete the repository and have Amazon ECR delete all of its contents on your behalf.
    */
   deleteRepository(callback?: (err: AWSError, data: ECR.Types.DeleteRepositoryResponse) => void): Request<ECR.Types.DeleteRepositoryResponse, AWSError>;
+  /**
+   * Deletes a repository creation template.
+   */
+  deleteRepositoryCreationTemplate(params: ECR.Types.DeleteRepositoryCreationTemplateRequest, callback?: (err: AWSError, data: ECR.Types.DeleteRepositoryCreationTemplateResponse) => void): Request<ECR.Types.DeleteRepositoryCreationTemplateResponse, AWSError>;
+  /**
+   * Deletes a repository creation template.
+   */
+  deleteRepositoryCreationTemplate(callback?: (err: AWSError, data: ECR.Types.DeleteRepositoryCreationTemplateResponse) => void): Request<ECR.Types.DeleteRepositoryCreationTemplateResponse, AWSError>;
   /**
    * Deletes the repository policy associated with the specified repository.
    */
@@ -156,6 +172,22 @@ declare class ECR extends Service {
    * Describes image repositories in a registry.
    */
   describeRepositories(callback?: (err: AWSError, data: ECR.Types.DescribeRepositoriesResponse) => void): Request<ECR.Types.DescribeRepositoriesResponse, AWSError>;
+  /**
+   * Returns details about the repository creation templates in a registry. The prefixes request parameter can be used to return the details for a specific repository creation template.
+   */
+  describeRepositoryCreationTemplates(params: ECR.Types.DescribeRepositoryCreationTemplatesRequest, callback?: (err: AWSError, data: ECR.Types.DescribeRepositoryCreationTemplatesResponse) => void): Request<ECR.Types.DescribeRepositoryCreationTemplatesResponse, AWSError>;
+  /**
+   * Returns details about the repository creation templates in a registry. The prefixes request parameter can be used to return the details for a specific repository creation template.
+   */
+  describeRepositoryCreationTemplates(callback?: (err: AWSError, data: ECR.Types.DescribeRepositoryCreationTemplatesResponse) => void): Request<ECR.Types.DescribeRepositoryCreationTemplatesResponse, AWSError>;
+  /**
+   * Retrieves the basic scan type version name.
+   */
+  getAccountSetting(params: ECR.Types.GetAccountSettingRequest, callback?: (err: AWSError, data: ECR.Types.GetAccountSettingResponse) => void): Request<ECR.Types.GetAccountSettingResponse, AWSError>;
+  /**
+   * Retrieves the basic scan type version name.
+   */
+  getAccountSetting(callback?: (err: AWSError, data: ECR.Types.GetAccountSettingResponse) => void): Request<ECR.Types.GetAccountSettingResponse, AWSError>;
   /**
    * Retrieves an authorization token. An authorization token represents your IAM authentication credentials and can be used to access any Amazon ECR registry that your IAM principal has access to. The authorization token is valid for 12 hours. The authorizationToken returned is a base64 encoded string that can be decoded and used in a docker login command to authenticate to a registry. The CLI offers an get-login-password command that simplifies the login process. For more information, see Registry authentication in the Amazon Elastic Container Registry User Guide.
    */
@@ -237,6 +269,14 @@ declare class ECR extends Service {
    */
   listTagsForResource(callback?: (err: AWSError, data: ECR.Types.ListTagsForResourceResponse) => void): Request<ECR.Types.ListTagsForResourceResponse, AWSError>;
   /**
+   * Allows you to change the basic scan type version by setting the name parameter to either CLAIR to AWS_NATIVE.
+   */
+  putAccountSetting(params: ECR.Types.PutAccountSettingRequest, callback?: (err: AWSError, data: ECR.Types.PutAccountSettingResponse) => void): Request<ECR.Types.PutAccountSettingResponse, AWSError>;
+  /**
+   * Allows you to change the basic scan type version by setting the name parameter to either CLAIR to AWS_NATIVE.
+   */
+  putAccountSetting(callback?: (err: AWSError, data: ECR.Types.PutAccountSettingResponse) => void): Request<ECR.Types.PutAccountSettingResponse, AWSError>;
+  /**
    * Creates or updates the image manifest and tags associated with an image. When an image is pushed and all new image layers have been uploaded, the PutImage API is called once to create or update the image manifest and the tags associated with the image.  This operation is used by the Amazon ECR proxy and is not generally used by customers for pulling and pushing images. In most cases, you should use the docker CLI to pull, tag, and push images. 
    */
   putImage(params: ECR.Types.PutImageRequest, callback?: (err: AWSError, data: ECR.Types.PutImageResponse) => void): Request<ECR.Types.PutImageResponse, AWSError>;
@@ -285,11 +325,11 @@ declare class ECR extends Service {
    */
   putRegistryScanningConfiguration(callback?: (err: AWSError, data: ECR.Types.PutRegistryScanningConfigurationResponse) => void): Request<ECR.Types.PutRegistryScanningConfigurationResponse, AWSError>;
   /**
-   * Creates or updates the replication configuration for a registry. The existing replication configuration for a repository can be retrieved with the DescribeRegistry API action. The first time the PutReplicationConfiguration API is called, a service-linked IAM role is created in your account for the replication process. For more information, see Using service-linked roles for Amazon ECR in the Amazon Elastic Container Registry User Guide.  When configuring cross-account replication, the destination account must grant the source account permission to replicate. This permission is controlled using a registry permissions policy. For more information, see PutRegistryPolicy. 
+   * Creates or updates the replication configuration for a registry. The existing replication configuration for a repository can be retrieved with the DescribeRegistry API action. The first time the PutReplicationConfiguration API is called, a service-linked IAM role is created in your account for the replication process. For more information, see Using service-linked roles for Amazon ECR in the Amazon Elastic Container Registry User Guide. For more information on the custom role for replication, see Creating an IAM role for replication.  When configuring cross-account replication, the destination account must grant the source account permission to replicate. This permission is controlled using a registry permissions policy. For more information, see PutRegistryPolicy. 
    */
   putReplicationConfiguration(params: ECR.Types.PutReplicationConfigurationRequest, callback?: (err: AWSError, data: ECR.Types.PutReplicationConfigurationResponse) => void): Request<ECR.Types.PutReplicationConfigurationResponse, AWSError>;
   /**
-   * Creates or updates the replication configuration for a registry. The existing replication configuration for a repository can be retrieved with the DescribeRegistry API action. The first time the PutReplicationConfiguration API is called, a service-linked IAM role is created in your account for the replication process. For more information, see Using service-linked roles for Amazon ECR in the Amazon Elastic Container Registry User Guide.  When configuring cross-account replication, the destination account must grant the source account permission to replicate. This permission is controlled using a registry permissions policy. For more information, see PutRegistryPolicy. 
+   * Creates or updates the replication configuration for a registry. The existing replication configuration for a repository can be retrieved with the DescribeRegistry API action. The first time the PutReplicationConfiguration API is called, a service-linked IAM role is created in your account for the replication process. For more information, see Using service-linked roles for Amazon ECR in the Amazon Elastic Container Registry User Guide. For more information on the custom role for replication, see Creating an IAM role for replication.  When configuring cross-account replication, the destination account must grant the source account permission to replicate. This permission is controlled using a registry permissions policy. For more information, see PutRegistryPolicy. 
    */
   putReplicationConfiguration(callback?: (err: AWSError, data: ECR.Types.PutReplicationConfigurationResponse) => void): Request<ECR.Types.PutReplicationConfigurationResponse, AWSError>;
   /**
@@ -333,6 +373,22 @@ declare class ECR extends Service {
    */
   untagResource(callback?: (err: AWSError, data: ECR.Types.UntagResourceResponse) => void): Request<ECR.Types.UntagResourceResponse, AWSError>;
   /**
+   * Updates an existing pull through cache rule.
+   */
+  updatePullThroughCacheRule(params: ECR.Types.UpdatePullThroughCacheRuleRequest, callback?: (err: AWSError, data: ECR.Types.UpdatePullThroughCacheRuleResponse) => void): Request<ECR.Types.UpdatePullThroughCacheRuleResponse, AWSError>;
+  /**
+   * Updates an existing pull through cache rule.
+   */
+  updatePullThroughCacheRule(callback?: (err: AWSError, data: ECR.Types.UpdatePullThroughCacheRuleResponse) => void): Request<ECR.Types.UpdatePullThroughCacheRuleResponse, AWSError>;
+  /**
+   * Updates an existing repository creation template.
+   */
+  updateRepositoryCreationTemplate(params: ECR.Types.UpdateRepositoryCreationTemplateRequest, callback?: (err: AWSError, data: ECR.Types.UpdateRepositoryCreationTemplateResponse) => void): Request<ECR.Types.UpdateRepositoryCreationTemplateResponse, AWSError>;
+  /**
+   * Updates an existing repository creation template.
+   */
+  updateRepositoryCreationTemplate(callback?: (err: AWSError, data: ECR.Types.UpdateRepositoryCreationTemplateResponse) => void): Request<ECR.Types.UpdateRepositoryCreationTemplateResponse, AWSError>;
+  /**
    * Uploads an image layer part to Amazon ECR. When an image is pushed, each new image layer is uploaded in parts. The maximum size of each image layer part can be 20971520 bytes (or about 20MB). The UploadLayerPart API is called once per each new image layer part.  This operation is used by the Amazon ECR proxy and is not generally used by customers for pulling and pushing images. In most cases, you should use the docker CLI to pull, tag, and push images. 
    */
   uploadLayerPart(params: ECR.Types.UploadLayerPartRequest, callback?: (err: AWSError, data: ECR.Types.UploadLayerPartResponse) => void): Request<ECR.Types.UploadLayerPartResponse, AWSError>;
@@ -340,6 +396,14 @@ declare class ECR extends Service {
    * Uploads an image layer part to Amazon ECR. When an image is pushed, each new image layer is uploaded in parts. The maximum size of each image layer part can be 20971520 bytes (or about 20MB). The UploadLayerPart API is called once per each new image layer part.  This operation is used by the Amazon ECR proxy and is not generally used by customers for pulling and pushing images. In most cases, you should use the docker CLI to pull, tag, and push images. 
    */
   uploadLayerPart(callback?: (err: AWSError, data: ECR.Types.UploadLayerPartResponse) => void): Request<ECR.Types.UploadLayerPartResponse, AWSError>;
+  /**
+   * Validates an existing pull through cache rule for an upstream registry that requires authentication. This will retrieve the contents of the Amazon Web Services Secrets Manager secret, verify the syntax, and then validate that authentication to the upstream registry is successful.
+   */
+  validatePullThroughCacheRule(params: ECR.Types.ValidatePullThroughCacheRuleRequest, callback?: (err: AWSError, data: ECR.Types.ValidatePullThroughCacheRuleResponse) => void): Request<ECR.Types.ValidatePullThroughCacheRuleResponse, AWSError>;
+  /**
+   * Validates an existing pull through cache rule for an upstream registry that requires authentication. This will retrieve the contents of the Amazon Web Services Secrets Manager secret, verify the syntax, and then validate that authentication to the upstream registry is successful.
+   */
+  validatePullThroughCacheRule(callback?: (err: AWSError, data: ECR.Types.ValidatePullThroughCacheRuleResponse) => void): Request<ECR.Types.ValidatePullThroughCacheRuleResponse, AWSError>;
   /**
    * Waits for the imageScanComplete state by periodically calling the underlying ECR.describeImageScanFindingsoperation every 5 seconds (at most 60 times). Wait until an image scan is complete and findings can be accessed
    */
@@ -358,6 +422,8 @@ declare class ECR extends Service {
   waitFor(state: "lifecyclePolicyPreviewComplete", callback?: (err: AWSError, data: ECR.Types.GetLifecyclePolicyPreviewResponse) => void): Request<ECR.Types.GetLifecyclePolicyPreviewResponse, AWSError>;
 }
 declare namespace ECR {
+  export type AccountSettingName = string;
+  export type AccountSettingValue = string;
   export type Arch = string;
   export type Arn = string;
   export interface Attribute {
@@ -561,13 +627,21 @@ declare namespace ECR {
      */
     ecrRepositoryPrefix: PullThroughCacheRuleRepositoryPrefix;
     /**
-     * The registry URL of the upstream public registry to use as the source for the pull through cache rule.
+     * The registry URL of the upstream public registry to use as the source for the pull through cache rule. The following is the syntax to use for each supported upstream registry.   Amazon ECR Public (ecr-public) - public.ecr.aws    Docker Hub (docker-hub) - registry-1.docker.io    Quay (quay) - quay.io    Kubernetes (k8s) - registry.k8s.io    GitHub Container Registry (github-container-registry) - ghcr.io    Microsoft Azure Container Registry (azure-container-registry) - &lt;custom&gt;.azurecr.io   
      */
     upstreamRegistryUrl: Url;
     /**
      * The Amazon Web Services account ID associated with the registry to create the pull through cache rule for. If you do not specify a registry, the default registry is assumed.
      */
     registryId?: RegistryId;
+    /**
+     * The name of the upstream registry.
+     */
+    upstreamRegistry?: UpstreamRegistry;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret that identifies the credentials to authenticate to the upstream registry.
+     */
+    credentialArn?: CredentialArn;
   }
   export interface CreatePullThroughCacheRuleResponse {
     /**
@@ -586,6 +660,62 @@ declare namespace ECR {
      * The registry ID associated with the request.
      */
     registryId?: RegistryId;
+    /**
+     * The name of the upstream registry associated with the pull through cache rule.
+     */
+    upstreamRegistry?: UpstreamRegistry;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret associated with the pull through cache rule.
+     */
+    credentialArn?: CredentialArn;
+  }
+  export interface CreateRepositoryCreationTemplateRequest {
+    /**
+     * The repository namespace prefix to associate with the template. All repositories created using this namespace prefix will have the settings defined in this template applied. For example, a prefix of prod would apply to all repositories beginning with prod/. Similarly, a prefix of prod/team would apply to all repositories beginning with prod/team/. To apply a template to all repositories in your registry that don't have an associated creation template, you can use ROOT as the prefix.  There is always an assumed / applied to the end of the prefix. If you specify ecr-public as the prefix, Amazon ECR treats that as ecr-public/. When using a pull through cache rule, the repository prefix you specify during rule creation is what you should specify as your repository creation template prefix as well. 
+     */
+    prefix: Prefix;
+    /**
+     * A description for the repository creation template.
+     */
+    description?: RepositoryTemplateDescription;
+    /**
+     * The encryption configuration to use for repositories created using the template.
+     */
+    encryptionConfiguration?: EncryptionConfigurationForRepositoryCreationTemplate;
+    /**
+     * The metadata to apply to the repository to help you categorize and organize. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+     */
+    resourceTags?: TagList;
+    /**
+     * The tag mutability setting for the repository. If this parameter is omitted, the default setting of MUTABLE will be used which will allow image tags to be overwritten. If IMMUTABLE is specified, all image tags within the repository will be immutable which will prevent them from being overwritten.
+     */
+    imageTagMutability?: ImageTagMutability;
+    /**
+     * The repository policy to apply to repositories created using the template. A repository policy is a permissions policy associated with a repository to control access permissions. 
+     */
+    repositoryPolicy?: RepositoryPolicyText;
+    /**
+     * The lifecycle policy to use for repositories created using the template.
+     */
+    lifecyclePolicy?: LifecyclePolicyTextForRepositoryCreationTemplate;
+    /**
+     * A list of enumerable strings representing the Amazon ECR repository creation scenarios that this template will apply towards. The two supported scenarios are PULL_THROUGH_CACHE and REPLICATION 
+     */
+    appliedFor: RCTAppliedForList;
+    /**
+     * The ARN of the role to be assumed by Amazon ECR. This role must be in the same account as the registry that you are configuring. Amazon ECR will assume your supplied role when the customRoleArn is specified. When this field isn't specified, Amazon ECR will use the service-linked role for the repository creation template.
+     */
+    customRoleArn?: CustomRoleArn;
+  }
+  export interface CreateRepositoryCreationTemplateResponse {
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The details of the repository creation template associated with the request.
+     */
+    repositoryCreationTemplate?: RepositoryCreationTemplate;
   }
   export interface CreateRepositoryRequest {
     /**
@@ -593,7 +723,7 @@ declare namespace ECR {
      */
     registryId?: RegistryId;
     /**
-     * The name to use for the repository. The repository name may be specified on its own (such as nginx-web-app) or it can be prepended with a namespace to group the repository into a category (such as project-a/nginx-web-app).
+     * The name to use for the repository. The repository name may be specified on its own (such as nginx-web-app) or it can be prepended with a namespace to group the repository into a category (such as project-a/nginx-web-app). The repository name must start with a letter and can only contain lowercase letters, numbers, hyphens, underscores, and forward slashes.
      */
     repositoryName: RepositoryName;
     /**
@@ -620,6 +750,8 @@ declare namespace ECR {
     repository?: Repository;
   }
   export type CreationTimestamp = Date;
+  export type CredentialArn = string;
+  export type CustomRoleArn = string;
   export interface CvssScore {
     /**
      * The base CVSS score used for the finding.
@@ -728,6 +860,10 @@ declare namespace ECR {
      * The registry ID associated with the request.
      */
     registryId?: RegistryId;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret associated with the pull through cache rule.
+     */
+    credentialArn?: CredentialArn;
   }
   export interface DeleteRegistryPolicyRequest {
   }
@@ -740,6 +876,22 @@ declare namespace ECR {
      * The contents of the registry permissions policy that was deleted.
      */
     policyText?: RegistryPolicyText;
+  }
+  export interface DeleteRepositoryCreationTemplateRequest {
+    /**
+     * The repository namespace prefix associated with the repository creation template.
+     */
+    prefix: Prefix;
+  }
+  export interface DeleteRepositoryCreationTemplateResponse {
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The details of the repository creation template that was deleted.
+     */
+    repositoryCreationTemplate?: RepositoryCreationTemplate;
   }
   export interface DeleteRepositoryPolicyRequest {
     /**
@@ -775,7 +927,7 @@ declare namespace ECR {
      */
     repositoryName: RepositoryName;
     /**
-     *  If a repository contains images, forces the deletion.
+     * If true, deleting the repository force deletes the contents of the repository. If false, the repository must be empty before attempting to delete it.
      */
     force?: ForceFlag;
   }
@@ -923,7 +1075,7 @@ declare namespace ECR {
   }
   export interface DescribeRegistryResponse {
     /**
-     * The ID of the registry.
+     * The registry ID associated with the request.
      */
     registryId?: RegistryId;
     /**
@@ -959,15 +1111,53 @@ declare namespace ECR {
      */
     nextToken?: NextToken;
   }
+  export interface DescribeRepositoryCreationTemplatesRequest {
+    /**
+     * The repository namespace prefixes associated with the repository creation templates to describe. If this value is not specified, all repository creation templates are returned.
+     */
+    prefixes?: PrefixList;
+    /**
+     * The nextToken value returned from a previous paginated DescribeRepositoryCreationTemplates request where maxResults was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the nextToken value. This value is null when there are no more results to return.  This token should be treated as an opaque identifier that is only used to retrieve the next items in a list and not for other programmatic purposes. 
+     */
+    nextToken?: NextToken;
+    /**
+     * The maximum number of repository results returned by DescribeRepositoryCreationTemplatesRequest in paginated output. When this parameter is used, DescribeRepositoryCreationTemplatesRequest only returns maxResults results in a single page along with a nextToken response element. The remaining results of the initial request can be seen by sending another DescribeRepositoryCreationTemplatesRequest request with the returned nextToken value. This value can be between 1 and 1000. If this parameter is not used, then DescribeRepositoryCreationTemplatesRequest returns up to 100 results and a nextToken value, if applicable.
+     */
+    maxResults?: MaxResults;
+  }
+  export interface DescribeRepositoryCreationTemplatesResponse {
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The details of the repository creation templates.
+     */
+    repositoryCreationTemplates?: RepositoryCreationTemplateList;
+    /**
+     * The nextToken value to include in a future DescribeRepositoryCreationTemplates request. When the results of a DescribeRepositoryCreationTemplates request exceed maxResults, this value can be used to retrieve the next page of results. This value is null when there are no more results to return.
+     */
+    nextToken?: NextToken;
+  }
   export interface EncryptionConfiguration {
     /**
-     * The encryption type to use. If you use the KMS encryption type, the contents of the repository will be encrypted using server-side encryption with Key Management Service key stored in KMS. When you use KMS to encrypt your data, you can either use the default Amazon Web Services managed KMS key for Amazon ECR, or specify your own KMS key, which you already created. For more information, see Protecting data using server-side encryption with an KMS key stored in Key Management Service (SSE-KMS) in the Amazon Simple Storage Service Console Developer Guide. If you use the AES256 encryption type, Amazon ECR uses server-side encryption with Amazon S3-managed encryption keys which encrypts the images in the repository using an AES-256 encryption algorithm. For more information, see Protecting data using server-side encryption with Amazon S3-managed encryption keys (SSE-S3) in the Amazon Simple Storage Service Console Developer Guide.
+     * The encryption type to use. If you use the KMS encryption type, the contents of the repository will be encrypted using server-side encryption with Key Management Service key stored in KMS. When you use KMS to encrypt your data, you can either use the default Amazon Web Services managed KMS key for Amazon ECR, or specify your own KMS key, which you already created. For more information, see Protecting data using server-side encryption with an KMS key stored in Key Management Service (SSE-KMS) in the Amazon Simple Storage Service Console Developer Guide. If you use the AES256 encryption type, Amazon ECR uses server-side encryption with Amazon S3-managed encryption keys which encrypts the images in the repository using an AES256 encryption algorithm. For more information, see Protecting data using server-side encryption with Amazon S3-managed encryption keys (SSE-S3) in the Amazon Simple Storage Service Console Developer Guide.
      */
     encryptionType: EncryptionType;
     /**
      * If you use the KMS encryption type, specify the KMS key to use for encryption. The alias, key ID, or full ARN of the KMS key can be specified. The key must exist in the same Region as the repository. If no key is specified, the default Amazon Web Services managed KMS key for Amazon ECR will be used.
      */
     kmsKey?: KmsKey;
+  }
+  export interface EncryptionConfigurationForRepositoryCreationTemplate {
+    /**
+     * The encryption type to use. If you use the KMS encryption type, the contents of the repository will be encrypted using server-side encryption with Key Management Service key stored in KMS. When you use KMS to encrypt your data, you can either use the default Amazon Web Services managed KMS key for Amazon ECR, or specify your own KMS key, which you already created. For more information, see Protecting data using server-side encryption with an KMS key stored in Key Management Service (SSE-KMS) in the Amazon Simple Storage Service Console Developer Guide. If you use the AES256 encryption type, Amazon ECR uses server-side encryption with Amazon S3-managed encryption keys which encrypts the images in the repository using an AES256 encryption algorithm. For more information, see Protecting data using server-side encryption with Amazon S3-managed encryption keys (SSE-S3) in the Amazon Simple Storage Service Console Developer Guide.
+     */
+    encryptionType: EncryptionType;
+    /**
+     * If you use the KMS encryption type, specify the KMS key to use for encryption. The full ARN of the KMS key must be specified. The key must exist in the same Region as the repository. If no key is specified, the default Amazon Web Services managed KMS key for Amazon ECR will be used.
+     */
+    kmsKey?: KmsKeyForRepositoryCreationTemplate;
   }
   export type EncryptionType = "AES256"|"KMS"|string;
   export interface EnhancedImageScanFinding {
@@ -1043,6 +1233,22 @@ declare namespace ECR {
   export type FindingSeverity = "INFORMATIONAL"|"LOW"|"MEDIUM"|"HIGH"|"CRITICAL"|"UNDEFINED"|string;
   export type FindingSeverityCounts = {[key: string]: SeverityCount};
   export type ForceFlag = boolean;
+  export interface GetAccountSettingRequest {
+    /**
+     * Basic scan type version name. 
+     */
+    name: AccountSettingName;
+  }
+  export interface GetAccountSettingResponse {
+    /**
+     * Retrieves the basic scan type version name.
+     */
+    name?: AccountSettingName;
+    /**
+     * Retrieves the value that specifies what basic scan type is being used: AWS_NATIVE or CLAIR.
+     */
+    value?: AccountSettingName;
+  }
   export type GetAuthorizationTokenRegistryIdList = RegistryId[];
   export interface GetAuthorizationTokenRequest {
     /**
@@ -1168,7 +1374,7 @@ declare namespace ECR {
   }
   export interface GetRegistryPolicyResponse {
     /**
-     * The ID of the registry.
+     * The registry ID associated with the request.
      */
     registryId?: RegistryId;
     /**
@@ -1180,7 +1386,7 @@ declare namespace ECR {
   }
   export interface GetRegistryScanningConfigurationResponse {
     /**
-     * The ID of the registry.
+     * The registry ID associated with the request.
      */
     registryId?: RegistryId;
     /**
@@ -1298,7 +1504,7 @@ declare namespace ECR {
      */
     failureReason?: ImageFailureReason;
   }
-  export type ImageFailureCode = "InvalidImageDigest"|"InvalidImageTag"|"ImageTagDoesNotMatchDigest"|"ImageNotFound"|"MissingDigestAndTag"|"ImageReferencedByManifestList"|"KmsError"|string;
+  export type ImageFailureCode = "InvalidImageDigest"|"InvalidImageTag"|"ImageTagDoesNotMatchDigest"|"ImageNotFound"|"MissingDigestAndTag"|"ImageReferencedByManifestList"|"KmsError"|"UpstreamAccessDenied"|"UpstreamTooManyRequests"|"UpstreamUnavailable"|string;
   export type ImageFailureList = ImageFailure[];
   export type ImageFailureReason = string;
   export interface ImageIdentifier {
@@ -1433,7 +1639,9 @@ declare namespace ECR {
      */
     partSize?: PartSize;
   }
+  export type IsPTCRuleValid = boolean;
   export type KmsKey = string;
+  export type KmsKeyForRepositoryCreationTemplate = string;
   export interface Layer {
     /**
      * The sha256 digest of the image layer.
@@ -1519,6 +1727,7 @@ declare namespace ECR {
   }
   export type LifecyclePolicyRulePriority = number;
   export type LifecyclePolicyText = string;
+  export type LifecyclePolicyTextForRepositoryCreationTemplate = string;
   export type LifecyclePreviewMaxResults = number;
   export interface ListImagesFilter {
     /**
@@ -1575,6 +1784,7 @@ declare namespace ECR {
   export type MediaTypeList = MediaType[];
   export type Metric = string;
   export type NextToken = string;
+  export type PTCValidateFailure = string;
   export type PackageManager = string;
   export interface PackageVulnerabilityDetails {
     /**
@@ -1620,6 +1830,8 @@ declare namespace ECR {
   }
   export type PartSize = number;
   export type Platform = string;
+  export type Prefix = string;
+  export type PrefixList = Prefix[];
   export type ProxyEndpoint = string;
   export interface PullThroughCacheRule {
     /**
@@ -1638,11 +1850,43 @@ declare namespace ECR {
      * The Amazon Web Services account ID associated with the registry the pull through cache rule is associated with.
      */
     registryId?: RegistryId;
+    /**
+     * The ARN of the Secrets Manager secret associated with the pull through cache rule.
+     */
+    credentialArn?: CredentialArn;
+    /**
+     * The name of the upstream source registry associated with the pull through cache rule.
+     */
+    upstreamRegistry?: UpstreamRegistry;
+    /**
+     * The date and time, in JavaScript date format, when the pull through cache rule was last updated.
+     */
+    updatedAt?: UpdatedTimestamp;
   }
   export type PullThroughCacheRuleList = PullThroughCacheRule[];
   export type PullThroughCacheRuleRepositoryPrefix = string;
   export type PullThroughCacheRuleRepositoryPrefixList = PullThroughCacheRuleRepositoryPrefix[];
   export type PushTimestamp = Date;
+  export interface PutAccountSettingRequest {
+    /**
+     * Basic scan type version name. 
+     */
+    name: AccountSettingName;
+    /**
+     * Setting value that determines what basic scan type is being used: AWS_NATIVE or CLAIR.
+     */
+    value: AccountSettingValue;
+  }
+  export interface PutAccountSettingResponse {
+    /**
+     * Retrieves the the basic scan type version name.
+     */
+    name?: AccountSettingName;
+    /**
+     * Retrieves the basic scan type value, either AWS_NATIVE or -.
+     */
+    value?: AccountSettingValue;
+  }
   export interface PutImageRequest {
     /**
      * The Amazon Web Services account ID associated with the registry that contains the repository in which to put the image. If you do not specify a registry, the default registry is assumed.
@@ -1767,7 +2011,7 @@ declare namespace ECR {
   }
   export interface PutRegistryPolicyResponse {
     /**
-     * The registry ID.
+     * The registry ID associated with the request.
      */
     registryId?: RegistryId;
     /**
@@ -1803,6 +2047,8 @@ declare namespace ECR {
      */
     replicationConfiguration?: ReplicationConfiguration;
   }
+  export type RCTAppliedFor = "REPLICATION"|"PULL_THROUGH_CACHE"|string;
+  export type RCTAppliedForList = RCTAppliedFor[];
   export type Reason = string;
   export interface Recommendation {
     /**
@@ -1832,7 +2078,7 @@ declare namespace ECR {
   }
   export interface RegistryScanningRule {
     /**
-     * The frequency that scans are performed at for a private registry. When the ENHANCED scan type is specified, the supported scan frequencies are CONTINUOUS_SCAN and SCAN_ON_PUSH. When the BASIC scan type is specified, the SCAN_ON_PUSH and MANUAL scan frequencies are supported.
+     * The frequency that scans are performed at for a private registry. When the ENHANCED scan type is specified, the supported scan frequencies are CONTINUOUS_SCAN and SCAN_ON_PUSH. When the BASIC scan type is specified, the SCAN_ON_PUSH scan frequency is supported. If scan on push is not specified, then the MANUAL scan frequency is set by default.
      */
     scanFrequency: ScanFrequency;
     /**
@@ -1882,7 +2128,7 @@ declare namespace ECR {
   export type ReplicationStatus = "IN_PROGRESS"|"COMPLETE"|"FAILED"|string;
   export interface Repository {
     /**
-     * The Amazon Resource Name (ARN) that identifies the repository. The ARN contains the arn:aws:ecr namespace, followed by the region of the repository, Amazon Web Services account ID of the repository owner, repository namespace, and repository name. For example, arn:aws:ecr:region:012345678910:repository/test.
+     * The Amazon Resource Name (ARN) that identifies the repository. The ARN contains the arn:aws:ecr namespace, followed by the region of the repository, Amazon Web Services account ID of the repository owner, repository namespace, and repository name. For example, arn:aws:ecr:region:012345678910:repository-namespace/repository-name.
      */
     repositoryArn?: Arn;
     /**
@@ -1911,6 +2157,53 @@ declare namespace ECR {
      */
     encryptionConfiguration?: EncryptionConfiguration;
   }
+  export interface RepositoryCreationTemplate {
+    /**
+     * The repository namespace prefix associated with the repository creation template.
+     */
+    prefix?: Prefix;
+    /**
+     * The description associated with the repository creation template.
+     */
+    description?: RepositoryTemplateDescription;
+    /**
+     * The encryption configuration associated with the repository creation template.
+     */
+    encryptionConfiguration?: EncryptionConfigurationForRepositoryCreationTemplate;
+    /**
+     * The metadata to apply to the repository to help you categorize and organize. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+     */
+    resourceTags?: TagList;
+    /**
+     * The tag mutability setting for the repository. If this parameter is omitted, the default setting of MUTABLE will be used which will allow image tags to be overwritten. If IMMUTABLE is specified, all image tags within the repository will be immutable which will prevent them from being overwritten.
+     */
+    imageTagMutability?: ImageTagMutability;
+    /**
+     * he repository policy to apply to repositories created using the template. A repository policy is a permissions policy associated with a repository to control access permissions. 
+     */
+    repositoryPolicy?: RepositoryPolicyText;
+    /**
+     * The lifecycle policy to use for repositories created using the template.
+     */
+    lifecyclePolicy?: LifecyclePolicyTextForRepositoryCreationTemplate;
+    /**
+     * A list of enumerable Strings representing the repository creation scenarios that this template will apply towards. The two supported scenarios are PULL_THROUGH_CACHE and REPLICATION
+     */
+    appliedFor?: RCTAppliedForList;
+    /**
+     * The ARN of the role to be assumed by Amazon ECR. Amazon ECR will assume your supplied role when the customRoleArn is specified. When this field isn't specified, Amazon ECR will use the service-linked role for the repository creation template.
+     */
+    customRoleArn?: CustomRoleArn;
+    /**
+     * The date and time, in JavaScript date format, when the repository creation template was created.
+     */
+    createdAt?: _Date;
+    /**
+     * The date and time, in JavaScript date format, when the repository creation template was last updated.
+     */
+    updatedAt?: _Date;
+  }
+  export type RepositoryCreationTemplateList = RepositoryCreationTemplate[];
   export interface RepositoryFilter {
     /**
      * The repository filter details. When the PREFIX_MATCH filter type is specified, this value is required and should be the repository name prefix to configure replication for.
@@ -1966,6 +2259,7 @@ declare namespace ECR {
   }
   export type RepositoryScanningConfigurationFailureList = RepositoryScanningConfigurationFailure[];
   export type RepositoryScanningConfigurationList = RepositoryScanningConfiguration[];
+  export type RepositoryTemplateDescription = string;
   export interface Resource {
     /**
      * An object that contains details about the resource involved in a finding.
@@ -2121,11 +2415,11 @@ declare namespace ECR {
     /**
      * One part of a key-value pair that make up a tag. A key is a general label that acts like a category for more specific tag values.
      */
-    Key?: TagKey;
+    Key: TagKey;
     /**
      * A value acts as a descriptor within a tag category (key).
      */
-    Value?: TagValue;
+    Value: TagValue;
   }
   export type TagKey = string;
   export type TagKeyList = TagKey[];
@@ -2159,6 +2453,84 @@ declare namespace ECR {
   }
   export interface UntagResourceResponse {
   }
+  export interface UpdatePullThroughCacheRuleRequest {
+    /**
+     * The Amazon Web Services account ID associated with the registry associated with the pull through cache rule. If you do not specify a registry, the default registry is assumed.
+     */
+    registryId?: RegistryId;
+    /**
+     * The repository name prefix to use when caching images from the source registry.
+     */
+    ecrRepositoryPrefix: PullThroughCacheRuleRepositoryPrefix;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret that identifies the credentials to authenticate to the upstream registry.
+     */
+    credentialArn: CredentialArn;
+  }
+  export interface UpdatePullThroughCacheRuleResponse {
+    /**
+     * The Amazon ECR repository prefix associated with the pull through cache rule.
+     */
+    ecrRepositoryPrefix?: PullThroughCacheRuleRepositoryPrefix;
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The date and time, in JavaScript date format, when the pull through cache rule was updated.
+     */
+    updatedAt?: UpdatedTimestamp;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret associated with the pull through cache rule.
+     */
+    credentialArn?: CredentialArn;
+  }
+  export interface UpdateRepositoryCreationTemplateRequest {
+    /**
+     * The repository namespace prefix that matches an existing repository creation template in the registry. All repositories created using this namespace prefix will have the settings defined in this template applied. For example, a prefix of prod would apply to all repositories beginning with prod/. This includes a repository named prod/team1 as well as a repository named prod/repository1. To apply a template to all repositories in your registry that don't have an associated creation template, you can use ROOT as the prefix.
+     */
+    prefix: Prefix;
+    /**
+     * A description for the repository creation template.
+     */
+    description?: RepositoryTemplateDescription;
+    encryptionConfiguration?: EncryptionConfigurationForRepositoryCreationTemplate;
+    /**
+     * The metadata to apply to the repository to help you categorize and organize. Each tag consists of a key and an optional value, both of which you define. Tag keys can have a maximum character length of 128 characters, and tag values can have a maximum length of 256 characters.
+     */
+    resourceTags?: TagList;
+    /**
+     * Updates the tag mutability setting for the repository. If this parameter is omitted, the default setting of MUTABLE will be used which will allow image tags to be overwritten. If IMMUTABLE is specified, all image tags within the repository will be immutable which will prevent them from being overwritten.
+     */
+    imageTagMutability?: ImageTagMutability;
+    /**
+     * Updates the repository policy created using the template. A repository policy is a permissions policy associated with a repository to control access permissions. 
+     */
+    repositoryPolicy?: RepositoryPolicyText;
+    /**
+     * Updates the lifecycle policy associated with the specified repository creation template.
+     */
+    lifecyclePolicy?: LifecyclePolicyTextForRepositoryCreationTemplate;
+    /**
+     * Updates the list of enumerable strings representing the Amazon ECR repository creation scenarios that this template will apply towards. The two supported scenarios are PULL_THROUGH_CACHE and REPLICATION 
+     */
+    appliedFor?: RCTAppliedForList;
+    /**
+     * The ARN of the role to be assumed by Amazon ECR. This role must be in the same account as the registry that you are configuring. Amazon ECR will assume your supplied role when the customRoleArn is specified. When this field isn't specified, Amazon ECR will use the service-linked role for the repository creation template.
+     */
+    customRoleArn?: CustomRoleArn;
+  }
+  export interface UpdateRepositoryCreationTemplateResponse {
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The details of the repository creation template associated with the request.
+     */
+    repositoryCreationTemplate?: RepositoryCreationTemplate;
+  }
+  export type UpdatedTimestamp = Date;
   export type UploadId = string;
   export interface UploadLayerPartRequest {
     /**
@@ -2204,7 +2576,44 @@ declare namespace ECR {
      */
     lastByteReceived?: PartSize;
   }
+  export type UpstreamRegistry = "ecr-public"|"quay"|"k8s"|"docker-hub"|"github-container-registry"|"azure-container-registry"|"gitlab-container-registry"|string;
   export type Url = string;
+  export interface ValidatePullThroughCacheRuleRequest {
+    /**
+     * The repository name prefix associated with the pull through cache rule.
+     */
+    ecrRepositoryPrefix: PullThroughCacheRuleRepositoryPrefix;
+    /**
+     * The registry ID associated with the pull through cache rule. If you do not specify a registry, the default registry is assumed.
+     */
+    registryId?: RegistryId;
+  }
+  export interface ValidatePullThroughCacheRuleResponse {
+    /**
+     * The Amazon ECR repository prefix associated with the pull through cache rule.
+     */
+    ecrRepositoryPrefix?: PullThroughCacheRuleRepositoryPrefix;
+    /**
+     * The registry ID associated with the request.
+     */
+    registryId?: RegistryId;
+    /**
+     * The upstream registry URL associated with the pull through cache rule.
+     */
+    upstreamRegistryUrl?: Url;
+    /**
+     * The Amazon Resource Name (ARN) of the Amazon Web Services Secrets Manager secret associated with the pull through cache rule.
+     */
+    credentialArn?: CredentialArn;
+    /**
+     * Whether or not the pull through cache rule was validated. If true, Amazon ECR was able to reach the upstream registry and authentication was successful. If false, there was an issue and validation failed. The failure reason indicates the cause.
+     */
+    isValid?: IsPTCRuleValid;
+    /**
+     * The reason the validation failed. For more details about possible causes and how to address them, see Using pull through cache rules in the Amazon Elastic Container Registry User Guide.
+     */
+    failure?: PTCValidateFailure;
+  }
   export type Version = string;
   export type VulnerabilityId = string;
   export type VulnerabilitySourceUpdateTimestamp = Date;

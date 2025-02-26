@@ -12,6 +12,14 @@ declare class AppIntegrations extends Service {
   constructor(options?: AppIntegrations.Types.ClientConfiguration)
   config: Config & AppIntegrations.Types.ClientConfiguration;
   /**
+   * Creates and persists an Application resource.
+   */
+  createApplication(params: AppIntegrations.Types.CreateApplicationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.CreateApplicationResponse) => void): Request<AppIntegrations.Types.CreateApplicationResponse, AWSError>;
+  /**
+   * Creates and persists an Application resource.
+   */
+  createApplication(callback?: (err: AWSError, data: AppIntegrations.Types.CreateApplicationResponse) => void): Request<AppIntegrations.Types.CreateApplicationResponse, AWSError>;
+  /**
    * Creates and persists a DataIntegration resource.  You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
   createDataIntegration(params: AppIntegrations.Types.CreateDataIntegrationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.CreateDataIntegrationResponse) => void): Request<AppIntegrations.Types.CreateDataIntegrationResponse, AWSError>;
@@ -20,6 +28,14 @@ declare class AppIntegrations extends Service {
    */
   createDataIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.CreateDataIntegrationResponse) => void): Request<AppIntegrations.Types.CreateDataIntegrationResponse, AWSError>;
   /**
+   * Creates and persists a DataIntegrationAssociation resource.
+   */
+  createDataIntegrationAssociation(params: AppIntegrations.Types.CreateDataIntegrationAssociationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.CreateDataIntegrationAssociationResponse) => void): Request<AppIntegrations.Types.CreateDataIntegrationAssociationResponse, AWSError>;
+  /**
+   * Creates and persists a DataIntegrationAssociation resource.
+   */
+  createDataIntegrationAssociation(callback?: (err: AWSError, data: AppIntegrations.Types.CreateDataIntegrationAssociationResponse) => void): Request<AppIntegrations.Types.CreateDataIntegrationAssociationResponse, AWSError>;
+  /**
    * Creates an EventIntegration, given a specified name, description, and a reference to an Amazon EventBridge bus in your account and a partner event source that pushes events to that bus. No objects are created in the your account, only metadata that is persisted on the EventIntegration control plane.
    */
   createEventIntegration(params: AppIntegrations.Types.CreateEventIntegrationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.CreateEventIntegrationResponse) => void): Request<AppIntegrations.Types.CreateEventIntegrationResponse, AWSError>;
@@ -27,6 +43,14 @@ declare class AppIntegrations extends Service {
    * Creates an EventIntegration, given a specified name, description, and a reference to an Amazon EventBridge bus in your account and a partner event source that pushes events to that bus. No objects are created in the your account, only metadata that is persisted on the EventIntegration control plane.
    */
   createEventIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.CreateEventIntegrationResponse) => void): Request<AppIntegrations.Types.CreateEventIntegrationResponse, AWSError>;
+  /**
+   * Deletes the Application. Only Applications that don't have any Application Associations can be deleted.
+   */
+  deleteApplication(params: AppIntegrations.Types.DeleteApplicationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.DeleteApplicationResponse) => void): Request<AppIntegrations.Types.DeleteApplicationResponse, AWSError>;
+  /**
+   * Deletes the Application. Only Applications that don't have any Application Associations can be deleted.
+   */
+  deleteApplication(callback?: (err: AWSError, data: AppIntegrations.Types.DeleteApplicationResponse) => void): Request<AppIntegrations.Types.DeleteApplicationResponse, AWSError>;
   /**
    * Deletes the DataIntegration. Only DataIntegrations that don't have any DataIntegrationAssociations can be deleted. Deleting a DataIntegration also deletes the underlying Amazon AppFlow flow and service linked role.   You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
@@ -44,6 +68,14 @@ declare class AppIntegrations extends Service {
    */
   deleteEventIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.DeleteEventIntegrationResponse) => void): Request<AppIntegrations.Types.DeleteEventIntegrationResponse, AWSError>;
   /**
+   * Get an Application resource.
+   */
+  getApplication(params: AppIntegrations.Types.GetApplicationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.GetApplicationResponse) => void): Request<AppIntegrations.Types.GetApplicationResponse, AWSError>;
+  /**
+   * Get an Application resource.
+   */
+  getApplication(callback?: (err: AWSError, data: AppIntegrations.Types.GetApplicationResponse) => void): Request<AppIntegrations.Types.GetApplicationResponse, AWSError>;
+  /**
    * Returns information about the DataIntegration.  You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
   getDataIntegration(params: AppIntegrations.Types.GetDataIntegrationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.GetDataIntegrationResponse) => void): Request<AppIntegrations.Types.GetDataIntegrationResponse, AWSError>;
@@ -59,6 +91,22 @@ declare class AppIntegrations extends Service {
    * Returns information about the event integration.
    */
   getEventIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.GetEventIntegrationResponse) => void): Request<AppIntegrations.Types.GetEventIntegrationResponse, AWSError>;
+  /**
+   * Returns a paginated list of application associations for an application.
+   */
+  listApplicationAssociations(params: AppIntegrations.Types.ListApplicationAssociationsRequest, callback?: (err: AWSError, data: AppIntegrations.Types.ListApplicationAssociationsResponse) => void): Request<AppIntegrations.Types.ListApplicationAssociationsResponse, AWSError>;
+  /**
+   * Returns a paginated list of application associations for an application.
+   */
+  listApplicationAssociations(callback?: (err: AWSError, data: AppIntegrations.Types.ListApplicationAssociationsResponse) => void): Request<AppIntegrations.Types.ListApplicationAssociationsResponse, AWSError>;
+  /**
+   * Lists applications in the account.
+   */
+  listApplications(params: AppIntegrations.Types.ListApplicationsRequest, callback?: (err: AWSError, data: AppIntegrations.Types.ListApplicationsResponse) => void): Request<AppIntegrations.Types.ListApplicationsResponse, AWSError>;
+  /**
+   * Lists applications in the account.
+   */
+  listApplications(callback?: (err: AWSError, data: AppIntegrations.Types.ListApplicationsResponse) => void): Request<AppIntegrations.Types.ListApplicationsResponse, AWSError>;
   /**
    * Returns a paginated list of DataIntegration associations in the account.  You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
@@ -116,6 +164,14 @@ declare class AppIntegrations extends Service {
    */
   untagResource(callback?: (err: AWSError, data: AppIntegrations.Types.UntagResourceResponse) => void): Request<AppIntegrations.Types.UntagResourceResponse, AWSError>;
   /**
+   * Updates and persists an Application resource.
+   */
+  updateApplication(params: AppIntegrations.Types.UpdateApplicationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.UpdateApplicationResponse) => void): Request<AppIntegrations.Types.UpdateApplicationResponse, AWSError>;
+  /**
+   * Updates and persists an Application resource.
+   */
+  updateApplication(callback?: (err: AWSError, data: AppIntegrations.Types.UpdateApplicationResponse) => void): Request<AppIntegrations.Types.UpdateApplicationResponse, AWSError>;
+  /**
    * Updates the description of a DataIntegration.  You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
   updateDataIntegration(params: AppIntegrations.Types.UpdateDataIntegrationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.UpdateDataIntegrationResponse) => void): Request<AppIntegrations.Types.UpdateDataIntegrationResponse, AWSError>;
@@ -123,6 +179,14 @@ declare class AppIntegrations extends Service {
    * Updates the description of a DataIntegration.  You cannot create a DataIntegration association for a DataIntegration that has been previously associated. Use a different DataIntegration, or recreate the DataIntegration using the CreateDataIntegration API. 
    */
   updateDataIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.UpdateDataIntegrationResponse) => void): Request<AppIntegrations.Types.UpdateDataIntegrationResponse, AWSError>;
+  /**
+   * Updates and persists a DataIntegrationAssociation resource.   Updating a DataIntegrationAssociation with ExecutionConfiguration will rerun the on-demand job.  
+   */
+  updateDataIntegrationAssociation(params: AppIntegrations.Types.UpdateDataIntegrationAssociationRequest, callback?: (err: AWSError, data: AppIntegrations.Types.UpdateDataIntegrationAssociationResponse) => void): Request<AppIntegrations.Types.UpdateDataIntegrationAssociationResponse, AWSError>;
+  /**
+   * Updates and persists a DataIntegrationAssociation resource.   Updating a DataIntegrationAssociation with ExecutionConfiguration will rerun the on-demand job.  
+   */
+  updateDataIntegrationAssociation(callback?: (err: AWSError, data: AppIntegrations.Types.UpdateDataIntegrationAssociationResponse) => void): Request<AppIntegrations.Types.UpdateDataIntegrationAssociationResponse, AWSError>;
   /**
    * Updates the description of an event integration.
    */
@@ -133,9 +197,147 @@ declare class AppIntegrations extends Service {
   updateEventIntegration(callback?: (err: AWSError, data: AppIntegrations.Types.UpdateEventIntegrationResponse) => void): Request<AppIntegrations.Types.UpdateEventIntegrationResponse, AWSError>;
 }
 declare namespace AppIntegrations {
+  export type ApplicationApprovedOrigins = ApplicationTrustedSource[];
+  export interface ApplicationAssociationSummary {
+    /**
+     * The Amazon Resource Name (ARN) of the Application Association.
+     */
+    ApplicationAssociationArn?: Arn;
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    ApplicationArn?: Arn;
+    /**
+     * The identifier for the client that is associated with the Application Association.
+     */
+    ClientId?: ClientId;
+  }
+  export type ApplicationAssociationsList = ApplicationAssociationSummary[];
+  export type ApplicationName = string;
+  export type ApplicationNamespace = string;
+  export interface ApplicationSourceConfig {
+    /**
+     * The external URL source for the application.
+     */
+    ExternalUrlConfig?: ExternalUrlConfig;
+  }
+  export interface ApplicationSummary {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn?: Arn;
+    /**
+     * A unique identifier for the Application.
+     */
+    Id?: UUID;
+    /**
+     * The name of the application.
+     */
+    Name?: ApplicationName;
+    /**
+     * The namespace of the application.
+     */
+    Namespace?: ApplicationNamespace;
+    /**
+     * The time when the application was created.
+     */
+    CreatedTime?: Timestamp;
+    /**
+     * The time when the application was last modified.
+     */
+    LastModifiedTime?: Timestamp;
+  }
+  export type ApplicationTrustedSource = string;
+  export type ApplicationsList = ApplicationSummary[];
   export type Arn = string;
+  export type ArnOrUUID = string;
   export type ClientAssociationMetadata = {[key: string]: NonBlankString};
   export type ClientId = string;
+  export interface CreateApplicationRequest {
+    /**
+     * The name of the application.
+     */
+    Name: ApplicationName;
+    /**
+     * The namespace of the application.
+     */
+    Namespace: ApplicationNamespace;
+    /**
+     * The description of the application.
+     */
+    Description?: Description;
+    /**
+     * The configuration for where the application should be loaded from.
+     */
+    ApplicationSourceConfig: ApplicationSourceConfig;
+    /**
+     * The events that the application subscribes.
+     */
+    Subscriptions?: SubscriptionList;
+    /**
+     * The events that the application publishes.
+     */
+    Publications?: PublicationList;
+    /**
+     * A unique, case-sensitive identifier that you provide to ensure the idempotency of the request. If not provided, the Amazon Web Services SDK populates this field. For more information about idempotency, see Making retries safe with idempotent APIs.
+     */
+    ClientToken?: IdempotencyToken;
+    /**
+     * The tags used to organize, track, or control access for this resource. For example, { "tags": {"key1":"value1", "key2":"value2"} }.
+     */
+    Tags?: TagMap;
+    /**
+     * The configuration of events or requests that the application has access to.
+     */
+    Permissions?: PermissionList;
+  }
+  export interface CreateApplicationResponse {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn?: Arn;
+    /**
+     * A unique identifier for the Application.
+     */
+    Id?: UUID;
+  }
+  export interface CreateDataIntegrationAssociationRequest {
+    /**
+     * A unique identifier for the DataIntegration.
+     */
+    DataIntegrationIdentifier: Identifier;
+    /**
+     * The identifier for the client that is associated with the DataIntegration association.
+     */
+    ClientId?: ClientId;
+    ObjectConfiguration?: ObjectConfiguration;
+    /**
+     * The URI of the data destination.
+     */
+    DestinationURI?: DestinationURI;
+    /**
+     * The mapping of metadata to be extracted from the data.
+     */
+    ClientAssociationMetadata?: ClientAssociationMetadata;
+    /**
+     * A unique, case-sensitive identifier that you provide to ensure the idempotency of the request. If not provided, the Amazon Web Services SDK populates this field. For more information about idempotency, see Making retries safe with idempotent APIs.
+     */
+    ClientToken?: IdempotencyToken;
+    /**
+     * The configuration for how the files should be pulled from the source.
+     */
+    ExecutionConfiguration?: ExecutionConfiguration;
+  }
+  export interface CreateDataIntegrationAssociationResponse {
+    /**
+     * A unique identifier. for the DataIntegrationAssociation.
+     */
+    DataIntegrationAssociationId?: UUID;
+    /**
+     * The Amazon Resource Name (ARN) for the DataIntegration.
+     */
+    DataIntegrationArn?: Arn;
+  }
   export interface CreateDataIntegrationRequest {
     /**
      * The name of the DataIntegration.
@@ -146,17 +348,17 @@ declare namespace AppIntegrations {
      */
     Description?: Description;
     /**
-     * The KMS key for the DataIntegration.
+     * The KMS key ARN for the DataIntegration.
      */
     KmsKey: NonBlankString;
     /**
      * The URI of the data source.
      */
-    SourceURI: SourceURI;
+    SourceURI?: SourceURI;
     /**
      * The name of the data and how often it should be pulled from the source.
      */
-    ScheduleConfig: ScheduleConfiguration;
+    ScheduleConfig?: ScheduleConfiguration;
     /**
      * The tags used to organize, track, or control access for this resource. For example, { "tags": {"key1":"value1", "key2":"value2"} }.
      */
@@ -192,7 +394,7 @@ declare namespace AppIntegrations {
      */
     Description?: Description;
     /**
-     * The KMS key for the DataIntegration.
+     * The KMS key ARN for the DataIntegration.
      */
     KmsKey?: NonBlankString;
     /**
@@ -265,6 +467,15 @@ declare namespace AppIntegrations {
      * The identifier for the client that is associated with the DataIntegration association.
      */
     ClientId?: ClientId;
+    /**
+     * The URI of the data destination.
+     */
+    DestinationURI?: DestinationURI;
+    /**
+     * The execution status of the last job.
+     */
+    LastExecutionStatus?: LastExecutionStatus;
+    ExecutionConfiguration?: ExecutionConfiguration;
   }
   export type DataIntegrationAssociationsList = DataIntegrationAssociationSummary[];
   export interface DataIntegrationSummary {
@@ -282,6 +493,14 @@ declare namespace AppIntegrations {
     SourceURI?: SourceURI;
   }
   export type DataIntegrationsList = DataIntegrationSummary[];
+  export interface DeleteApplicationRequest {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn: ArnOrUUID;
+  }
+  export interface DeleteApplicationResponse {
+  }
   export interface DeleteDataIntegrationRequest {
     /**
      * A unique identifier for the DataIntegration.
@@ -299,8 +518,10 @@ declare namespace AppIntegrations {
   export interface DeleteEventIntegrationResponse {
   }
   export type Description = string;
+  export type DestinationURI = string;
   export type EventBridgeBus = string;
   export type EventBridgeRuleName = string;
+  export type EventDefinitionSchema = string;
   export interface EventFilter {
     /**
      * The source of the events.
@@ -361,6 +582,27 @@ declare namespace AppIntegrations {
   }
   export type EventIntegrationAssociationsList = EventIntegrationAssociation[];
   export type EventIntegrationsList = EventIntegration[];
+  export type EventName = string;
+  export interface ExecutionConfiguration {
+    /**
+     * The mode for data import/export execution.
+     */
+    ExecutionMode: ExecutionMode;
+    OnDemandConfiguration?: OnDemandConfiguration;
+    ScheduleConfiguration?: ScheduleConfiguration;
+  }
+  export type ExecutionMode = "ON_DEMAND"|"SCHEDULED"|string;
+  export type ExecutionStatus = "COMPLETED"|"IN_PROGRESS"|"FAILED"|string;
+  export interface ExternalUrlConfig {
+    /**
+     * The URL to access the application.
+     */
+    AccessUrl: URL;
+    /**
+     * Additional URLs to allow list if different than the access URL.
+     */
+    ApprovedOrigins?: ApplicationApprovedOrigins;
+  }
   export type Fields = string;
   export type FieldsList = Fields[];
   export type FieldsMap = {[key: string]: FieldsList};
@@ -375,6 +617,62 @@ declare namespace AppIntegrations {
     Filters?: FieldsMap;
   }
   export type FolderList = NonBlankLongString[];
+  export interface GetApplicationRequest {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn: ArnOrUUID;
+  }
+  export interface GetApplicationResponse {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn?: Arn;
+    /**
+     * A unique identifier for the Application.
+     */
+    Id?: UUID;
+    /**
+     * The name of the application.
+     */
+    Name?: ApplicationName;
+    /**
+     * The namespace of the application.
+     */
+    Namespace?: ApplicationNamespace;
+    /**
+     * The description of the application.
+     */
+    Description?: Description;
+    /**
+     * The configuration for where the application should be loaded from.
+     */
+    ApplicationSourceConfig?: ApplicationSourceConfig;
+    /**
+     * The events that the application subscribes.
+     */
+    Subscriptions?: SubscriptionList;
+    /**
+     * The events that the application publishes.
+     */
+    Publications?: PublicationList;
+    /**
+     * The created time of the Application.
+     */
+    CreatedTime?: Timestamp;
+    /**
+     * The last modified time of the Application.
+     */
+    LastModifiedTime?: Timestamp;
+    /**
+     * The tags used to organize, track, or control access for this resource. For example, { "tags": {"key1":"value1", "key2":"value2"} }.
+     */
+    Tags?: TagMap;
+    /**
+     * The configuration of events or requests that the application has access to.
+     */
+    Permissions?: PermissionList;
+  }
   export interface GetDataIntegrationRequest {
     /**
      * A unique identifier.
@@ -395,11 +693,11 @@ declare namespace AppIntegrations {
      */
     Name?: Name;
     /**
-     * The KMS key for the DataIntegration.
+     * The KMS key ARN for the DataIntegration.
      */
     Description?: Description;
     /**
-     * The KMS key for the DataIntegration.
+     * The KMS key ARN for the DataIntegration.
      */
     KmsKey?: NonBlankString;
     /**
@@ -457,6 +755,60 @@ declare namespace AppIntegrations {
   }
   export type IdempotencyToken = string;
   export type Identifier = string;
+  export interface LastExecutionStatus {
+    /**
+     * The job status enum string.
+     */
+    ExecutionStatus?: ExecutionStatus;
+    /**
+     * The status message of a job.
+     */
+    StatusMessage?: NonBlankString;
+  }
+  export interface ListApplicationAssociationsRequest {
+    /**
+     * A unique identifier for the Application.
+     */
+    ApplicationId: ArnOrUUID;
+    /**
+     * The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
+     */
+    NextToken?: NextToken;
+    /**
+     * The maximum number of results to return per page.
+     */
+    MaxResults?: MaxResults;
+  }
+  export interface ListApplicationAssociationsResponse {
+    /**
+     * List of Application Associations for the Application.
+     */
+    ApplicationAssociations?: ApplicationAssociationsList;
+    /**
+     * If there are additional results, this is the token for the next set of results.
+     */
+    NextToken?: NextToken;
+  }
+  export interface ListApplicationsRequest {
+    /**
+     * The token for the next set of results. Use the value returned in the previous response in the next request to retrieve the next set of results.
+     */
+    NextToken?: NextToken;
+    /**
+     * The maximum number of results to return per page.
+     */
+    MaxResults?: MaxResults;
+  }
+  export interface ListApplicationsResponse {
+    /**
+     * The Applications associated with this account.
+     */
+    Applications?: ApplicationsList;
+    /**
+     * If there are additional results, this is the token for the next set of results.
+     */
+    NextToken?: NextToken;
+  }
   export interface ListDataIntegrationAssociationsRequest {
     /**
      * A unique identifier for the DataIntegration.
@@ -564,6 +916,33 @@ declare namespace AppIntegrations {
   export type NonBlankString = string;
   export type Object = string;
   export type ObjectConfiguration = {[key: string]: FieldsMap};
+  export interface OnDemandConfiguration {
+    /**
+     * The start time for data pull from the source as an Unix/epoch string in milliseconds
+     */
+    StartTime: NonBlankString;
+    /**
+     * The end time for data pull from the source as an Unix/epoch string in milliseconds
+     */
+    EndTime?: NonBlankString;
+  }
+  export type Permission = string;
+  export type PermissionList = Permission[];
+  export interface Publication {
+    /**
+     * The name of the publication.
+     */
+    Event: EventName;
+    /**
+     * The JSON schema of the publication event.
+     */
+    Schema: EventDefinitionSchema;
+    /**
+     * The description of the publication.
+     */
+    Description?: Description;
+  }
+  export type PublicationList = Publication[];
   export interface ScheduleConfiguration {
     /**
      * The start date for objects to import in the first flow run as an Unix/epoch timestamp in milliseconds or in ISO-8601 format.
@@ -580,6 +959,17 @@ declare namespace AppIntegrations {
   }
   export type Source = string;
   export type SourceURI = string;
+  export interface Subscription {
+    /**
+     * The name of the subscription.
+     */
+    Event: EventName;
+    /**
+     * The description of the subscription.
+     */
+    Description?: Description;
+  }
+  export type SubscriptionList = Subscription[];
   export type TagKey = string;
   export type TagKeyList = TagKey[];
   export type TagMap = {[key: string]: TagValue};
@@ -596,6 +986,8 @@ declare namespace AppIntegrations {
   export interface TagResourceResponse {
   }
   export type TagValue = string;
+  export type Timestamp = Date;
+  export type URL = string;
   export type UUID = string;
   export interface UntagResourceRequest {
     /**
@@ -608,6 +1000,54 @@ declare namespace AppIntegrations {
     tagKeys: TagKeyList;
   }
   export interface UntagResourceResponse {
+  }
+  export interface UpdateApplicationRequest {
+    /**
+     * The Amazon Resource Name (ARN) of the Application.
+     */
+    Arn: ArnOrUUID;
+    /**
+     * The name of the application.
+     */
+    Name?: ApplicationName;
+    /**
+     * The description of the application.
+     */
+    Description?: Description;
+    /**
+     * The configuration for where the application should be loaded from.
+     */
+    ApplicationSourceConfig?: ApplicationSourceConfig;
+    /**
+     * The events that the application subscribes.
+     */
+    Subscriptions?: SubscriptionList;
+    /**
+     * The events that the application publishes.
+     */
+    Publications?: PublicationList;
+    /**
+     * The configuration of events or requests that the application has access to.
+     */
+    Permissions?: PermissionList;
+  }
+  export interface UpdateApplicationResponse {
+  }
+  export interface UpdateDataIntegrationAssociationRequest {
+    /**
+     * A unique identifier for the DataIntegration.
+     */
+    DataIntegrationIdentifier: Identifier;
+    /**
+     * A unique identifier. of the DataIntegrationAssociation resource
+     */
+    DataIntegrationAssociationIdentifier: Identifier;
+    /**
+     * The configuration for how the files should be pulled from the source.
+     */
+    ExecutionConfiguration: ExecutionConfiguration;
+  }
+  export interface UpdateDataIntegrationAssociationResponse {
   }
   export interface UpdateDataIntegrationRequest {
     /**
@@ -631,7 +1071,7 @@ declare namespace AppIntegrations {
      */
     Name: Name;
     /**
-     * The description of the event inegration.
+     * The description of the event integration.
      */
     Description?: Description;
   }
