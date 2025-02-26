@@ -17,7 +17,7 @@ async function run() {
   let akeylessToken;
 
   try {
-    akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl);
+    const akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl);
     akeylessToken = akeylessLoginResponse['token'];
   } catch (error) {
     let message = `Failed to login to AKeyless: ${JSON.stringify(error)}`;

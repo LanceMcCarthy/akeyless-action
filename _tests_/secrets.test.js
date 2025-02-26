@@ -2,10 +2,10 @@ jest.mock('@actions/core');
 jest.mock('../src/akeyless_api');
 jest.mock('akeyless');
 
-core = require('@actions/core');
-akeylessApi = require('../src/akeyless_api');
-akeyless = require('akeyless');
-secrets = require('../src/secrets');
+const core = require('@actions/core');
+const akeylessApi = require('../src/akeyless_api');
+const akeyless = require('akeyless');
+const secrets = require('../src/secrets');
 
 test('export dynamic secrets', async () => {
   // ARRANGE
@@ -19,7 +19,7 @@ test('export dynamic secrets', async () => {
   core.setOutput = jest.fn(() => {});
   core.exportVariable = jest.fn(() => {});
 
-  api = jest.fn(() => {});
+  const api = jest.fn(() => {});
   api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
   akeylessApi.api = jest.fn(() => api);
   akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
@@ -51,7 +51,7 @@ test('export dynamic secrets - separated', async () => {
   core.setOutput = jest.fn(() => {});
   core.exportVariable = jest.fn(() => {});
 
-  api = jest.fn(() => {});
+  const api = jest.fn(() => {});
   api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
   akeylessApi.api = jest.fn(() => api);
   akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
@@ -81,7 +81,7 @@ test('export static secrets', async () => {
   core.setOutput = jest.fn(() => {});
   core.exportVariable = jest.fn(() => {});
 
-  api = jest.fn(() => {});
+  const api = jest.fn(() => {});
   api.getSecretValue = jest.fn(() => Promise.resolve(staticSecret));
   akeylessApi.api = jest.fn(() => api);
   akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');

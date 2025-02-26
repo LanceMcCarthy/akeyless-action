@@ -1,7 +1,7 @@
 jest.mock('@actions/core');
 
-core = require('@actions/core');
-input = require('../src/input');
+const core = require('@actions/core');
+const input = require('../src/input');
 
 test('Input is all good', () => {
   core.getInput = jest.fn();
@@ -15,7 +15,7 @@ test('Input is all good', () => {
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(false);
-  params = input.fetchAndValidateInput();
+  const params = input.fetchAndValidateInput();
 
   expect(params).toEqual({
     accessId: 'p-asdf',

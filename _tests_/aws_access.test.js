@@ -2,16 +2,16 @@ jest.mock('@actions/core');
 jest.mock('../src/akeyless_api');
 jest.mock('akeyless');
 
-core = require('@actions/core');
-akeylessApi = require('../src/akeyless_api');
-akeyless = require('akeyless');
-awsAccess = require('../src/aws_access');
+const core = require('@actions/core');
+const akeylessApi = require('../src/akeyless_api');
+const akeyless = require('akeyless');
+const awsAccess = require('../src/aws_access');
 
 test('jwt login', async () => {
   core.setSecret = jest.fn(() => {});
   core.setOuput = jest.fn(() => {});
   core.exportVariable = jest.fn(() => {});
-  api = jest.fn(() => {});
+  const api = jest.fn(() => {});
   api.getDynamicSecretValue = jest.fn(() =>
     Promise.resolve({
       access_key_id: 'aws-access-key',

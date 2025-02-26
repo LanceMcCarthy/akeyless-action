@@ -57,7 +57,7 @@ const fetchAndValidateInput = () => {
       continue;
     }
     try {
-      parsed = JSON.parse(params[paramKey]);
+      const parsed = JSON.parse(params[paramKey]);
       if (parsed.constructor !== Object) {
         throw new Error(`Input '${inputId}' did not contain a valid JSON dictionary`);
       }
