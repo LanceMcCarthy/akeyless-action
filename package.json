@@ -25,13 +25,13 @@
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
     "akeyless": "^5.0.0",
-    "akeyless-cloud-id": "^2.4.0"
+    "akeyless-cloud-id": "^2.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
-    "@eslint/js": "^9.22.0",
-    "eslint": "^9.22.0",
-    "eslint-plugin-github": "^5.1.5",
+    "@eslint/js": "^9.23.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-github": "^6.0.0",
     "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-prettier": "^5.2.1",
     "globals": "^16.0.0",
