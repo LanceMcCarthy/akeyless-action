@@ -1,8 +1,8 @@
 
 const AWS = require('aws-sdk')
 const aws4 = require('aws4')
-const axios = require('axios')
 const { GoogleAuth } = require('google-auth-library');
+const { DefaultAzureCredential } = require("@azure/identity");
 
 async function getCloudId(acc_type, param) {
     if (acc_type === "aws_iam") {
@@ -19,12 +19,13 @@ async function getCloudId(acc_type, param) {
 }
 
 async function getAzureCloudID(object_id) {
-    const headers = { 'user-agent': 'AKEYLESS', 'Metadata': 'true' }
-    const params = { 'api-version': '2018-02-01', 'resource': 'https://management.azure.com/', 'object_id': object_id }
-
-    const res = await axios.get('http://169.254.169.254/metadata/identity/oauth2/token', { params, headers })
+ 
+    const credential = new DefaultAzureCredential();
     
-    return Buffer.from(res.data.access_token).toString('base64')
+    const scope = "https://management.azure.com/.default";
+    const token = await credential.getToken(scope);
+
+    return Buffer.from(token.token).toString('base64')
 }
 
 
