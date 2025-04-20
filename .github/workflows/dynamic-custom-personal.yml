@@ -4,14 +4,14 @@ name: 'Custom Producer Dynamic Secrets (p)'
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'src/**/*'
-  #     - 'package.json'
-  #     - 'package-lock.json'
-  #     - '.github/workflows/personal-dynamic-custom.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**/*'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/dynamic-custom-personal.yml'
 
 permissions:
   id-token: write
@@ -33,7 +33,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/custom-web-producer":"my_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
@@ -74,7 +74,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/custom-web-producer":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
@@ -104,7 +104,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/custom-web-producer":"WEB"}' #applies "WEB_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
