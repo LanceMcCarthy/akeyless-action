@@ -1,4 +1,4 @@
-name: 'Custom Producer Dynamic Secrets'
+name: 'Custom Producer Dynamic Secrets (p)'
 # Docs => https://docs.akeyless.io/docs/custom-producer
 # Custom Producer API source code => https://github.com/LanceMcCarthy/akeyless-web-target/blob/main/src/SecretsMocker/SecretsMocker/Controllers/SyncController.cs
 
