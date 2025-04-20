@@ -23,29 +23,29 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/live-azure-ad":"akelyess_payload"}'
 
     - name: Verify Values (Temporary - only for debugging)
       run: |
         echo 'ID'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.id'
+        echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.id'
         echo 'MSG'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.msg'
+        echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.msg'
         echo 'SECRET'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret'
+        echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.secret'
         echo 'TTL_IN_MINUTES'
-        echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.ttl_in_minutes'
+        echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.ttl_in_minutes'
 
     ###  ARRRRG - Still trying pull apart the '[object, object]' in 
     - name: Learn keys
       run: |
-       echo "secret: ${{ env.akelyess_payload_secret }}"
-       echo '${{ env.akelyess_payload_secret }}' | jq -r '.value'
+       echo "secret: ${{env.akelyess_payload_secret}}"
+       echo '${{env.akelyess_payload_secret}}' | jq -r '.value'
 
-       # echo '${{ steps.fetch-secrets.outputs.akelyess_payload }}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
-       # cat '${{ steps.fetch-secrets.outputs.akelyess_payload }}' -o '${{ github.workspace }}\hello.txt'
-       # Get-Content '${{ github.workspace }}\hello.txt'
+       # echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.secret as $n | try to_entries[] | [ $n, .value]'
+       # cat '${{steps.fetch-secrets.outputs.akelyess_payload}}' -o '${{github.workspace}}\hello.txt'
+       # Get-Content '${{github.workspace}}\hello.txt'
 
     # #### Option 1 ####
     # # The easiest, just use AzureSignTool
@@ -57,7 +57,7 @@ jobs:
     # - name: Use AzureSignTool
     #   id: use-signtool
     #   run: |
-    #     azuresigntool sign -kvu "${{ secrets.AZURE_KEY_VAULT_URI }}" -kvi "${{ secrets.AZURE_CLIENT_ID }}" -kvt "${{ secrets.AZURE_TENANT_ID }}"-kvs "${{ secrets.AZURE_CLIENT_SECRET }}" -kvc ${{ secrets.AZURE_CERT_NAME }} -tr http://timestamp.digicert.com -v '${{ github.workspace }}\.github\test_files\ConsoleApp1.exe'
+    #     azuresigntool sign -kvu "${{secrets.AZURE_KEY_VAULT_URI}}" -kvi "${{secrets.AZURE_CLIENT_ID}}" -kvt "${{secrets.AZURE_TENANT_ID}}"-kvs "${{secrets.AZURE_CLIENT_SECRET}}" -kvc ${{secrets.AZURE_CERT_NAME}} -tr http://timestamp.digicert.com -v '${{github.workspace}}\.github\test_files\ConsoleApp1.exe'
 
 # ----------------- personal akeyless account ----------------- #
 

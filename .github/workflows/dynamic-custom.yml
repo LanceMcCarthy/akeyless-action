@@ -34,29 +34,29 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/custom-web-producer":"my_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
       run: |
-        echo "Your job output secret is ${{ steps.fetch-secrets.outputs.my_dynamic_secret }}"
+        echo "Your job output secret is ${{steps.fetch-secrets.outputs.my_dynamic_secret}}"
         echo "Manually parsed PASSWORD:" 
-        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.password'
+        echo '${{steps.fetch-secrets.outputs.my_dynamic_secret}}' | jq '.password'
 
     - name: Verify Environment Variables using jq
       run: |
-        echo "Your environment secret is ${{ env.my_dynamic_secret }}"
+        echo "Your environment secret is ${{env.my_dynamic_secret}}"
         echo "Manually parsed PASSWORD:"
-        echo '${{ env.my_dynamic_secret }}' | jq '.password'
+        echo '${{env.my_dynamic_secret}}' | jq '.password'
 
     # Extra 1 & 2 Another way to get the secret values is to use jq and export them to custom env vars directly
     - name: EXTRA (part 1) - Export Secrets to Environment using jq
       run: |
-        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+        echo '${{steps.fetch-secrets.outputs.my_dynamic_secret}}' | jq -r 'to_entries|map("AKEYLESS_\(.key)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
     
     - name: EXTRA (part 2) - Verify EXTRA 1's Exported Variables
       run: |
-        echo "AKEYLESS_password = ${{ env.AKEYLESS_password }}"
+        echo "AKEYLESS_password = ${{env.AKEYLESS_password}}"
 
   ########## Option 2 ########## 
   # Uses 'parse-dynamic-secrets: true' 
@@ -74,17 +74,17 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/custom-web-producer":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
-        echo "UPDATED_AT: ${{ steps.fetch-secrets.outputs.password }}"
+        echo "UPDATED_AT: ${{steps.fetch-secrets.outputs.password}}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
-        echo "PASSWORD: ${{ env.password }}"
+        echo "PASSWORD: ${{env.password}}"
 
   ########## Option 3 ##########
   # - Uses 'parse-dynamic-secrets: true'
@@ -103,17 +103,17 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/custom-web-producer":"WEB"}' #applies "WEB_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
-        echo "PASSWORD: ${{ steps.fetch-secrets.outputs.WEB_password }}"
+        echo "PASSWORD: ${{steps.fetch-secrets.outputs.WEB_password}}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
-        echo "PASSWORD: ${{ env.WEB_password }}"
+        echo "PASSWORD: ${{env.WEB_password}}"
 
 # ----------------- personal akeyless account ----------------- #
 
@@ -137,9 +137,9 @@ jobs:
 
     - name: Verify Job Outputs using jq
       run: |
-        echo "Your job output secret is ${{ steps.fetch-secrets.outputs.my_dynamic_secret }}"
+        echo "Your job output secret is ${{steps.fetch-secrets.outputs.my_dynamic_secret}}"
         echo "Manually parsed PASSWORD:" 
-        echo '${{ steps.fetch-secrets.outputs.my_dynamic_secret }}' | jq '.password'
+        echo '${{steps.fetch-secrets.outputs.my_dynamic_secret}}' | jq '.password'
 
     - name: Verify Environment Variables using jq
       run: |
