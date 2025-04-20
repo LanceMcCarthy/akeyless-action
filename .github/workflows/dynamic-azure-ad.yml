@@ -12,19 +12,17 @@ on:
       - 'package-lock.json'
       - '.github/workflows/dynamic-azure-ad.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
-  ##############################
   ########## Option 1 ########## 
-  ##############################
-  # - Uses default behavior 
-  # The response from Akeyless is kept in it's original JSON string. It is then your responsibility to correctly parse it.
-  
+  # Default behavior: 
+  # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (default)
-    permissions:
-      id-token: write
-      contents: read
+    name: EntraID dynamic (default)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -35,7 +33,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/dvlup-azure":"azure_ad_dynamic_secret"}'
 
     # See other example workflows on how to manually parse each key value => https://github.com/LanceMcCarthy/akeyless-action/blob/main/.github/workflows/dynamic-github.yml#L35-L53
@@ -43,28 +41,21 @@ jobs:
     # For this demo we'll just use jq and export them to custom env vars directly
     - name: Export Secrets to Environment using jq
       run: |
-        echo '${{ steps.fetch-secrets.outputs.azure_ad_dynamic_secret }}' | jq -r 'to_entries|map("AKEYLESS_AZURE_AD_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+        echo '${{steps.fetch-secrets.outputs.azure_ad_dynamic_secret}}' | jq -r 'to_entries|map("AKEYLESS_AZURE_AD_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
     
     - name: Verify exported variables
       run: |
-        echo "id: ${{ env.AKEYLESS_AZURE_AD_ID }}"
-        echo "msg: ${{ env.AKEYLESS_AZURE_AD_MSG }}"
-        echo "secret: ${{ env.AKEYLESS_AZURE_AD_SECRET }}"
-        echo "ttl_in_minutes: ${{ env.AKEYLESS_AZURE_AD_TTL_IN_MINUTES }}"
+        echo "id: ${{env.AKEYLESS_AZURE_AD_ID}}"
+        echo "msg: ${{env.AKEYLESS_AZURE_AD_MSG}}"
+        echo "secret: ${{env.AKEYLESS_AZURE_AD_SECRET}}"
+        echo "ttl_in_minutes: ${{env.AKEYLESS_AZURE_AD_TTL_IN_MINUTES}}"
   
-
-  ##############################
   ########## Option 2 ########## 
-  ##############################
-  # - Uses 'parse-dynamic-secrets: true' 
+  # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
-
   auto_parsed_secrets:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (parsed)
-    permissions:
-      id-token: write
-      contents: read
+    name: EntraID dynamic (parsed)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -75,38 +66,31 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/dvlup-azure":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
       run: |
-        echo "ID: ${{ steps.fetch-secrets.outputs.id }}" 
-        echo "MSG: ${{ steps.fetch-secrets.outputs.msg }}"
-        echo "SECRET: ${{ steps.fetch-secrets.outputs.secret }}"
-        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.ttl_in_minutes }}"
+        echo "ID: ${{steps.fetch-secrets.outputs.id}}" 
+        echo "MSG: ${{steps.fetch-secrets.outputs.msg}}"
+        echo "SECRET: ${{steps.fetch-secrets.outputs.secret}}"
+        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.ttl_in_minutes}}"
 
     - name: Verify Environment Variables (to known field names, pre-parsed)
       run: |
-        echo "ID: ${{ env.id }}"
-        echo "MSG: ${{ env.msg }}"
-        echo "SECRET: ${{ env.secret }}"
-        echo "TTL_IN_MINUTES: ${{ env.ttl_in_minutes }}"
+        echo "ID: ${{env.id}}"
+        echo "MSG: ${{env.msg}}"
+        echo "SECRET: ${{env.secret}}"
+        echo "TTL_IN_MINUTES: ${{env.ttl_in_minutes}}"
 
-
-  ##############################
   ########## Option 3 ##########
-  ##############################
   # - Uses 'parse-dynamic-secrets: true'
-  # - Uses 'AZURE_AD' as a prefix to the output names
+  # - Uses 'WEB' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
-
   auto_parsed_secrets_with_prefix:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (prefix-parsed)
-    permissions:
-      id-token: write
-      contents: read
+    name: EntraID dynamic (prefix-parsed)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -117,20 +101,123 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
         dynamic-secrets: '{"/DevTools/dvlup-azure":"AZURE_AD"}' #applies "AZURE_AD_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
       run: |
-        echo "ID: ${{ steps.fetch-secrets.outputs.AZURE_AD_id }}" 
-        echo "MSG: ${{ steps.fetch-secrets.outputs.AZURE_AD_msg }}"
-        echo "SECRET: ${{ steps.fetch-secrets.outputs.AZURE_AD_secret }}"
-        echo "TTL_IN_MINUTES: ${{ steps.fetch-secrets.outputs.AZURE_AD_ttl_in_minutes }}" 
+        echo "ID: ${{steps.fetch-secrets.outputs.AZURE_AD_id}}" 
+        echo "MSG: ${{steps.fetch-secrets.outputs.AZURE_AD_msg}}"
+        echo "SECRET: ${{steps.fetch-secrets.outputs.AZURE_AD_secret}}"
+        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.AZURE_AD_ttl_in_minutes}}" 
 
     - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
       run: |
-        echo "ID: ${{ env.AZURE_AD_id }}"
-        echo "MSG: ${{ env.AZURE_AD_msg }}"
-        echo "SECRET: ${{ env.AZURE_AD_secret }}"
-        echo "TTL_IN_MINUTES: ${{ env.AZURE_AD_ttl_in_minutes }}"
+        echo "ID: ${{env.AZURE_AD_id}}"
+        echo "MSG: ${{env.AZURE_AD_msg}}"
+        echo "SECRET: ${{env.AZURE_AD_secret}}"
+        echo "TTL_IN_MINUTES: ${{env.AZURE_AD_ttl_in_minutes}}"
+
+# ----------------- personal akeyless account ----------------- #
+
+  ########## Option 1 ########## 
+  # Default behavior: 
+  # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
+  fetch_dynamic_secrets_p:
+    runs-on: ubuntu-latest
+    name: EntraID dynamic [p] (default)
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secret from Akleyless
+      id: fetch-secrets
+      uses: ./
+      with:
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        dynamic-secrets: '{"/entra-id-dvlup":"entra_dynamic_secret"}'
+
+    # See other example workflows on how to manually parse each key value => https://github.com/LanceMcCarthy/akeyless-action/blob/main/.github/workflows/dynamic-github.yml#L35-L53
+    # For this demo we'll just use jq and export them to custom env vars directly
+    - name: Export Secrets to Environment using jq
+      run: |
+        echo '${{steps.fetch-secrets.outputs.entra_dynamic_secret}}' | jq -r 'to_entries|map("AKEYLESS_ENTRA_ID_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+    
+    - name: Verify exported variables
+      run: |
+        echo "id: ${{env.AKEYLESS_ENTRA_ID_ID}}"
+        echo "msg: ${{env.AKEYLESS_ENTRA_ID_MSG}}"
+        echo "secret: ${{env.AKEYLESS_ENTRA_ID_SECRET}}"
+        echo "ttl_in_minutes: ${{env.AKEYLESS_ENTRA_ID_TTL_IN_MINUTES}}"
+  
+  ########## Option 2 ########## 
+  # Uses 'parse-dynamic-secrets: true' 
+  # This will automatically parse the JSON string into individual outputs
+  auto_parsed_secrets_p:
+    runs-on: ubuntu-latest
+    name: EntraID dynamic [p] (parsed)
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secret from Akleyless
+      id: fetch-secrets
+      uses: ./
+      with:
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        dynamic-secrets: '{"/entra-id-dvlup":""}' #no prefix, all output fields are dynamically parsed from source
+        parse-dynamic-secrets: true
+
+    - name: Verify Job Outputs (to known field names, pre-parsed)
+      run: |
+        echo "ID: ${{steps.fetch-secrets.outputs.id}}" 
+        echo "MSG: ${{steps.fetch-secrets.outputs.msg}}"
+        echo "SECRET: ${{steps.fetch-secrets.outputs.secret}}"
+        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.ttl_in_minutes}}"
+
+    - name: Verify Environment Variables (to known field names, pre-parsed)
+      run: |
+        echo "ID: ${{env.id}}"
+        echo "MSG: ${{env.msg}}"
+        echo "SECRET: ${{env.secret}}"
+        echo "TTL_IN_MINUTES: ${{env.ttl_in_minutes}}"
+
+  ########## Option 3 ##########
+  # - Uses 'parse-dynamic-secrets: true'
+  # - Uses 'WEB' as a prefix to the output names
+  # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
+  auto_parsed_secrets_with_prefix_p:
+    runs-on: ubuntu-latest
+    name: EntraID dynamic [p] (prefix-parsed)
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Fetch dynamic secret from Akleyless
+      id: fetch-secrets
+      uses: ./
+      with:
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        dynamic-secrets: '{"/entra-id-dvlup":"ENTRA_ID"}' # added the "ENTRA_ID_" prefix to dynamically parsed output names
+        parse-dynamic-secrets: true
+
+    - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
+      run: |
+        echo "ID: ${{steps.fetch-secrets.outputs.ENTRA_ID_id}}" 
+        echo "MSG: ${{steps.fetch-secrets.outputs.ENTRA_ID_msg}}"
+        echo "SECRET: ${{steps.fetch-secrets.outputs.ENTRA_ID_secret}}"
+        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.ENTRA_ID_ttl_in_minutes}}" 
+
+    - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
+      run: |
+        echo "ID: ${{env.ENTRA_ID_id}}"
+        echo "MSG: ${{env.ENTRA_ID_msg}}"
+        echo "SECRET: ${{env.ENTRA_ID_secret}}"
+        echo "TTL_IN_MINUTES: ${{env.ENTRA_ID_ttl_in_minutes}}"
