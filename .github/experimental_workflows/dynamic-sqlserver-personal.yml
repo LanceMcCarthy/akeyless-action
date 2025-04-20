@@ -33,7 +33,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/az-dvlup-sqlsrvsecret":"my_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
@@ -89,7 +89,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/az-dvlup-sqlsrvsecret":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
@@ -125,7 +125,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/az-dvlup-sqlsrvsecret":"SQL"}' # adds the "SQL_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 

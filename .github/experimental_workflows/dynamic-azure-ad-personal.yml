@@ -12,6 +12,10 @@ on:
       - 'package-lock.json'
       - '.github/workflows/dynamic-azure-ad-personal.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   ########## Option 1 ########## 
   # Default behavior: 
@@ -19,9 +23,6 @@ jobs:
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
     name: EntraID dynamic (default)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -48,17 +49,12 @@ jobs:
         echo "secret: ${{env.AKEYLESS_ENTRA_ID_SECRET}}"
         echo "ttl_in_minutes: ${{env.AKEYLESS_ENTRA_ID_TTL_IN_MINUTES}}"
   
-
   ########## Option 2 ########## 
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   auto_parsed_secrets:
     runs-on: ubuntu-latest
     name: EntraID dynamic (parsed)
-    needs: [fetch_dynamic_secrets]
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -87,7 +83,6 @@ jobs:
         echo "SECRET: ${{env.secret}}"
         echo "TTL_IN_MINUTES: ${{env.ttl_in_minutes}}"
 
-
   ########## Option 3 ##########
   # - Uses 'parse-dynamic-secrets: true'
   # - Uses 'WEB' as a prefix to the output names
@@ -95,9 +90,6 @@ jobs:
   auto_parsed_secrets_with_prefix:
     runs-on: ubuntu-latest
     name: EntraID dynamic (prefix-parsed)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3

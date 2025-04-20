@@ -9,9 +9,6 @@ jobs:
   code_sign:
     runs-on: windows-latest
     name: Code Signing
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -22,7 +19,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/entra-id-live":"akelyess_payload"}'
 
     - name: Verify Values (Temporary - only for debugging)
@@ -36,7 +33,6 @@ jobs:
         echo 'TTL_IN_MINUTES'
         echo '${{steps.fetch-secrets.outputs.akelyess_payload}}' | jq -r '.ttl_in_minutes'
 
-
     ###  ARRRRG - Still trying pull apart the '[object, object]' in 
     - name: Learn keys
       run: |
@@ -48,15 +44,13 @@ jobs:
        # cat '${{steps.fetch-secrets.outputs.akelyess_payload}}' -o '${{github.workspace}}\hello.txt'
        # Get-Content '${{github.workspace}}\hello.txt'
 
+    # #### Option 1 ####
+    # # The easiest, just use AzureSignTool
+    # - name: Install AzureSignTool
+    #   id: install-signtool
+    #   run: dotnet tool install --global AzureSignTool 
 
-    #### Option 1 ####
-    # The easiest, just use AzureSignTool
-
-    - name: Install AzureSignTool
-      id: install-signtool
-      run: dotnet tool install --global AzureSignTool 
-
-      # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
-    - name: Use AzureSignTool
-      id: use-signtool
-      run: azuresigntool sign -kvu "${{secrets.AZURE_KEY_VAULT_URI}}" -kvi "${{secrets.AZURE_CLIENT_ID}}" -kvt "${{secrets.AZURE_TENANT_ID}}"-kvs "${{secrets.AZURE_CLIENT_SECRET}}" -kvc ${{secrets.AZURE_CERT_NAME}} -tr http://timestamp.digicert.com -v '${{github.workspace}}\.github\test_files\ConsoleApp1.exe'
+    #   # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
+    # - name: Use AzureSignTool
+    #   id: use-signtool
+    #   run: azuresigntool sign -kvu "${{secrets.AZURE_KEY_VAULT_URI}}" -kvi "${{secrets.AZURE_CLIENT_ID}}" -kvt "${{secrets.AZURE_TENANT_ID}}"-kvs "${{secrets.AZURE_CLIENT_SECRET}}" -kvc ${{secrets.AZURE_CERT_NAME}} -tr http://timestamp.digicert.com -v '${{github.workspace}}\.github\test_files\ConsoleApp1.exe'

@@ -12,6 +12,10 @@ on:
       - 'package-lock.json'
       - '.github/workflows/dynamic-github-personal.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   ########## Option 1 ########## 
   # Default behavior: 
@@ -19,9 +23,6 @@ jobs:
   github_dynamic_secrets:
     runs-on: ubuntu-latest
     name: GitHub dynamic (default)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -32,7 +33,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/github-secrets":"github_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
@@ -66,16 +67,12 @@ jobs:
         echo "token: ${{env.AKEYLESS_GITHUB_TOKEN}}"
         echo "ttl_in_minutes: ${{env.AKEYLESS_GITHUB_TTL_IN_MINUTES}}"
 
-
   ########## Option 2 ########## 
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   github_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
     name: GitHub dynamic (parsed)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -86,7 +83,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/github-secrets":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
@@ -102,7 +99,6 @@ jobs:
         echo "TOKEN: ${{env.token}}"
         echo "TTL_IN_MINUTES: ${{env.ttl_in_minutes}}"
 
-
   ########## Option 3 ##########
   # - Uses 'parse-dynamic-secrets: true'
   # - Uses 'WEB' as a prefix to the output names
@@ -110,9 +106,6 @@ jobs:
   github_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
     name: GitHub dynamic (prefix-parsed)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -123,7 +116,7 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
         dynamic-secrets: '{"/github-secrets":"GH"}' # adds the "GH_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
