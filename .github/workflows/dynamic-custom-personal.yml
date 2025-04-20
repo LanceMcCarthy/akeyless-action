@@ -23,7 +23,7 @@ jobs:
   # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   custom_producer_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: Custom producer dynamic secrets (default)
+    name: Custom producer (default)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
   # This will automatically parse the JSON string into individual outputs
   custom_producer_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
-    name: Custom producer dynamic secrets (parsed)
+    name: Custom producer (parsed)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -93,7 +93,7 @@ jobs:
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   custom_producer_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
-    name: Custom producer dynamic secrets (parsed with prefix)
+    name: Custom producer (prefix-parsed)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -105,7 +105,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/custom-web-producer":"WEB"}' #applies "WEB_" prefix to dynamically parsed output names
+        dynamic-secrets: '{"/custom-web-producer":"WEB"}' # adds the "WEB_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)

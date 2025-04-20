@@ -59,5 +59,4 @@ jobs:
       # Nice walkthrough https://melatonin.dev/blog/how-to-code-sign-windows-installers-with-an-ev-cert-on-github-actions/
     - name: Use AzureSignTool
       id: use-signtool
-      run: |
-        azuresigntool sign -kvu "${{secrets.AZURE_KEY_VAULT_URI}}" -kvi "${{secrets.AZURE_CLIENT_ID}}" -kvt "${{secrets.AZURE_TENANT_ID}}"-kvs "${{secrets.AZURE_CLIENT_SECRET}}" -kvc ${{secrets.AZURE_CERT_NAME}} -tr http://timestamp.digicert.com -v '${{github.workspace}}\.github\test_files\ConsoleApp1.exe'
+      run: azuresigntool sign -kvu "${{secrets.AZURE_KEY_VAULT_URI}}" -kvi "${{secrets.AZURE_CLIENT_ID}}" -kvt "${{secrets.AZURE_TENANT_ID}}"-kvs "${{secrets.AZURE_CLIENT_SECRET}}" -kvc ${{secrets.AZURE_CERT_NAME}} -tr http://timestamp.digicert.com -v '${{github.workspace}}\.github\test_files\ConsoleApp1.exe'

@@ -18,7 +18,7 @@ jobs:
   # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (default)
+    name: EntraID dynamic (default)
     permissions:
       id-token: write
       contents: read
@@ -36,7 +36,6 @@ jobs:
         dynamic-secrets: '{"/entra-id-dvlup":"entra_dynamic_secret"}'
 
     # See other example workflows on how to manually parse each key value => https://github.com/LanceMcCarthy/akeyless-action/blob/main/.github/workflows/dynamic-github.yml#L35-L53
-
     # For this demo we'll just use jq and export them to custom env vars directly
     - name: Export Secrets to Environment using jq
       run: |
@@ -55,7 +54,8 @@ jobs:
   # This will automatically parse the JSON string into individual outputs
   auto_parsed_secrets:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (parsed)
+    name: EntraID dynamic (parsed)
+    needs: [fetch_dynamic_secrets]
     permissions:
       id-token: write
       contents: read
@@ -94,7 +94,7 @@ jobs:
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   auto_parsed_secrets_with_prefix:
     runs-on: ubuntu-latest
-    name: AAD dynamic secrets (prefix-parsed)
+    name: EntraID dynamic (prefix-parsed)
     permissions:
       id-token: write
       contents: read
@@ -109,7 +109,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{env.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/entra-id-dvlup":"ENTRA_ID"}' #applies "ENTRA_ID_" prefix to dynamically parsed output names
+        dynamic-secrets: '{"/entra-id-dvlup":"ENTRA_ID"}' # added the "ENTRA_ID_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
