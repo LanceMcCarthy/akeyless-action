@@ -24,7 +24,7 @@
   "dependencies": {
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
-    "akeyless": "^5.0.0",
+    "akeyless": "^5.0.1",
     "akeyless-cloud-id": "^2.5.0"
   },
   "devDependencies": {
