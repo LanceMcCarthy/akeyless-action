@@ -11,13 +11,14 @@ on:
 #      - 'package-lock.json'
 #      - '.github/workflows/dynamic-aws.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   aws_dynamic_secrets:
     runs-on: ubuntu-latest
     name: AWS dynamic secrets (default)
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - name: Checkout
       uses: actions/checkout@v3

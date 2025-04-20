@@ -33,8 +33,8 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
-        dynamic-secrets: '{"/DevTools/github-secrets":"github_dynamic_secret"}'
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        dynamic-secrets: '{"/github-secrets":"github_dynamic_secret"}'
 
     - name: Verify Job Outputs using jq
       run: |
@@ -83,8 +83,8 @@ jobs:
       id: fetch-secrets
       uses: ./
       with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
-        dynamic-secrets: '{"/DevTools/github-secrets":""}' #no prefix, all output fields are dynamically parsed from source
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
+        dynamic-secrets: '{"/github-secrets":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
@@ -106,123 +106,6 @@ jobs:
   github_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
     name: GitHub dynamic (prefix-parsed)
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Fetch dynamic secret from Akleyless
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
-        dynamic-secrets: '{"/DevTools/github-secrets":"GH"}' #applies "GH_" prefix to dynamically parsed output names
-        parse-dynamic-secrets: true
-
-    - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
-      run: |
-        echo "ID: ${{steps.fetch-secrets.outputs.GH_id}}" 
-        echo "TOKEN: ${{steps.fetch-secrets.outputs.GH_token}}" 
-        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.GH_ttl_in_minutes}}" 
-
-    - name: Verify Environment Variables (to known field names, pre-parsed with prefix)
-      run: |
-        echo "ID: ${{env.GH_id}}"
-        echo "TOKEN: ${{env.GH_token}}"
-        echo "TTL_IN_MINUTES: ${{env.GH_ttl_in_minutes}}"
-
-# ----------------- personal akeyless account ----------------- #
-
-  ########## Option 1 ########## 
-  # Default behavior: 
-  # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
-  github_dynamic_secrets_p:
-    runs-on: ubuntu-latest
-    name: GitHub dynamic [p] (default)
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Fetch dynamic secret from Akleyless
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/github-secrets":"github_dynamic_secret"}'
-
-    - name: Verify Job Outputs using jq
-      run: |
-        echo "Your job output secret is ${{steps.fetch-secrets.outputs.github_dynamic_secret}}"
-        echo "Manually parsed ID:" 
-        echo '${{steps.fetch-secrets.outputs.github_dynamic_secret}}' | jq '.id'
-        echo "Manually parsed TOKEN:" 
-        echo '${{steps.fetch-secrets.outputs.github_dynamic_secret}}' | jq '.token'
-        echo "Manually parsed TTL_IN_MINUTES:" 
-        echo '${{steps.fetch-secrets.outputs.github_dynamic_secret}}' | jq '.ttl_in_minutes'
-
-    - name: Verify Environment Variables using jq
-      run: |
-        echo "Your environment secret is ${{env.github_dynamic_secret}}"
-        echo "Manually parsed ID:"
-        echo '${{env.github_dynamic_secret}}' | jq '.id'
-        echo "Manually parsed TOKEN:"
-        echo '${{env.github_dynamic_secret}}' | jq '.token'
-        echo "Manually parsed TTL_IN_MINUTES:"
-        echo '${{env.github_dynamic_secret}}' | jq '.ttl_in_minutes'
-
-    # Extra 1 & 2 Another way to get the secret values is to use jq and export them to custom env vars directly
-    - name: EXTRA (part 1) - Export Secrets to Environment using jq
-      run: |
-        echo '${{steps.fetch-secrets.outputs.github_dynamic_secret}}' | jq -r 'to_entries|map("AKEYLESS_GITHUB_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
-    
-    - name: EXTRA (part 2) - Verify EXTRA 1's Exported Variables
-      run: |
-        echo "id: ${{env.AKEYLESS_GITHUB_ID}}"
-        echo "token: ${{env.AKEYLESS_GITHUB_TOKEN}}"
-        echo "ttl_in_minutes: ${{env.AKEYLESS_GITHUB_TTL_IN_MINUTES}}"
-
-  ########## Option 2 ########## 
-  # Uses 'parse-dynamic-secrets: true' 
-  # This will automatically parse the JSON string into individual outputs
-  github_dynamic_secrets_parsed_p:
-    runs-on: ubuntu-latest
-    name: GitHub dynamic [p] (parsed)
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Fetch dynamic secret from Akleyless
-      id: fetch-secrets
-      uses: ./
-      with:
-        access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/github-secrets":""}' #no prefix, all output fields are dynamically parsed from source
-        parse-dynamic-secrets: true
-
-    - name: Verify Job Outputs (to known field names, pre-parsed)
-      run: |
-        echo "ID: ${{steps.fetch-secrets.outputs.id}}" 
-        echo "TOKEN: ${{steps.fetch-secrets.outputs.token}}" 
-        echo "TTL_IN_MINUTES: ${{steps.fetch-secrets.outputs.ttl_in_minutes}}"
-
-    - name: Verify Environment Variables (to known field names, pre-parsed)
-      run: |
-        echo "ID: ${{env.id}}"
-        echo "TOKEN: ${{env.token}}"
-        echo "TTL_IN_MINUTES: ${{env.ttl_in_minutes}}"
-
-  ########## Option 3 ##########
-  # - Uses 'parse-dynamic-secrets: true'
-  # - Uses 'WEB' as a prefix to the output names
-  # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
-  github_dynamic_secrets_prefixed_p:
-    runs-on: ubuntu-latest
-    name: GitHub dynamic [p] (prefix-parsed)
     steps:
     - name: Checkout
       uses: actions/checkout@v3
