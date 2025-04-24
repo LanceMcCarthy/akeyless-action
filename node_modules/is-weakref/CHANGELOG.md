@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1](https://github.com/inspect-js/is-weakref/compare/v1.1.0...v1.1.1) - 2025-02-03
+
+### Commits
+
+- [Dev Deps] update `@arethetypeswrong/cli`, `@ljharb/tsconfig`, `@types/tape`, `for-each` [`e0bccbc`](https://github.com/inspect-js/is-weakref/commit/e0bccbcfc4fa0176ef6e07876fcf67b2d7a99884)
+- [types] use WeakKey instead of object [`9ec7583`](https://github.com/inspect-js/is-weakref/commit/9ec75834bfceb6b153bf6a55f9e410fe5ecdb90a)
+- [Deps] update `call-bound` [`7655eb0`](https://github.com/inspect-js/is-weakref/commit/7655eb01853dda6ac7ad85c067e290ff18ce1879)
+
 ## [v1.1.0](https://github.com/inspect-js/is-weakref/compare/v1.0.2...v1.1.0) - 2024-12-13
 
 ### Commits

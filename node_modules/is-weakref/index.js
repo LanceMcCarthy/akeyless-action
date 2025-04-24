@@ -2,7 +2,8 @@
 
 var callBound = require('call-bound');
 
-var $deref = callBound('WeakRef.prototype.deref', true);
+// eslint-disable-next-line no-extra-parens
+var $deref = /** @type {<T extends WeakKey>(thisArg: WeakRef<T>) => T | undefined} */ (callBound('WeakRef.prototype.deref', true));
 
 /** @type {import('.')} */
 module.exports = typeof WeakRef === 'undefined'
@@ -14,6 +15,7 @@ module.exports = typeof WeakRef === 'undefined'
 			return false;
 		}
 		try {
+			// @ts-expect-error
 			$deref(value);
 			return true;
 		} catch (e) {

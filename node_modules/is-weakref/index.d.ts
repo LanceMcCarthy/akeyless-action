@@ -1,3 +1,3 @@
-declare function isWeakRef<T extends object>(value: unknown): value is WeakRef<T>;
+declare function isWeakRef<T extends WeakKey>(value: unknown): value is WeakRef<T>;
 
 export = isWeakRef;

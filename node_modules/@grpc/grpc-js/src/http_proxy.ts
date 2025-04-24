@@ -17,10 +17,8 @@
 
 import { log } from './logging';
 import { LogVerbosity } from './constants';
-import { getDefaultAuthority } from './resolver';
-import { Socket } from 'net';
+import { isIPv4, Socket } from 'net';
 import * as http from 'http';
-import * as tls from 'tls';
 import * as logging from './logging';
 import {
   SubchannelAddress,
@@ -121,6 +119,58 @@ function getNoProxyHostList(): string[] {
   }
 }
 
+interface CIDRNotation {
+  ip: number;
+  prefixLength: number;
+}
+
+/*
+ * The groups correspond to CIDR parts as follows:
+ * 1. ip
+ * 2. prefixLength
+ */
+
+export function parseCIDR(cidrString: string): CIDRNotation | null {
+  const splitRange = cidrString.split('/');  
+  if (splitRange.length !== 2) {  
+    return null;  
+  }  
+  const prefixLength = parseInt(splitRange[1], 10);  
+  if (!isIPv4(splitRange[0]) || Number.isNaN(prefixLength) || prefixLength < 0 || prefixLength > 32) {  
+    return null;  
+  }  
+  return {  
+    ip: ipToInt(splitRange[0]),  
+    prefixLength: prefixLength  
+  };
+}
+
+function ipToInt(ip: string) {
+  return ip.split(".").reduce((acc, octet) => (acc << 8) + parseInt(octet, 10), 0);
+}
+
+function isIpInCIDR(cidr: CIDRNotation, serverHost: string) {
+  const ip = cidr.ip;
+  const mask = -1 << (32 - cidr.prefixLength);
+  const hostIP = ipToInt(serverHost);
+
+  return (hostIP & mask) === (ip & mask);
+}
+
+function hostMatchesNoProxyList(serverHost: string): boolean {
+  for (const host of getNoProxyHostList()) {
+    const parsedCIDR = parseCIDR(host);
+    // host is a CIDR and serverHost is an IP address
+    if (isIPv4(serverHost) && parsedCIDR && isIpInCIDR(parsedCIDR, serverHost)) {
+      return true;
+    } else if (serverHost.endsWith(host)) {
+      // host is a single IP or a domain name suffix
+      return true;
+    }
+  }
+  return false;
+}
+
 export interface ProxyMapResult {
   target: GrpcUri;
   extraOptions: ChannelOptions;
@@ -149,13 +199,9 @@ export function mapProxyName(
     return noProxyResult;
   }
   const serverHost = hostPort.host;
-  for (const host of getNoProxyHostList()) {
-    if (host === serverHost) {
-      trace(
-        'Not using proxy for target in no_proxy list: ' + uriToString(target)
-      );
-      return noProxyResult;
-    }
+  if (hostMatchesNoProxyList(serverHost)) {
+    trace('Not using proxy for target in no_proxy list: ' + uriToString(target));
+    return noProxyResult;
   }
   const extraOptions: ChannelOptions = {
     'grpc.http_connect_target': uriToString(target),
@@ -172,27 +218,21 @@ export function mapProxyName(
   };
 }
 
-export interface ProxyConnectionResult {
-  socket?: Socket;
-  realTarget?: GrpcUri;
-}
-
 export function getProxiedConnection(
   address: SubchannelAddress,
-  channelOptions: ChannelOptions,
-  connectionOptions: tls.ConnectionOptions
-): Promise<ProxyConnectionResult> {
+  channelOptions: ChannelOptions
+): Promise<Socket | null> {
   if (!('grpc.http_connect_target' in channelOptions)) {
-    return Promise.resolve<ProxyConnectionResult>({});
+    return Promise.resolve(null);
   }
   const realTarget = channelOptions['grpc.http_connect_target'] as string;
   const parsedTarget = parseUri(realTarget);
   if (parsedTarget === null) {
-    return Promise.resolve<ProxyConnectionResult>({});
+    return Promise.resolve(null);
   }
   const splitHostPost = splitHostPort(parsedTarget.path);
   if (splitHostPost === null) {
-    return Promise.resolve<ProxyConnectionResult>({});
+    return Promise.resolve(null);
   }
   const hostPort = `${splitHostPost.host}:${
     splitHostPost.port ?? DEFAULT_PORT
@@ -221,7 +261,7 @@ export function getProxiedConnection(
   options.headers = headers;
   const proxyAddressString = subchannelAddressToString(address);
   trace('Using proxy ' + proxyAddressString + ' to connect to ' + options.path);
-  return new Promise<ProxyConnectionResult>((resolve, reject) => {
+  return new Promise<Socket | null>((resolve, reject) => {
     const request = http.request(options);
     request.once('connect', (res, socket, head) => {
       request.removeAllListeners();
@@ -239,55 +279,13 @@ export function getProxiedConnection(
         if (head.length > 0) {
           socket.unshift(head);
         }
-        if ('secureContext' in connectionOptions) {
-          /* The proxy is connecting to a TLS server, so upgrade this socket
-           * connection to a TLS connection.
-           * This is a workaround for https://github.com/nodejs/node/issues/32922
-           * See https://github.com/grpc/grpc-node/pull/1369 for more info. */
-          const targetPath = getDefaultAuthority(parsedTarget);
-          const hostPort = splitHostPort(targetPath);
-          const remoteHost = hostPort?.host ?? targetPath;
-
-          const cts = tls.connect(
-            {
-              host: remoteHost,
-              servername: remoteHost,
-              socket: socket,
-              ...connectionOptions,
-            },
-            () => {
-              trace(
-                'Successfully established a TLS connection to ' +
-                  options.path +
-                  ' through proxy ' +
-                  proxyAddressString
-              );
-              resolve({ socket: cts, realTarget: parsedTarget });
-            }
-          );
-          cts.on('error', (error: Error) => {
-            trace(
-              'Failed to establish a TLS connection to ' +
-                options.path +
-                ' through proxy ' +
-                proxyAddressString +
-                ' with error ' +
-                error.message
-            );
-            reject();
-          });
-        } else {
-          trace(
-            'Successfully established a plaintext connection to ' +
-              options.path +
-              ' through proxy ' +
-              proxyAddressString
-          );
-          resolve({
-            socket,
-            realTarget: parsedTarget,
-          });
-        }
+        trace(
+          'Successfully established a plaintext connection to ' +
+            options.path +
+            ' through proxy ' +
+            proxyAddressString
+        );
+        resolve(socket);
       } else {
         log(
           LogVerbosity.ERROR,
