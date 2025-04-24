@@ -8,6 +8,7 @@
     "format": "prettier --write **/*.js",
     "lint": "eslint **/*.js",
     "test": "jest",
+    "precommit_nolint": "npm run restore && npm run format&& npm run test",
     "precommit": "npm run restore && npm run format && npm run lint && npm run test"
   },
   "repository": {
