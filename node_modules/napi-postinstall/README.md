@@ -107,7 +107,7 @@ if (isNpm()) {
 
 // fallback.js
 module.exports = require('napi-postinstall/fallback')(
-  require.resolve('../package.json') /* <napi-package-json-path> */,
+  require.resolve('./package.json') /* <napi-package-json-path> */,
   true /* <check-version> */,
 )
 ```
