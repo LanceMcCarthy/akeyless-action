@@ -38,7 +38,7 @@ test('Input is all good', () => {
     ['producer-for-aws-access'],
     ['static-secrets'],
     ['dynamic-secrets'],
-    ['timeout', {default: 15, required: false}]
+    ['timeout']
   ]);
 
   expect(core.getBooleanInput.mock.calls).toEqual([

@@ -38,6 +38,10 @@ inputs:
     description: 'True/False to denote if dynamic secrets will exported as a single object, or parsed into individual outputs/env variables. Please visit the demos in ci.yml for clarification.'
     required: false
     default: false
+  timeout:
+    description: 'Timeout for API requests in seconds (15-120), default: 15.'
+    required: false
+    default: '15'
 runs:
   using: 'node20'
   main: 'src/index.js'

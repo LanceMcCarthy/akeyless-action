@@ -34,7 +34,7 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
-    timeout: Number(core.getInput('timeout', {default: 15, required: false}))
+    timeout: Number(core.getInput('timeout') || '15')
   };
 
   // our only required parameter
