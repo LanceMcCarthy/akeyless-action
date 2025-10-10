@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const akeylessApi = require('./akeyless_api');
 const akeyless = require('akeyless');
 
-async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs) {
+async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, timeout) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
@@ -11,7 +11,8 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
     try {
       const param = akeyless.GetDynamicSecretValue.constructFromObject({
         token: akeylessToken,
-        name: akeylessPath
+        name: akeylessPath,
+        timeout: timeout
       });
 
       const dynamicSecret = await api.getDynamicSecretValue(param).catch(error => {
@@ -100,7 +101,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   }
 }
 
-async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment) {
+async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, timeout) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
@@ -110,7 +111,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
 
     const param = akeyless.GetSecretValue.constructFromObject({
       token: akeylessToken,
-      names: [name]
+      names: [name],
+      timeout: timeout
     });
 
     const staticSecret = await api.getSecretValue(param).catch(error => {

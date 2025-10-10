@@ -15,6 +15,7 @@ test('Input is all good', () => {
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(false);
+  core.getInput.mockReturnValueOnce(30);
   const params = input.fetchAndValidateInput();
 
   expect(params).toEqual({
@@ -26,9 +27,19 @@ test('Input is all good', () => {
     dynamicSecrets: {'/some/dynamic/secret': 'other_key'},
     exportSecretsToOutputs: true,
     exportSecretsToEnvironment: true,
-    parseDynamicSecrets: false
+    parseDynamicSecrets: false,
+    timeout: 30
   });
-  expect(core.getInput.mock.calls).toEqual([['access-id', {required: true}], ['access-type'], ['api-url'], ['producer-for-aws-access'], ['static-secrets'], ['dynamic-secrets']]);
+
+  expect(core.getInput.mock.calls).toEqual([
+    ['access-id', {required: true}],
+    ['access-type'],
+    ['api-url'],
+    ['producer-for-aws-access'],
+    ['static-secrets'],
+    ['dynamic-secrets'],
+    ['timeout', {default: 15, required: false}]
+  ]);
 
   expect(core.getBooleanInput.mock.calls).toEqual([
     ['export-secrets-to-outputs', {default: true}],
@@ -59,6 +70,7 @@ test('invalid access type', () => {
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(true);
   core.getBooleanInput.mockReturnValueOnce(false);
+  core.getInput.mockReturnValueOnce(30);
   expect(() => {
     input.fetchAndValidateInput();
   }).toThrow("access-type must be one of: ['jwt', 'aws_iam']");

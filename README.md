@@ -28,6 +28,7 @@ This action will login to AKeyless using JWT or IAM authentication and then fetc
 | **export-secrets-to-outputs** | No | `boolean` | Default: `true`. True/False to denote if static/dynamic secrets should be exported as environment variables.  |
 | **export-secrets-to-environment** | No | `boolean` | Default: `true`. True/False to denote if static/dynamic secrets should be exported as action outputs. |
 | **parse-dynamic-secrets** | No | `boolean` | Default: `false`. True/False to denote if dynamic secrets will be broken up into individual outputs/env vars, see the [parsed dynamic secrets demos](#parsed-dynamic-secrets). |
+| **timeout** | No | `Number`  | Overrides the default gateway request timeout of 15 seconds. |
 
 > It is important that you follow the instructions in the [AKeyless Setup](#akeyless-setup) and [Job Permissions Requirement](#job-permissions-requirement) sections **before** using this Action.
 
@@ -41,8 +42,8 @@ The default behavior will create a single output/env variable that uses the name
 
 | Name | Value |
 |------|-------|
-| outputs | use `${{ steps.JOB_NAME.outputs.SECRET_NAME }}` |
-| environment variables | use `${{ env.SECRET_NAME }}` |
+| outputs | use `${{steps.JOB_NAME.outputs.SECRET_NAME}}` |
+| environment variables | use `${{env.SECRET_NAME}}` |
 
 ##### Parsed Outputs
 
@@ -51,12 +52,12 @@ the outputs will be:
 
 | Name | Value |
 |------|-------|
-| job outputs | `${{ steps.job-name.outputs.id }}` |
-|  | `${{ steps.job-name.outputs.username }}` |
-|  | `${{ steps.job-name.outputs.password }}` |
-| environment variables | `${{ env.id }}` |
-|  | `${{ env.username }}` |
-|  | `${{ env.password }}` |
+| job outputs | `${{steps.job-name.outputs.id}}` |
+|  | `${{steps.job-name.outputs.username}}` |
+|  | `${{steps.job-name.outputs.password}}` |
+| environment variables | `${{env.id}}` |
+|  | `${{env.username}}` |
+|  | `${{env.password}}` |
 
 See the [parsed dynamic secrets](#parsed-dynamic-secrets) example for a better explanation.
 
@@ -138,14 +139,14 @@ jobs:
     - name: Use Outputs
       run: |
         echo "Step Outputs"
-        echo "my_first_secret: ${{ steps.fetch-secrets.outputs.my_first_secret }}"
-        echo "my_second_secret: ${{ steps.fetch-secrets.outputs.my_second_secret }}"
-        echo "my_dynamic_secret: ${{ steps.fetch-secrets.outputs.my_dynamic_secret }}"
+        echo "my_first_secret: ${{steps.fetch-secrets.outputs.my_first_secret}}"
+        echo "my_second_secret: ${{steps.fetch-secrets.outputs.my_second_secret}}"
+        echo "my_dynamic_secret: ${{steps.fetch-secrets.outputs.my_dynamic_secret}}"
         
         echo "Environment Variables"
-        echo "my_first_secret: ${{ env.my_first_secret }}"
-        echo "my_second_secret: ${{ env.my_second_secret }}"
-        echo "my_dynamic_secret: ${{ env.my_dynamic_secret }}"
+        echo "my_first_secret: ${{env.my_first_secret}}"
+        echo "my_second_secret: ${{env.my_second_secret}}"
+        echo "my_dynamic_secret: ${{env.my_dynamic_secret}}"
 ```
 
 ### Dynamic Secrets Demos
@@ -170,25 +171,25 @@ If you want those secrets as separate environment variables, there's one extra s
       id: fetch-dynamic-secrets
       uses: LanceMcCarthy/akeyless-action@v4
       with:
-        access-id: ${{ secrets.AKEYLESS_ACCESS_ID }} # Looks like p-fq3afjjxv839
+        access-id: ${{secrets.AKEYLESS_ACCESS_ID}} # Looks like p-fq3afjjxv839
         dynamic-secrets: '{"/path/to/dynamic/aws/secret":"aws_dynamic_secrets"}'
         
 # ********* KEY TAKEAWAY  ********* #
 # STEP 1 - EXPORT DYNAMIC SECRET's KEYS TO ENV VARS
     - name: Export Secrets to Environment
       run: |
-        echo '${{ steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets }}' | jq -r 'to_entries|map("AWS_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
+        echo '${{steps.fetch-dynamic-secrets.outputs.aws_dynamic_secrets}}' | jq -r 'to_entries|map("AWS_\(.key|ascii_upcase)=\(.value|tostring)")|.[]' >> $GITHUB_ENV
 
 # STEP 2 - You can now access each secret separately as environment variables
     - name: Verify Vars
       run: |
-        echo "access_key_id: ${{ env.AWS_ACCESS_KEY_ID }}"
-        echo "id: ${{ env.AWS_ID }}"
-        echo "secret_access_key: ${{ env.AWS_SECRET_ACCESS_KEY }}"
-        echo "security_token: ${{ env.AWS_SECURITY_TOKEN }}"
-        echo "ttl_in_minutes: ${{ env.AWS_TTL_IN_MINUTES }}"
-        echo "type: ${{ env.AWS_TYPE }}"
-        echo "user: ${{ env.AWS_USER }}"
+        echo "access_key_id: ${{env.AWS_ACCESS_KEY_ID}}"
+        echo "id: ${{env.AWS_ID}}"
+        echo "secret_access_key: ${{env.AWS_SECRET_ACCESS_KEY}}"
+        echo "security_token: ${{env.AWS_SECURITY_TOKEN}}"
+        echo "ttl_in_minutes: ${{env.AWS_TTL_IN_MINUTES}}"
+        echo "type: ${{env.AWS_TYPE}}"
+        echo "user: ${{env.AWS_USER}}"
 ```
 
 #### Parsed Output
@@ -202,7 +203,7 @@ For example, a SQL server dynamic secret will provide **id**, **user**, **ttl_in
   id: get-secrets
   uses: LanceMcCarthy/akeyless-action@v4
   with:
-    access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+    access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
     dynamic-secrets: '{"/DevTools/my-sqlsrv-secret":""}' # no prefix, use an empty string for output var
     parse-dynamic-secrets: true
 ```
@@ -211,19 +212,19 @@ Then the outputs/vars will be directly generated for each key: `id`, `user`, `tt
 
 Step Outputs:
 ```bash
-echo ${{ steps.get-secrets.outputs.id }}
-echo ${{ steps.get-secrets.outputs.user }}
-echo ${{ steps.get-secrets.outputs.ttl_in_minutes }}
-echo ${{ steps.get-secrets.outputs.password }}
+echo ${{steps.get-secrets.outputs.id}}
+echo ${{steps.get-secrets.outputs.user}}
+echo ${{steps.get-secrets.outputs.ttl_in_minutes}}
+echo ${{steps.get-secrets.outputs.password}}
 ```
 
 Environment Variables:
 
 ```bash
-echo ${{ env.id }}
-echo ${{ env.user }}
-echo ${{ env.ttl_in_minutes }}
-echo ${{ env.password }}
+echo ${{env.id}}
+echo ${{env.user}}
+echo ${{env.ttl_in_minutes}}
+echo ${{env.password}}
 ```
 
 ##### Using a Prefix
@@ -237,7 +238,7 @@ For example, using "SQL" for the output path:
   uses: LanceMcCarthy/akeyless-action@v4
   id: job-name
   with:
-    access-id: ${{ secrets.AKEYLESS_ACCESS_ID }}
+    access-id: ${{secrets.AKEYLESS_ACCESS_ID}}
     dynamic-secrets: '{"/DevTools/my-sqlsrv-secret":"SQL"}' # uses 'SQL' for prefix
     parse-dynamic-secrets: true
 ```
@@ -245,8 +246,8 @@ The action will prefix `SQL_` prefix to all the automatically parsed outputs:
 
 ```bash
 # notice the extra "SQL_" prefix
-echo ${{ env.SQL_user }}
-echo ${{ steps.job-name.outputs.SQL_user }}
+echo ${{env.SQL_user}}
+echo ${{steps.job-name.outputs.SQL_user}}
 ```
 
 ## AKeyless Setup
