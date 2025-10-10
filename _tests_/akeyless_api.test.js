@@ -14,7 +14,7 @@ describe('AKeyless API module', () => {
       basePath: ''
     };
     const mockV2Api = {};
-    
+
     akeyless.ApiClient = jest.fn(() => mockApiClient);
     akeyless.V2Api = jest.fn(() => mockV2Api);
 
@@ -34,7 +34,7 @@ describe('AKeyless API module', () => {
       basePath: ''
     };
     const mockV2Api = {};
-    
+
     akeyless.ApiClient = jest.fn(() => mockApiClient);
     akeyless.V2Api = jest.fn(() => mockV2Api);
 
@@ -54,7 +54,7 @@ describe('AKeyless API module', () => {
       basePath: ''
     };
     const mockV2Api = {};
-    
+
     akeyless.ApiClient = jest.fn(() => mockApiClient);
     akeyless.V2Api = jest.fn(() => mockV2Api);
 
@@ -70,17 +70,13 @@ describe('AKeyless API module', () => {
 
   test('multiple API clients can be created', () => {
     // ARRANGE
-    const mockApiClient1 = { basePath: '' };
-    const mockApiClient2 = { basePath: '' };
-    const mockV2Api1 = { client: mockApiClient1 };
-    const mockV2Api2 = { client: mockApiClient2 };
-    
-    akeyless.ApiClient = jest.fn()
-      .mockReturnValueOnce(mockApiClient1)
-      .mockReturnValueOnce(mockApiClient2);
-    akeyless.V2Api = jest.fn()
-      .mockReturnValueOnce(mockV2Api1)
-      .mockReturnValueOnce(mockV2Api2);
+    const mockApiClient1 = {basePath: ''};
+    const mockApiClient2 = {basePath: ''};
+    const mockV2Api1 = {client: mockApiClient1};
+    const mockV2Api2 = {client: mockApiClient2};
+
+    akeyless.ApiClient = jest.fn().mockReturnValueOnce(mockApiClient1).mockReturnValueOnce(mockApiClient2);
+    akeyless.V2Api = jest.fn().mockReturnValueOnce(mockV2Api1).mockReturnValueOnce(mockV2Api2);
 
     // ACT
     const api1 = akeylessApi.api('https://api1.akeyless.io');

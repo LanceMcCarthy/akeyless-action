@@ -25,8 +25,8 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '/aws/producer',
-      staticSecrets: { '/static/secret': 'static_var' },
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -35,7 +35,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.resolve());
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
@@ -47,21 +47,8 @@ describe('Main index module', () => {
     expect(input.fetchAndValidateInput).toHaveBeenCalledTimes(1);
     expect(auth.akeylessLogin).toHaveBeenCalledWith('p-12345', 'jwt', 'https://api.akeyless.io');
     expect(awsAccess.awsLogin).toHaveBeenCalledWith('akeyless-token-123', '/aws/producer', 'https://api.akeyless.io');
-    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith(
-      'akeyless-token-123',
-      { '/static/secret': 'static_var' },
-      'https://api.akeyless.io',
-      true,
-      true
-    );
-    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith(
-      'akeyless-token-123',
-      { '/dynamic/secret': 'dynamic_var' },
-      'https://api.akeyless.io',
-      true,
-      true,
-      false
-    );
+    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true);
+    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, false);
   });
 
   test('successful flow without AWS producer', async () => {
@@ -71,8 +58,8 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '', // No AWS producer
-      staticSecrets: { '/static/secret': 'static_var' },
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -81,7 +68,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.resolve());
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
@@ -103,7 +90,7 @@ describe('Main index module', () => {
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '/aws/producer',
       staticSecrets: null, // No static secrets
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -112,7 +99,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.resolve());
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
@@ -133,7 +120,7 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '/aws/producer',
-      staticSecrets: { '/static/secret': 'static_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
       dynamicSecrets: null, // No dynamic secrets
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
@@ -143,7 +130,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.resolve());
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
@@ -164,8 +151,8 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '/aws/producer',
-      staticSecrets: { '/static/secret': 'static_var' },
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -245,7 +232,7 @@ describe('Main index module', () => {
     core.error = jest.fn();
     core.setFailed = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.reject(new Error('AWS access failed')));
 
     // ACT
@@ -263,7 +250,7 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '',
-      staticSecrets: { '/static/secret': 'static_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
       dynamicSecrets: {},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
@@ -275,7 +262,7 @@ describe('Main index module', () => {
     core.error = jest.fn();
     core.setFailed = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     secrets.exportStaticSecrets = jest.fn(() => Promise.reject(new Error('Static secrets failed')));
 
     // ACT
@@ -294,7 +281,7 @@ describe('Main index module', () => {
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '',
       staticSecrets: {},
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -305,7 +292,7 @@ describe('Main index module', () => {
     core.error = jest.fn();
     core.setFailed = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     secrets.exportDynamicSecrets = jest.fn(() => Promise.reject(new Error('Dynamic secrets failed')));
 
     // ACT
@@ -333,7 +320,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.resolve());
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
@@ -355,8 +342,8 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '',
-      staticSecrets: { '/static/secret': 'static_var' },
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: true,
@@ -365,7 +352,7 @@ describe('Main index module', () => {
 
     core.debug = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
 
@@ -373,21 +360,8 @@ describe('Main index module', () => {
     await index.run();
 
     // ASSERT
-    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith(
-      'akeyless-token-123',
-      { '/static/secret': 'static_var' },
-      'https://api.akeyless.io',
-      true,
-      true
-    );
-    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith(
-      'akeyless-token-123',
-      { '/dynamic/secret': 'dynamic_var' },
-      'https://api.akeyless.io',
-      true,
-      true,
-      true
-    );
+    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true);
+    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, true);
   });
 
   test('continues execution after AWS access failure', async () => {
@@ -397,8 +371,8 @@ describe('Main index module', () => {
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
       producerForAwsAccess: '/aws/producer',
-      staticSecrets: { '/static/secret': 'static_var' },
-      dynamicSecrets: { '/dynamic/secret': 'dynamic_var' },
+      staticSecrets: {'/static/secret': 'static_var'},
+      dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
@@ -409,7 +383,7 @@ describe('Main index module', () => {
     core.error = jest.fn();
     core.setFailed = jest.fn();
     input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({ token: 'akeyless-token-123' }));
+    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
     awsAccess.awsLogin = jest.fn(() => Promise.reject(new Error('AWS access failed')));
     secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
     secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());

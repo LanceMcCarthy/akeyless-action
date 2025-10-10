@@ -74,16 +74,16 @@ describe('Secrets module', () => {
         name: '/path/to/dynamic/producer',
         timeout: 30
       });
-      
+
       // Each key should be set as a separate secret/output/env var
       expect(core.setSecret).toHaveBeenCalledWith('aws-access-key');
       expect(core.setSecret).toHaveBeenCalledWith('aws-secret-key');
       expect(core.setSecret).toHaveBeenCalledWith('aws-session-token');
-      
+
       expect(core.setOutput).toHaveBeenCalledWith('aws_access_key_id', 'aws-access-key');
       expect(core.setOutput).toHaveBeenCalledWith('aws_secret_access_key', 'aws-secret-key');
       expect(core.setOutput).toHaveBeenCalledWith('aws_session_token', 'aws-session-token');
-      
+
       expect(core.exportVariable).toHaveBeenCalledWith('aws_access_key_id', 'aws-access-key');
       expect(core.exportVariable).toHaveBeenCalledWith('aws_secret_access_key', 'aws-secret-key');
       expect(core.exportVariable).toHaveBeenCalledWith('aws_session_token', 'aws-session-token');
@@ -357,9 +357,7 @@ describe('Secrets module', () => {
       core.info = jest.fn(() => {});
 
       const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn()
-        .mockResolvedValueOnce({ '/secret1': 'value1' })
-        .mockResolvedValueOnce({ '/secret2': 'value2' });
+      api.getSecretValue = jest.fn().mockResolvedValueOnce({'/secret1': 'value1'}).mockResolvedValueOnce({'/secret2': 'value2'});
       akeylessApi.api = jest.fn(() => api);
       akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
 

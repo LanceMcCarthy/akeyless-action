@@ -64,8 +64,8 @@ describe('Input validation module', () => {
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getInput.mockReturnValueOnce('{}');  // Use valid empty JSON instead of empty string
-    core.getInput.mockReturnValueOnce('{}');  // Use valid empty JSON instead of empty string
+    core.getInput.mockReturnValueOnce('{}'); // Use valid empty JSON instead of empty string
+    core.getInput.mockReturnValueOnce('{}'); // Use valid empty JSON instead of empty string
     core.getBooleanInput = jest.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
@@ -91,7 +91,7 @@ describe('Input validation module', () => {
   test('throws error when access-id is missing', () => {
     core.getInput = jest.fn();
     core.getInput.mockReturnValueOnce('');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow('You must provide the access id for your auth method via the access-id input');
@@ -102,7 +102,7 @@ describe('Input validation module', () => {
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce(343);
     core.getInput.mockReturnValue('sup');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'access-type' should be a string");
@@ -121,7 +121,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("access-type must be one of: ['jwt', 'aws_iam']");
@@ -137,7 +137,7 @@ describe('Input validation module', () => {
     core.getInput.mockReturnValueOnce('');
     core.getBooleanInput = jest.fn();
     core.getBooleanInput.mockReturnValueOnce('not-a-boolean'); // Invalid boolean
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'export-secrets-to-outputs' should be a boolean");
@@ -156,7 +156,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'static-secrets' did not contain valid JSON");
@@ -175,7 +175,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'dynamic-secrets' did not contain a valid JSON dictionary");
@@ -194,7 +194,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('not-a-number');
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'timeout' should be a number");
@@ -213,7 +213,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('10'); // Below minimum of 15
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'timeout' should be between 15 and 120");
@@ -232,7 +232,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('150'); // Above maximum of 120
-    
+
     expect(() => {
       input.fetchAndValidateInput();
     }).toThrow("Input 'timeout' should be between 15 and 120");

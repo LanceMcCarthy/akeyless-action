@@ -25,9 +25,9 @@ describe('AWS Access module', () => {
     );
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
+
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-    
+
     expect(api.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
     expect(akeyless.GetDynamicSecretValue.constructFromObject).toHaveBeenCalledWith({
       token: 'akeyless-token',
@@ -54,9 +54,9 @@ describe('AWS Access module', () => {
     );
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
+
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-    
+
     expect(api.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
     expect(akeyless.GetDynamicSecretValue.constructFromObject).toHaveBeenCalledWith({
       token: 'akeyless-token',
@@ -82,9 +82,9 @@ describe('AWS Access module', () => {
     );
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
+
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-    
+
     expect(core.setSecret.mock.calls).toEqual([['aws-access-key'], ['aws-secret-key']]);
     expect(core.exportVariable.mock.calls).toEqual([
       ['AWS_ACCESS_KEY_ID', 'aws-access-key'],
@@ -105,9 +105,9 @@ describe('AWS Access module', () => {
     );
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
+
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-    
+
     expect(core.setSecret.mock.calls).toEqual([['aws-access-key'], ['aws-secret-key']]);
     expect(core.exportVariable.mock.calls).toEqual([
       ['AWS_ACCESS_KEY_ID', 'aws-access-key'],
@@ -120,10 +120,9 @@ describe('AWS Access module', () => {
     api.getDynamicSecretValue = jest.fn(() => Promise.reject(new Error('API call failed')));
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
-    await expect(awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io'))
-      .rejects.toThrow('API call failed');
-    
+
+    await expect(awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io')).rejects.toThrow('API call failed');
+
     expect(api.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
   });
 
@@ -140,9 +139,9 @@ describe('AWS Access module', () => {
     );
     akeylessApi.api = jest.fn(() => api);
     akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
-    
+
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-    
+
     expect(core.setSecret.mock.calls).toEqual([[undefined], ['aws-secret-key'], ['aws-session-token']]);
     expect(core.exportVariable.mock.calls).toEqual([
       ['AWS_ACCESS_KEY_ID', undefined],
