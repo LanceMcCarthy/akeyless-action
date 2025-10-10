@@ -34,7 +34,7 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
-    timeout: core.getInput('timeout', {default: 15, required: false})
+    timeout: Number(core.getInput('timeout', {default: 15, required: false}))
   };
 
   // our only required parameter
@@ -86,11 +86,11 @@ const fetchAndValidateInput = () => {
 
   // check for number types
   for (const [paramKey, inputId] of Object.entries(numberInputs)) {
-    const numberValue = params[paramKey];
-    if (isNaN(numberValue)) {
+    const parsedNumber = Number(params[paramKey]);
+    if (isNaN(parsedNumber)) {
       throw new Error(`Input '${inputId}' should be a number`);
     }
-    if (numberValue < 15 || numberValue > 120) {
+    if (parsedNumber < 15 || parsedNumber > 120) {
       throw new Error(`Input '${inputId}' should be between 15 and 120`);
     }
   }
