@@ -5,6 +5,7 @@ on:
 #  push:
 #    branches:
 #      - main
+#      - experimental
 #    paths:
 #      - 'src/**/*'
 #      - 'package.json'
@@ -19,11 +20,16 @@ jobs:
   aws_dynamic_secrets:
     runs-on: ubuntu-latest
     name: AWS dynamic secrets (default)
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Build Action
+      run: |
+        npm ci
+        npm run build
 
     - name: Fetch dynamic secrets from Akleyless
       id: fetch-secrets

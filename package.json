@@ -2,18 +2,20 @@
   "name": "akeyless-action",
   "version": "5.1.2",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf node_modules package-lock.json && npm install",
-    "rebuild": "rimraf node_modules package-lock.json && npm run restore && npm run lint",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "rebuild": "npm run clean && npm run restore && npm run format && npm run lint && npm run build",
     "restore": "npm install",
-    "format": "prettier --write **/*.js",
-    "lint": "eslint **/*.js",
+    "format": "prettier --write \"src/**/*.ts\" \"_tests_/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"_tests_/**/*.ts\"",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:akeyless",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:coverage-verbose": "jest --coverage --verbose",
-    "precommit_nolint": "npm run restore && npm run format && npm run test",
     "precommit": "npm run restore && npm run format && npm run lint && npm run test"
   },
   "repository": {
@@ -28,7 +30,7 @@
   },
   "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
   "dependencies": {
-    "@actions/core": "^2.0.2",
+    "@actions/core": "^2.0.3",
     "@actions/github": "^8.0.1",
     "@aws-sdk/credential-providers": "^3.972.3",
     "@aws-sdk/signature-v4": "^3.374.0",
@@ -36,10 +38,15 @@
     "fast-xml-parser": "^5.3.4"
   },
   "devDependencies": {
+    "@aws-crypto/sha256-js": "^5.2.0",
     "@babel/preset-env": "^7.28.6",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
+    "@types/aws-sdk": "^0.0.42",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.1.0",
     "babel-jest": "^30.2.0",
+    "esbuild": "^0.27.2",
     "eslint": "^9.39.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-filenames": "^1.3.2",
@@ -51,6 +58,8 @@
     "globals": "^17.0.0",
     "jest": "^30.2.0",
     "prettier": "3.7.4",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.4.6",
+    "typescript": "^5.9.3"
   }
 }

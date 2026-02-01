@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - experimental
     paths:
       - 'src/**/*'
       - 'package.json'
@@ -23,11 +24,16 @@ jobs:
   fetch_dynamic_secrets:
     runs-on: ubuntu-latest
     name: EntraID dynamic (default)
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Build Action
+      run: |
+        npm ci
+        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -55,11 +61,16 @@ jobs:
   auto_parsed_secrets:
     runs-on: ubuntu-latest
     name: EntraID dynamic (parsed)
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Build Action
+      run: |
+        npm ci
+        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -90,11 +101,16 @@ jobs:
   auto_parsed_secrets_with_prefix:
     runs-on: ubuntu-latest
     name: EntraID dynamic (prefix-parsed)
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Build Action
+      run: |
+        npm ci
+        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
