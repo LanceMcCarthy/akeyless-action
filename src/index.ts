@@ -6,18 +6,40 @@ import {exportStaticSecrets, exportDynamicSecrets} from './secrets';
 import {fetchAndValidateInput} from './input';
 
 export async function run() {
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
-    fetchAndValidateInput();
 
-  core.debug(`access id: ${accessId}`);
-  core.debug(`Fetch akeyless token with access type ${accessType}`);
+  const {
+    accessId,
+    accessType,
+    apiUrl,
+    producerForAwsAccess,
+    staticSecrets,
+    dynamicSecrets,
+    exportSecretsToOutputs,
+    exportSecretsToEnvironment,
+    parseDynamicSecrets,
+    timeout
+  } = fetchAndValidateInput();
+
+  core.info(`[DEBUG] accessId: ${accessId}`);
+  core.info(`[DEBUG] accessType: ${accessType}`);
+  core.info(`[DEBUG] apiUrl: ${apiUrl}`);
+  core.info(`[DEBUG] producerForAwsAccess: ${producerForAwsAccess}`);
+  core.info(`[DEBUG] staticSecrets: ${JSON.stringify(staticSecrets)}`);
+  core.info(`[DEBUG] dynamicSecrets: ${JSON.stringify(dynamicSecrets)}`);
+  core.info(`[DEBUG] exportSecretsToOutputs: ${exportSecretsToOutputs}`);
+  core.info(`[DEBUG] exportSecretsToEnvironment: ${exportSecretsToEnvironment}`);
+  core.info(`[DEBUG] parseDynamicSecrets: ${parseDynamicSecrets}`);
+  core.info(`[DEBUG] timeout: ${timeout}`);
 
   let akeylessToken: string;
 
   try {
+    core.info(`[DEBUG] Calling akeylessLogin with accessId: ${accessId}, accessType: ${accessType}, apiUrl: ${apiUrl}`);
     const akeylessLoginResponse = await akeylessLogin(accessId, accessType, apiUrl);
+    core.info(`[DEBUG] akeylessLoginResponse: ${JSON.stringify(akeylessLoginResponse)}`);
     akeylessToken = (akeylessLoginResponse as {token: string}).token;
-  } catch {
+  } catch (err) {
+    core.error(`[DEBUG] Failed to login to AKeyless. Error: ${err instanceof Error ? err.stack : JSON.stringify(err)}`);
     core.setFailed('Failed to login to AKeyless.');
     return;
   }
