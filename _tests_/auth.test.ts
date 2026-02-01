@@ -1,4 +1,3 @@
-// TypeScript migrated test for auth
 import * as auth from '../src/auth';
 
 describe('Authentication module', () => {

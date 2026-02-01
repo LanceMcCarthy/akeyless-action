@@ -1,6 +1,5 @@
-
 import * as core from '@actions/core';
-import { allowedAccessTypes } from './auth';
+import {allowedAccessTypes} from './auth';
 
 const stringInputs = {
   accessId: 'access-id',
@@ -35,12 +34,12 @@ type Params = {
   exportSecretsToEnvironment: boolean;
   parseDynamicSecrets: boolean;
   timeout: number;
-  [key: string]: any;
+  [key: string]: string | boolean | number | Record<string, string>;
 };
 
 export function fetchAndValidateInput(): Params {
   const params = {
-    accessId: core.getInput('access-id', { required: true }),
+    accessId: core.getInput('access-id', {required: true}),
     accessType: core.getInput('access-type'),
     apiUrl: core.getInput('api-url'),
     producerForAwsAccess: core.getInput('producer-for-aws-access'),
@@ -63,32 +62,32 @@ export function fetchAndValidateInput(): Params {
 
   // check for string types
   for (const [paramKey, inputId] of Object.entries(stringInputs)) {
-    if (typeof (params as any)[paramKey] !== 'string') {
+    if (typeof params[paramKey] !== 'string') {
       throw new Error(`Input '${inputId}' should be a string`);
     }
   }
 
   // check for bool types
   for (const [paramKey, inputId] of Object.entries(boolInputs)) {
-    if (typeof (params as any)[paramKey] !== 'boolean') {
+    if (typeof params[paramKey] !== 'boolean') {
       throw new Error(`Input '${inputId}' should be a boolean`);
     }
   }
 
   // check for dict types
   for (const [paramKey, inputId] of Object.entries(dictInputs)) {
-    if (typeof (params as any)[paramKey] !== 'string') {
+    if (typeof params[paramKey] !== 'string') {
       throw new Error(`Input '${inputId}' should be a serialized JSON dictionary with the secret path as a key and the output name as the value`);
     }
-    if (!(params as any)[paramKey]) {
+    if (!params[paramKey]) {
       continue;
     }
     try {
-      const parsed = JSON.parse((params as any)[paramKey]) as Record<string, string>;
+      const parsed = JSON.parse(params[paramKey] as string) as Record<string, string>;
       if (parsed.constructor !== Object) {
         throw new Error(`Input '${inputId}' did not contain a valid JSON dictionary`);
       }
-      (params as any)[paramKey] = parsed;
+      params[paramKey] = parsed;
     } catch (e) {
       if (e instanceof SyntaxError) {
         throw new Error(`Input '${inputId}' did not contain valid JSON`);
@@ -105,7 +104,7 @@ export function fetchAndValidateInput(): Params {
 
   // check for number types
   for (const [paramKey, inputId] of Object.entries(numberInputs)) {
-    const parsedNumber = Number((params as any)[paramKey]);
+    const parsedNumber = Number(params[paramKey]);
     if (isNaN(parsedNumber)) {
       throw new Error(`Input '${inputId}' should be a number`);
     }

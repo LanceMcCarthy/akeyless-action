@@ -1,14 +1,12 @@
-
 import * as core from '@actions/core';
 // import * as github from '@actions/github';
-import { akeylessLogin } from './auth';
-import { awsLogin } from './aws_access';
-import { exportStaticSecrets, exportDynamicSecrets } from './secrets';
-import { fetchAndValidateInput } from './input';
-
+import {akeylessLogin} from './auth';
+import {awsLogin} from './aws_access';
+import {exportStaticSecrets, exportDynamicSecrets} from './secrets';
+import {fetchAndValidateInput} from './input';
 
 export async function run() {
-  const { accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout } =
+  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
     fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
@@ -18,7 +16,7 @@ export async function run() {
 
   try {
     const akeylessLoginResponse = await akeylessLogin(accessId, accessType, apiUrl);
-    akeylessToken = (akeylessLoginResponse as any)['token'];
+    akeylessToken = (akeylessLoginResponse as { token: string }).token;
   } catch {
     core.setFailed('Failed to login to AKeyless.');
     return;

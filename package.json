@@ -4,19 +4,18 @@
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:akeyless",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist",
-    "rebuild": "npm run clean && npm run restore && npm run lint && npm run build",
+    "rebuild": "npm run clean && npm run restore && npm run format && npm run lint && npm run build",
     "restore": "npm install",
     "format": "prettier --write \"src/**/*.ts\" \"_tests_/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" \"_tests_/**/*.ts\"",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:akeyless",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:coverage-verbose": "jest --coverage --verbose",
-    "precommit_nolint": "npm run restore && npm run format && npm run test",
     "precommit": "npm run restore && npm run format && npm run lint && npm run test"
   },
   "repository": {

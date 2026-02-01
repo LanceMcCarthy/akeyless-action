@@ -1,18 +1,15 @@
-// @ts-nocheck
-
-import { api } from '../src/akeyless_api';
+// Lint fix: removed @ts-nocheck
+import {api} from '../src/akeyless_api';
 import * as akeyless from 'akeyless';
-
 
 jest.mock('akeyless', () => {
   const actual = jest.requireActual('akeyless');
   return {
     ...actual,
-    ApiClient: jest.fn(() => ({ basePath: '' })),
-    V2Api: jest.fn(() => ({})),
+    ApiClient: jest.fn(() => ({basePath: ''})),
+    V2Api: jest.fn(() => ({}))
   };
 });
-
 
 describe('AKeyless API module', () => {
   beforeEach(() => {
@@ -26,8 +23,6 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-
-
     (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
     (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
@@ -35,8 +30,8 @@ describe('AKeyless API module', () => {
     const result = api('https://api.akeyless.io');
 
     // ASSERT
-    expect((akeyless as any).ApiClient).toHaveBeenCalledTimes(1);
-    expect((akeyless as any).V2Api).toHaveBeenCalledWith(mockApiClient);
+    expect((akeyless.ApiClient as jest.Mock)).toHaveBeenCalledTimes(1);
+    expect((akeyless.V2Api as jest.Mock)).toHaveBeenCalledWith(mockApiClient);
     expect(mockApiClient.basePath).toBe('https://api.akeyless.io');
     expect(result).toBe(mockV2Api);
   });
@@ -48,8 +43,6 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-
-
     (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
     (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
@@ -57,8 +50,8 @@ describe('AKeyless API module', () => {
     const result = api('https://custom.akeyless.io');
 
     // ASSERT
-    expect((akeyless as any).ApiClient).toHaveBeenCalledTimes(1);
-    expect((akeyless as any).V2Api).toHaveBeenCalledWith(mockApiClient);
+    expect((akeyless.ApiClient as jest.Mock)).toHaveBeenCalledTimes(1);
+    expect((akeyless.V2Api as jest.Mock)).toHaveBeenCalledWith(mockApiClient);
     expect(mockApiClient.basePath).toBe('https://custom.akeyless.io');
     expect(result).toBe(mockV2Api);
   });
@@ -70,8 +63,6 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-
-
     (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
     (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
@@ -79,8 +70,8 @@ describe('AKeyless API module', () => {
     const result = api('');
 
     // ASSERT
-    expect((akeyless as any).ApiClient).toHaveBeenCalledTimes(1);
-    expect((akeyless as any).V2Api).toHaveBeenCalledWith(mockApiClient);
+    expect((akeyless.ApiClient as jest.Mock)).toHaveBeenCalledTimes(1);
+    expect((akeyless.V2Api as jest.Mock)).toHaveBeenCalledWith(mockApiClient);
     expect(mockApiClient.basePath).toBe('');
     expect(result).toBe(mockV2Api);
   });
@@ -92,22 +83,16 @@ describe('AKeyless API module', () => {
     const mockV2Api1 = {client: mockApiClient1};
     const mockV2Api2 = {client: mockApiClient2};
 
-
-
-    (akeyless.ApiClient as jest.Mock)
-      .mockImplementationOnce(() => mockApiClient1)
-      .mockImplementationOnce(() => mockApiClient2);
-    (akeyless.V2Api as jest.Mock)
-      .mockImplementationOnce(() => mockV2Api1)
-      .mockImplementationOnce(() => mockV2Api2);
+    (akeyless.ApiClient as jest.Mock).mockImplementationOnce(() => mockApiClient1).mockImplementationOnce(() => mockApiClient2);
+    (akeyless.V2Api as jest.Mock).mockImplementationOnce(() => mockV2Api1).mockImplementationOnce(() => mockV2Api2);
 
     // ACT
     const result1 = api('https://api1.akeyless.io');
     const result2 = api('https://api2.akeyless.io');
 
     // ASSERT
-    expect((akeyless as any).ApiClient).toHaveBeenCalledTimes(2);
-    expect((akeyless as any).V2Api).toHaveBeenCalledTimes(2);
+    expect((akeyless.ApiClient as jest.Mock)).toHaveBeenCalledTimes(2);
+    expect((akeyless.V2Api as jest.Mock)).toHaveBeenCalledTimes(2);
     expect(mockApiClient1.basePath).toBe('https://api1.akeyless.io');
     expect(mockApiClient2.basePath).toBe('https://api2.akeyless.io');
     expect(result1).toBe(mockV2Api1);

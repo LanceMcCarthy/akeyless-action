@@ -1,5 +1,5 @@
 import * as core from '@actions/core';
-import { api as akeylessApi } from './akeyless_api';
+import {api as akeylessApi} from './akeyless_api';
 import akeyless from 'akeyless';
 
 export async function exportDynamicSecrets(
@@ -158,4 +158,3 @@ export async function exportStaticSecrets(
     core.info(`Successfully exported ${akeylessPath} to ${variableName}.`);
   }
 }
-

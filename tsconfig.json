@@ -14,5 +14,5 @@
   },
   "include": ["src/**/*", "_tests_/**/*"],
   "exclude": ["node_modules", "dist"],
-  "types": ["jest"]
+  "types": ["jest", "node"]
 }

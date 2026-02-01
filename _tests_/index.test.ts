@@ -1,10 +1,8 @@
-// TypeScript migrated test for index
-import * as core from '@actions/core';
 import * as auth from '../src/auth';
 import * as awsAccess from '../src/aws_access';
 import * as secrets from '../src/secrets';
 import * as input from '../src/input';
-import { run } from '../src/index';
+import {run} from '../src/index';
 
 jest.mock('@actions/core');
 jest.mock('../src/auth');
@@ -30,7 +28,7 @@ describe('Main index module', () => {
       parseDynamicSecrets: false,
       timeout: 30
     });
-    jest.spyOn(auth, 'akeylessLogin').mockResolvedValue({ token: 'akeyless-token-123' });
+    jest.spyOn(auth, 'akeylessLogin').mockResolvedValue({token: 'akeyless-token-123'});
     jest.spyOn(awsAccess, 'awsLogin').mockResolvedValue(undefined);
     jest.spyOn(secrets, 'exportStaticSecrets').mockResolvedValue(undefined);
     jest.spyOn(secrets, 'exportDynamicSecrets').mockResolvedValue(undefined);

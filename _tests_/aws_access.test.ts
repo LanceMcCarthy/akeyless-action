@@ -1,23 +1,25 @@
-// @ts-nocheck
+// Lint fix: removed @ts-nocheck
 import * as core from '@actions/core';
-import { api as akeylessApi } from '../src/akeyless_api';
+// Removed unused akeylessApi import
 import * as akeyless from 'akeyless';
 
 jest.mock('@actions/core');
 jest.mock('../src/akeyless_api', () => ({
   api: jest.fn(() => ({
-    getDynamicSecretValue: jest.fn(() => Promise.resolve({
-      access_key_id: 'aws-access-key',
-      secret_access_key: 'aws-secret-key',
-      security_token: 'aws-session-token',
-    })),
-  })),
+    getDynamicSecretValue: jest.fn(() =>
+      Promise.resolve({
+        access_key_id: 'aws-access-key',
+        secret_access_key: 'aws-secret-key',
+        security_token: 'aws-session-token'
+      })
+    )
+  }))
 }));
 jest.mock('akeyless', () => {
   return {
-    GetDynamicSecretValue: { constructFromObject: jest.fn(() => 'get_dynamic_secret_body') },
-    ApiClient: jest.fn(() => ({ basePath: '' })),
-    V2Api: jest.fn(() => ({})),
+    GetDynamicSecretValue: {constructFromObject: jest.fn(() => 'get_dynamic_secret_body')},
+    ApiClient: jest.fn(() => ({basePath: ''})),
+    V2Api: jest.fn(() => ({}))
   };
 });
 
@@ -30,12 +32,13 @@ describe('AWS Access module', () => {
     jest.spyOn(core, 'setSecret').mockImplementation(() => {});
     jest.spyOn(core, 'exportVariable').mockImplementation(() => {});
     // Call the function under test
-    await require('../src/aws_access').awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
+    const { awsLogin } = await import('../src/aws_access');
+    await awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
     // Get the actual mock instance used
-    const { api } = require('../src/akeyless_api');
+    const { api } = await import('../src/akeyless_api');
     const apiClientInstance = (api as jest.Mock).mock.results[0].value;
     expect(apiClientInstance.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
-    expect((akeyless as any).GetDynamicSecretValue.constructFromObject).toHaveBeenCalledWith({
+    expect((akeyless.GetDynamicSecretValue.constructFromObject as jest.Mock)).toHaveBeenCalledWith({
       token: 'akeyless-token',
       name: '/path/to/dynamic/producer'
     });
