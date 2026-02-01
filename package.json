@@ -2,14 +2,17 @@
   "name": "akeyless-action",
   "version": "5.1.2",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf node_modules package-lock.json && npm install",
-    "rebuild": "rimraf node_modules package-lock.json && npm run restore && npm run lint",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:akeyless",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf dist",
+    "rebuild": "npm run clean && npm run restore && npm run lint && npm run build",
     "restore": "npm install",
-    "format": "prettier --write **/*.js",
-    "lint": "eslint **/*.js",
+    "format": "prettier --write \"src/**/*.ts\" \"_tests_/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" \"_tests_/**/*.ts\"",
     "test": "jest",
+    "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:coverage-verbose": "jest --coverage --verbose",
@@ -39,7 +42,9 @@
     "@babel/preset-env": "^7.28.6",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
+    "@types/node": "^25.1.0",
     "babel-jest": "^30.2.0",
+    "esbuild": "^0.27.2",
     "eslint": "^9.39.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-filenames": "^1.3.2",
@@ -51,6 +56,7 @@
     "globals": "^17.0.0",
     "jest": "^30.2.0",
     "prettier": "3.7.4",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.3"
   }
 }
