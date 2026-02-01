@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import {api as akeylessApi} from './akeyless_api';
-import akeyless from 'akeyless';
+import * as akeyless from 'akeyless';
 
 export async function exportDynamicSecrets(
   akeylessToken: string,

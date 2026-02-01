@@ -1,6 +1,6 @@
 import * as core from '@actions/core';
 import {api as akeylessApi} from './akeyless_api';
-import akeyless from 'akeyless';
+import * as akeyless from 'akeyless';
 import {fromNodeProviderChain} from '@aws-sdk/credential-providers';
 import {SignatureV4} from '@aws-sdk/signature-v4';
 import {Sha256} from '@aws-crypto/sha256-js';

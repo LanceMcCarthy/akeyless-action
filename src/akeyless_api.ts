@@ -1,4 +1,4 @@
-import akeyless from 'akeyless';
+import * as akeyless from 'akeyless';
 
 export function api(url: string) {
   const client = new akeyless.ApiClient();
