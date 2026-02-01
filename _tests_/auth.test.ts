@@ -1,4 +1,5 @@
-const auth = require('../src/auth');
+// TypeScript migrated test for auth
+import * as auth from '../src/auth';
 
 describe('Authentication module', () => {
   test('exports allowed access types', () => {

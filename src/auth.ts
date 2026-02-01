@@ -71,7 +71,11 @@ async function getAwsCloudIdV3(): Promise<string> {
     const awsData = JSON.stringify(cloudIdObj);
     return Buffer.from(awsData).toString('base64');
   } catch (error: unknown) {
-    throw new Error(`Failed to get AWS cloud ID: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Failed to get AWS cloud ID: ${error.message}`);
+    } else {
+      throw new Error(`Failed to get AWS cloud ID: ${String(error)}`);
+    }
   }
 }
 
@@ -84,7 +88,11 @@ async function jwtLogin(apiUrl: string, accessId: string) {
     core.debug('Fetching JWT from Github');
     githubToken = await core.getIDToken();
   } catch (error: unknown) {
-    action_fail(`Failed to fetch Github JWT: ${error.message}`);
+    if (error instanceof Error) {
+      action_fail(`Failed to fetch Github JWT: ${error.message}`);
+    } else {
+      action_fail(`Failed to fetch Github JWT: ${String(error)}`);
+    }
   }
   try {
     core.debug('Fetching token from AKeyless');
@@ -96,7 +104,11 @@ async function jwtLogin(apiUrl: string, accessId: string) {
       })
     );
   } catch (error: unknown) {
-    action_fail(`Failed to login to AKeyless: ${error.message}`);
+    if (error instanceof Error) {
+      action_fail(`Failed to login to AKeyless: ${error.message}`);
+    } else {
+      action_fail(`Failed to login to AKeyless: ${String(error)}`);
+    }
   }
 }
 
@@ -107,7 +119,11 @@ async function awsIamLogin(apiUrl: string, accessId: string) {
   try {
     cloudId = await getAwsCloudIdV3();
   } catch (error: unknown) {
-    action_fail(`Failed to fetch cloud id: ${error.message}`);
+    if (error instanceof Error) {
+      action_fail(`Failed to fetch cloud id: ${error.message}`);
+    } else {
+      action_fail(`Failed to fetch cloud id: ${String(error)}`);
+    }
   }
 
   if (cloudId === undefined) {
@@ -123,7 +139,11 @@ async function awsIamLogin(apiUrl: string, accessId: string) {
       })
     );
   } catch (error: unknown) {
-    action_fail(`Failed to login to AKeyless: ${error.message}`);
+    if (error instanceof Error) {
+      action_fail(`Failed to login to AKeyless: ${error.message}`);
+    } else {
+      action_fail(`Failed to login to AKeyless: ${String(error)}`);
+    }
   }
 }
 
@@ -139,6 +159,10 @@ export async function akeylessLogin(accessId: string, accessType: string, apiUrl
     core.debug('fetch token');
     return login[accessType](apiUrl, accessId);
   } catch (error: unknown) {
-    action_fail(error.message);
+    if (error instanceof Error) {
+      action_fail(error.message);
+    } else {
+      action_fail(String(error));
+    }
   }
 }
