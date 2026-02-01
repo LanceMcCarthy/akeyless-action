@@ -23,7 +23,7 @@ export async function exportDynamicSecrets(
         timeout: timeout
       });
 
-      const dynamicSecret = await api.getDynamicSecretValue(param).catch((error: any) => {
+      const dynamicSecret = await api.getDynamicSecretValue(param).catch((error: unknown) => {
         core.error(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
         core.setFailed(`getDynamicSecretValue Failed: ${JSON.stringify(error)}`);
       });
@@ -130,7 +130,7 @@ export async function exportStaticSecrets(
       timeout: timeout
     });
 
-    const staticSecret = await api.getSecretValue(param).catch((error: any) => {
+    const staticSecret = await api.getSecretValue(param).catch((error: unknown) => {
       core.error(`getSecretValue Failed: ${JSON.stringify(error)}`);
       core.setFailed(`getSecretValue Failed: ${JSON.stringify(error)}`);
     });

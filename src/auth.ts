@@ -39,7 +39,6 @@ async function getAwsCloudIdV3(): Promise<string> {
       path: '/',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-        'Content-Length': body.length.toString(),
         Host: 'sts.amazonaws.com'
       },
       body: body
@@ -71,7 +70,7 @@ async function getAwsCloudIdV3(): Promise<string> {
 
     const awsData = JSON.stringify(cloudIdObj);
     return Buffer.from(awsData).toString('base64');
-  } catch (error: any) {
+  } catch (error: unknown) {
     throw new Error(`Failed to get AWS cloud ID: ${error.message}`);
   }
 }
@@ -84,7 +83,7 @@ async function jwtLogin(apiUrl: string, accessId: string) {
   try {
     core.debug('Fetching JWT from Github');
     githubToken = await core.getIDToken();
-  } catch (error: any) {
+  } catch (error: unknown) {
     action_fail(`Failed to fetch Github JWT: ${error.message}`);
   }
   try {
@@ -96,7 +95,7 @@ async function jwtLogin(apiUrl: string, accessId: string) {
         jwt: githubToken
       })
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     action_fail(`Failed to login to AKeyless: ${error.message}`);
   }
 }
@@ -107,7 +106,7 @@ async function awsIamLogin(apiUrl: string, accessId: string) {
 
   try {
     cloudId = await getAwsCloudIdV3();
-  } catch (error: any) {
+  } catch (error: unknown) {
     action_fail(`Failed to fetch cloud id: ${error.message}`);
   }
 
@@ -123,12 +122,12 @@ async function awsIamLogin(apiUrl: string, accessId: string) {
         'cloud-id': cloudId
       })
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     action_fail(`Failed to login to AKeyless: ${error.message}`);
   }
 }
 
-const login: Record<string, (apiUrl: string, accessId: string) => Promise<any>> = {
+const login: Record<string, (apiUrl: string, accessId: string) => Promise<unknown>> = {
   jwt: jwtLogin,
   aws_iam: awsIamLogin
 };
@@ -139,7 +138,7 @@ export async function akeylessLogin(accessId: string, accessType: string, apiUrl
   try {
     core.debug('fetch token');
     return login[accessType](apiUrl, accessId);
-  } catch (error: any) {
+  } catch (error: unknown) {
     action_fail(error.message);
   }
 }

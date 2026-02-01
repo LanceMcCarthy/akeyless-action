@@ -38,7 +38,7 @@ type Params = {
 };
 
 export function fetchAndValidateInput(): Params {
-  const params: any = {
+  const params = {
     accessId: core.getInput('access-id', { required: true }),
     accessType: core.getInput('access-type'),
     apiUrl: core.getInput('api-url'),
@@ -83,7 +83,7 @@ export function fetchAndValidateInput(): Params {
       continue;
     }
     try {
-      const parsed = JSON.parse(params[paramKey]);
+      const parsed = JSON.parse(params[paramKey]) as Record<string, string>;
       if (parsed.constructor !== Object) {
         throw new Error(`Input '${inputId}' did not contain a valid JSON dictionary`);
       }

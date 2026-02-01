@@ -16,7 +16,7 @@ export async function awsLogin(
           name: producerForAwsAccess
         })
       )
-      .then((awsCredentials: any) => {
+      .then((awsCredentials: Record<string, string>) => {
         const accessKeyId = awsCredentials['access_key_id'];
         const secretAccessKey = awsCredentials['secret_access_key'];
         const sessionToken = awsCredentials['security_token'];
@@ -31,7 +31,7 @@ export async function awsLogin(
         }
         resolve();
       })
-      .catch((error: any) => {
+      .catch((error: unknown) => {
         reject(error);
       });
   });
