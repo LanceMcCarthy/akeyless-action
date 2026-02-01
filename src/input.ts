@@ -38,7 +38,7 @@ type Params = {
 };
 
 export function fetchAndValidateInput(): Params {
-  const params = {
+  const params: Params = {
     accessId: core.getInput('access-id', {required: true}),
     accessType: core.getInput('access-type'),
     apiUrl: core.getInput('api-url'),
@@ -49,7 +49,9 @@ export function fetchAndValidateInput(): Params {
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment'),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets'),
     timeout: Number(core.getInput('timeout') || '15')
-  };
+    // Add index signature for dynamic access
+    // This is a type assertion to allow string indexing
+  } as Params;
 
   // our only required parameter
   if (!params['accessId']) {

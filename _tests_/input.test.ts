@@ -8,7 +8,7 @@ jest.mock('../src/auth');
 describe('Input validation module', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (auth as { allowedAccessTypes: string[] }).allowedAccessTypes = ['jwt', 'aws_iam'];
+    (auth as {allowedAccessTypes: string[]}).allowedAccessTypes = ['jwt', 'aws_iam'];
   });
 
   test('valid input with all parameters', () => {

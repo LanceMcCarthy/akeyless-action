@@ -29,7 +29,6 @@ describe('Secrets module', () => {
     jest.spyOn(core, 'exportVariable').mockImplementation(() => {});
     jest.spyOn(core, 'info').mockImplementation(() => {});
 
-
     await expect(exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30)).resolves.not.toThrow();
   });
 
@@ -38,7 +37,6 @@ describe('Secrets module', () => {
     jest.spyOn(core, 'setOutput').mockImplementation(() => {});
     jest.spyOn(core, 'exportVariable').mockImplementation(() => {});
     jest.spyOn(core, 'info').mockImplementation(() => {});
-
 
     await expect(exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30)).resolves.not.toThrow();
   });

@@ -32,13 +32,13 @@ describe('AWS Access module', () => {
     jest.spyOn(core, 'setSecret').mockImplementation(() => {});
     jest.spyOn(core, 'exportVariable').mockImplementation(() => {});
     // Call the function under test
-    const { awsLogin } = await import('../src/aws_access');
+    const {awsLogin} = await import('../src/aws_access');
     await awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
     // Get the actual mock instance used
-    const { api } = await import('../src/akeyless_api');
+    const {api} = await import('../src/akeyless_api');
     const apiClientInstance = (api as jest.Mock).mock.results[0].value;
     expect(apiClientInstance.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
-    expect((akeyless.GetDynamicSecretValue.constructFromObject as jest.Mock)).toHaveBeenCalledWith({
+    expect(akeyless.GetDynamicSecretValue.constructFromObject as jest.Mock).toHaveBeenCalledWith({
       token: 'akeyless-token',
       name: '/path/to/dynamic/producer'
     });
