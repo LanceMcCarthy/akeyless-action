@@ -18,7 +18,7 @@ export async function run() {
 
   try {
     const akeylessLoginResponse = await akeylessLogin(accessId, accessType, apiUrl);
-    akeylessToken = akeylessLoginResponse['token'];
+    akeylessToken = (akeylessLoginResponse as any)['token'];
   } catch {
     core.setFailed('Failed to login to AKeyless.');
     return;

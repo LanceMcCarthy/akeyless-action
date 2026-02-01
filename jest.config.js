@@ -13,10 +13,6 @@ module.exports = {
     ]
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-      useESM: false
-    }
-  }
+  preset: 'ts-jest',
+  globals: {},
 };

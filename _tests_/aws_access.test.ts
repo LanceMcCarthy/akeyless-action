@@ -4,8 +4,22 @@ import { api as akeylessApi } from '../src/akeyless_api';
 import * as akeyless from 'akeyless';
 
 jest.mock('@actions/core');
-jest.mock('../src/akeyless_api');
-jest.mock('akeyless');
+jest.mock('../src/akeyless_api', () => ({
+  api: jest.fn(() => ({
+    getDynamicSecretValue: jest.fn(() => Promise.resolve({
+      access_key_id: 'aws-access-key',
+      secret_access_key: 'aws-secret-key',
+      security_token: 'aws-session-token',
+    })),
+  })),
+}));
+jest.mock('akeyless', () => {
+  return {
+    GetDynamicSecretValue: { constructFromObject: jest.fn(() => 'get_dynamic_secret_body') },
+    ApiClient: jest.fn(() => ({ basePath: '' })),
+    V2Api: jest.fn(() => ({})),
+  };
+});
 
 describe('AWS Access module', () => {
   beforeEach(() => {
@@ -15,20 +29,12 @@ describe('AWS Access module', () => {
   test('successful AWS login with session token', async () => {
     jest.spyOn(core, 'setSecret').mockImplementation(() => {});
     jest.spyOn(core, 'exportVariable').mockImplementation(() => {});
-    const api = jest.fn(() => {});
-    (api as any).getDynamicSecretValue = jest.fn(() =>
-      Promise.resolve({
-        access_key_id: 'aws-access-key',
-        secret_access_key: 'aws-secret-key',
-        security_token: 'aws-session-token'
-      })
-    );
-    (akeylessApi as any).api = jest.fn(() => api);
-    (akeyless as any).GetDynamicSecretValue = { constructFromObject: jest.fn(() => 'get_dynamic_secret_body') };
-
+    // Call the function under test
     await require('../src/aws_access').awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
-
-    expect((api as any).getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
+    // Get the actual mock instance used
+    const { api } = require('../src/akeyless_api');
+    const apiClientInstance = (api as jest.Mock).mock.results[0].value;
+    expect(apiClientInstance.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
     expect((akeyless as any).GetDynamicSecretValue.constructFromObject).toHaveBeenCalledWith({
       token: 'akeyless-token',
       name: '/path/to/dynamic/producer'

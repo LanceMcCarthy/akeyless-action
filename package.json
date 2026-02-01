@@ -39,9 +39,11 @@
     "fast-xml-parser": "^5.3.4"
   },
   "devDependencies": {
+    "@aws-crypto/sha256-js": "^5.2.0",
     "@babel/preset-env": "^7.28.6",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
+    "@types/aws-sdk": "^0.0.42",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.1.0",
     "babel-jest": "^30.2.0",

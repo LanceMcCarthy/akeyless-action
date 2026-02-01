@@ -35,6 +35,7 @@ type Params = {
   exportSecretsToEnvironment: boolean;
   parseDynamicSecrets: boolean;
   timeout: number;
+  [key: string]: any;
 };
 
 export function fetchAndValidateInput(): Params {
@@ -62,32 +63,32 @@ export function fetchAndValidateInput(): Params {
 
   // check for string types
   for (const [paramKey, inputId] of Object.entries(stringInputs)) {
-    if (typeof params[paramKey] !== 'string') {
+    if (typeof (params as any)[paramKey] !== 'string') {
       throw new Error(`Input '${inputId}' should be a string`);
     }
   }
 
   // check for bool types
   for (const [paramKey, inputId] of Object.entries(boolInputs)) {
-    if (typeof params[paramKey] !== 'boolean') {
+    if (typeof (params as any)[paramKey] !== 'boolean') {
       throw new Error(`Input '${inputId}' should be a boolean`);
     }
   }
 
   // check for dict types
   for (const [paramKey, inputId] of Object.entries(dictInputs)) {
-    if (typeof params[paramKey] !== 'string') {
+    if (typeof (params as any)[paramKey] !== 'string') {
       throw new Error(`Input '${inputId}' should be a serialized JSON dictionary with the secret path as a key and the output name as the value`);
     }
-    if (!params[paramKey]) {
+    if (!(params as any)[paramKey]) {
       continue;
     }
     try {
-      const parsed = JSON.parse(params[paramKey]) as Record<string, string>;
+      const parsed = JSON.parse((params as any)[paramKey]) as Record<string, string>;
       if (parsed.constructor !== Object) {
         throw new Error(`Input '${inputId}' did not contain a valid JSON dictionary`);
       }
-      params[paramKey] = parsed;
+      (params as any)[paramKey] = parsed;
     } catch (e) {
       if (e instanceof SyntaxError) {
         throw new Error(`Input '${inputId}' did not contain valid JSON`);
@@ -104,7 +105,7 @@ export function fetchAndValidateInput(): Params {
 
   // check for number types
   for (const [paramKey, inputId] of Object.entries(numberInputs)) {
-    const parsedNumber = Number(params[paramKey]);
+    const parsedNumber = Number((params as any)[paramKey]);
     if (isNaN(parsedNumber)) {
       throw new Error(`Input '${inputId}' should be a number`);
     }

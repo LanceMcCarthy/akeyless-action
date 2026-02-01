@@ -3,10 +3,16 @@
 import { api } from '../src/akeyless_api';
 import * as akeyless from 'akeyless';
 
-// Helper to mock property getter exports for CJS modules
-function mockAkeylessProperty(name: string, value: any) {
-  jest.spyOn(akeyless, name, 'get').mockReturnValue(value);
-}
+
+jest.mock('akeyless', () => {
+  const actual = jest.requireActual('akeyless');
+  return {
+    ...actual,
+    ApiClient: jest.fn(() => ({ basePath: '' })),
+    V2Api: jest.fn(() => ({})),
+  };
+});
+
 
 describe('AKeyless API module', () => {
   beforeEach(() => {
@@ -21,8 +27,9 @@ describe('AKeyless API module', () => {
     const mockV2Api = {};
 
 
-    mockAkeylessProperty('ApiClient', jest.fn(() => mockApiClient));
-    mockAkeylessProperty('V2Api', jest.fn(() => mockV2Api));
+
+    (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
+    (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
     // ACT
     const result = api('https://api.akeyless.io');
@@ -42,8 +49,9 @@ describe('AKeyless API module', () => {
     const mockV2Api = {};
 
 
-    mockAkeylessProperty('ApiClient', jest.fn(() => mockApiClient));
-    mockAkeylessProperty('V2Api', jest.fn(() => mockV2Api));
+
+    (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
+    (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
     // ACT
     const result = api('https://custom.akeyless.io');
@@ -63,8 +71,9 @@ describe('AKeyless API module', () => {
     const mockV2Api = {};
 
 
-    mockAkeylessProperty('ApiClient', jest.fn(() => mockApiClient));
-    mockAkeylessProperty('V2Api', jest.fn(() => mockV2Api));
+
+    (akeyless.ApiClient as jest.Mock).mockImplementation(() => mockApiClient);
+    (akeyless.V2Api as jest.Mock).mockImplementation(() => mockV2Api);
 
     // ACT
     const result = api('');
@@ -84,8 +93,13 @@ describe('AKeyless API module', () => {
     const mockV2Api2 = {client: mockApiClient2};
 
 
-    mockAkeylessProperty('ApiClient', jest.fn().mockReturnValueOnce(mockApiClient1).mockReturnValueOnce(mockApiClient2));
-    mockAkeylessProperty('V2Api', jest.fn().mockReturnValueOnce(mockV2Api1).mockReturnValueOnce(mockV2Api2));
+
+    (akeyless.ApiClient as jest.Mock)
+      .mockImplementationOnce(() => mockApiClient1)
+      .mockImplementationOnce(() => mockApiClient2);
+    (akeyless.V2Api as jest.Mock)
+      .mockImplementationOnce(() => mockV2Api1)
+      .mockImplementationOnce(() => mockV2Api2);
 
     // ACT
     const result1 = api('https://api1.akeyless.io');
