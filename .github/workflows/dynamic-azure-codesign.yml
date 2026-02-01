@@ -4,6 +4,15 @@ name: 'Azure Code Sign'
 
 on:
   workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+#      - experimental
+#    paths:
+#      - 'src/**/*'
+#      - 'package.json'
+#      - 'package-lock.json'
+#      - '.github/workflows/dynamic-aws.yml'
 
 permissions:
   id-token: write
