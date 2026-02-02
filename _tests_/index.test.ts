@@ -1,22 +1,23 @@
+import {describe, it, expect, vi, beforeEach} from 'vitest';
 import * as auth from '../src/auth';
 import * as awsAccess from '../src/aws_access';
 import * as secrets from '../src/secrets';
 import * as input from '../src/input';
 import {run} from '../src/index';
 
-jest.mock('@actions/core');
-jest.mock('../src/auth');
-jest.mock('../src/aws_access');
-jest.mock('../src/secrets');
-jest.mock('../src/input');
+vi.mock('@actions/core');
+vi.mock('../src/auth');
+vi.mock('../src/aws_access');
+vi.mock('../src/secrets');
+vi.mock('../src/input');
 
 describe('Main index module', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
-  test('calls run without error', async () => {
-    jest.spyOn(input, 'fetchAndValidateInput').mockReturnValue({
+  it('calls run without error', async () => {
+    vi.mocked(input.fetchAndValidateInput).mockReturnValue({
       accessId: 'p-12345',
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
@@ -28,10 +29,10 @@ describe('Main index module', () => {
       parseDynamicSecrets: false,
       timeout: 30
     });
-    jest.spyOn(auth, 'akeylessLogin').mockResolvedValue({token: 'akeyless-token-123'});
-    jest.spyOn(awsAccess, 'awsLogin').mockResolvedValue(undefined);
-    jest.spyOn(secrets, 'exportStaticSecrets').mockResolvedValue(undefined);
-    jest.spyOn(secrets, 'exportDynamicSecrets').mockResolvedValue(undefined);
+    vi.mocked(auth.akeylessLogin).mockResolvedValue({token: 'akeyless-token-123'});
+    vi.mocked(awsAccess.awsLogin).mockResolvedValue(undefined);
+    vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+    vi.mocked(secrets.exportDynamicSecrets).mockResolvedValue(undefined);
 
     await expect(run()).resolves.not.toThrow();
   });
