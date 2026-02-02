@@ -16,7 +16,8 @@
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:coverage-verbose": "jest --coverage --verbose",
-    "precommit": "npm run restore && npm run format && npm run lint && npm run test"
+    "precommit": "npm run restore && npm run format && npm run lint && npm run test && npm run build",
+    "plainbuild": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js --external:aws-sdk --external:@aws-sdk/* --external:akeyless"
   },
   "repository": {
     "type": "git",
