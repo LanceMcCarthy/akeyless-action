@@ -6,18 +6,13 @@
   "scripts": {
     "typecheck": "tsc --noEmit",
     "clean": "rimraf dist",
-    "rebuild": "npm run clean && npm run restore && npm run format && npm run lint && npm run build",
     "restore": "npm install",
+    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
     "format": "prettier --write \"src/**/*.ts\" \"_tests_/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" \"_tests_/**/*.ts\"",
-    "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:verbose": "jest --verbose",
-    "test:coverage-verbose": "jest --coverage --verbose",
-    "precommit": "npm run restore && npm run format && npm run lint && npm run test && npm run build",
-    "plainbuild": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js"
+    "test": "jest  --coverage",
+    "rebuild": "npm run clean && npm run restore && npm run format && npm run lint && npm run build",
+    "precommit": "npm run restore && npm run format && npm run lint && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
