@@ -95,7 +95,7 @@ async function jwtLogin(apiUrl: string, accessId: string) {
   }
   try {
     core.debug('Fetching token from AKeyless');
-    return api.auth(
+    return await api.auth(
       akeyless.Auth.constructFromObject({
         'access-type': 'jwt',
         'access-id': accessId,
@@ -130,7 +130,7 @@ async function awsIamLogin(apiUrl: string, accessId: string) {
   }
 
   try {
-    return api.auth(
+    return await api.auth(
       akeyless.Auth.constructFromObject({
         'access-type': 'aws_iam',
         'access-id': accessId,

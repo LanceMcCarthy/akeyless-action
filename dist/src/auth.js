@@ -87,7 +87,7 @@ async function jwtLogin(apiUrl, accessId) {
     }
     try {
         core.debug('Fetching token from AKeyless');
-        return api.auth(akeyless.Auth.constructFromObject({
+        return await api.auth(akeyless.Auth.constructFromObject({
             'access-type': 'jwt',
             'access-id': accessId,
             jwt: githubToken
@@ -120,7 +120,7 @@ async function awsIamLogin(apiUrl, accessId) {
         action_fail(`CloudId is undefined.`);
     }
     try {
-        return api.auth(akeyless.Auth.constructFromObject({
+        return await api.auth(akeyless.Auth.constructFromObject({
             'access-type': 'aws_iam',
             'access-id': accessId,
             'cloud-id': cloudId
