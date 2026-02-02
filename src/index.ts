@@ -6,19 +6,8 @@ import {exportStaticSecrets, exportDynamicSecrets} from './secrets';
 import {fetchAndValidateInput} from './input';
 
 export async function run() {
-
-  const {
-    accessId,
-    accessType,
-    apiUrl,
-    producerForAwsAccess,
-    staticSecrets,
-    dynamicSecrets,
-    exportSecretsToOutputs,
-    exportSecretsToEnvironment,
-    parseDynamicSecrets,
-    timeout
-  } = fetchAndValidateInput();
+  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
+    fetchAndValidateInput();
 
   core.info(`[DEBUG] accessId: ${accessId}`);
   core.info(`[DEBUG] accessType: ${accessType}`);
