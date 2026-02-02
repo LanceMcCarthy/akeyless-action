@@ -1,4 +1,5 @@
 import * as core from '@actions/core';
+import {fileURLToPath} from 'url';
 // import * as github from '@actions/github';
 import {akeylessLogin} from './auth';
 import {awsLogin} from './aws_access';
@@ -75,7 +76,10 @@ export async function run() {
   }
 }
 
-if (require.main === module) {
+// ES module check for if this file is being run directly
+const isMainModule = process.argv[1] === fileURLToPath(import.meta.url);
+
+if (isMainModule) {
   (async () => {
     try {
       core.debug('Starting main run');

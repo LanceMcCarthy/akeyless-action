@@ -1,18 +1,21 @@
 module.exports = {
   testEnvironment: 'node',
-  testMatch: ['**/_tests_/**/*.test.(ts|js)'],
+  testMatch: ['**/_tests_/**/*.test.ts'],
   collectCoverageFrom: ['src/**/*.{ts,js}'],
-  transformIgnorePatterns: ['node_modules/(?!(@actions|@octokit|before-after-hook|universal-user-agent)/)'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
-    '^.+\\.js$': [
-      'babel-jest',
-      {
-        presets: [['@babel/preset-env', {targets: {node: 'current'}}]]
-      }
-    ]
+    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest'
   },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(@actions)/)'
+  ],
+  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   preset: 'ts-jest',
-  globals: {},
+  moduleNameMapper: {
+    '^@actions/http-client/lib/(.*)$': '<rootDir>/node_modules/@actions/http-client/lib/$1.js',
+    '^@actions/http-client$': '<rootDir>/node_modules/@actions/http-client/lib/index.js',
+    '^@actions/core$': '<rootDir>/node_modules/@actions/core/lib/core.js',
+    '^@actions/exec$': '<rootDir>/node_modules/@actions/exec/lib/exec.js',
+    '^@actions/io$': '<rootDir>/node_modules/@actions/io/lib/io.js'
+  },
 };

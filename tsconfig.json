@@ -2,16 +2,17 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
+    "moduleResolution": "bundler",
     "outDir": "dist",
     "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-    "allowJs": true
+    "allowJs": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*", "_tests_/**/*"],
   "exclude": ["node_modules", "dist"],
-  "types": ["jest", "node"]
+  "types": ["vitest/globals", "node"]
 }

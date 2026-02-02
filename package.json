@@ -1,7 +1,8 @@
 {
   "name": "akeyless-action",
-  "version": "5.1.2",
+  "version": "5.2.0-beta",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
+  "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "typecheck": "tsc --noEmit",
@@ -10,7 +11,7 @@
     "build": "tsc && esbuild src/index.ts --bundle --platform=node --target=node20 --outfile=dist/index.js",
     "format": "prettier --write \"src/**/*.ts\" \"_tests_/**/*.ts\"",
     "lint": "eslint \"src/**/*.ts\" \"_tests_/**/*.ts\"",
-    "test": "jest  --coverage",
+    "test": "vitest --coverage --run",
     "rebuild": "npm run clean && npm run restore && npm run format && npm run lint && npm run build",
     "precommit": "npm run restore && npm run format && npm run lint && npm run test && npm run build"
   },
@@ -27,20 +28,21 @@
   "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
   "dependencies": {
     "@actions/core": "^3.0.0",
-    "@actions/github": "^9.0.0",
+    "@aws-crypto/sha256-js": "^5.2.0",
     "@aws-sdk/credential-providers": "^3.972.3",
     "@aws-sdk/signature-v4": "^3.374.0",
-    "akeyless": "^5.0.16",
-    "fast-xml-parser": "^5.3.4"
+    "akeyless": "^5.0.16"
   },
   "devDependencies": {
-    "@aws-crypto/sha256-js": "^5.2.0",
+    "@actions/http-client": "^4.0.0",
     "@babel/preset-env": "^7.29.0",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.39.1",
     "@types/aws-sdk": "^2.7.4",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.2.0",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
     "babel-jest": "^30.2.0",
     "esbuild": "^0.27.2",
     "eslint": "^9.39.1",
@@ -56,6 +58,7 @@
     "prettier": "3.8.1",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
