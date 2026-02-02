@@ -223,4 +223,230 @@ describe('Input validation module', () => {
     expect(params.staticSecrets).toBeDefined();
     expect(params.dynamicSecrets).toBeDefined();
   });
+
+  it('parses static-secrets JSON and validates as object', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'static-secrets':
+          return '{"path/to/secret": "SECRET_VAR", "another/path": "ANOTHER_VAR"}';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(typeof params.staticSecrets).toBe('object');
+    expect(params.staticSecrets).toEqual({
+      'path/to/secret': 'SECRET_VAR',
+      'another/path': 'ANOTHER_VAR'
+    });
+  });
+
+  it('parses dynamic-secrets JSON and validates as object', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'dynamic-secrets':
+          return '{"producer/one": "DYNAMIC_VAR_ONE", "producer/two": "DYNAMIC_VAR_TWO"}';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(typeof params.dynamicSecrets).toBe('object');
+    expect(params.dynamicSecrets).toEqual({
+      'producer/one': 'DYNAMIC_VAR_ONE',
+      'producer/two': 'DYNAMIC_VAR_TWO'
+    });
+  });
+
+  it('uses default timeout value of 15 when empty', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'timeout':
+          return '';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.timeout).toBe(15);
+  });
+
+  it('accepts valid timeout at minimum boundary (15)', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'timeout':
+          return '15';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.timeout).toBe(15);
+  });
+
+  it('accepts valid timeout at maximum boundary (120)', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'timeout':
+          return '120';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.timeout).toBe(120);
+  });
+
+  it('accepts valid timeout in middle range (60)', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        case 'timeout':
+          return '60';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.timeout).toBe(60);
+  });
+
+  it('respects boolean input values from getBooleanInput', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    // When getBooleanInput returns false, that value is respected (no override)
+    expect(params.exportSecretsToOutputs).toBe(false);
+    expect(params.exportSecretsToEnvironment).toBe(false);
+    expect(params.parseDynamicSecrets).toBe(false);
+  });
+
+  it('allows overriding boolean defaults', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'export-secrets-to-outputs':
+          return false;
+        case 'export-secrets-to-environment':
+          return false;
+        case 'parse-dynamic-secrets':
+          return true;
+        default:
+          return false;
+      }
+    });
+
+    const params = fetchAndValidateInput();
+    expect(params.exportSecretsToOutputs).toBe(false);
+    expect(params.exportSecretsToEnvironment).toBe(false);
+    expect(params.parseDynamicSecrets).toBe(true);
+  });
+
+  it('converts access-type to lowercase for jwt', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'JWT';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.accessType).toBe('jwt');
+  });
+
+  it('converts access-type to lowercase for aws_iam', () => {
+    vi.mocked(core.getInput).mockImplementation((name: string) => {
+      switch (name) {
+        case 'access-id':
+          return 'p-asdf';
+        case 'access-type':
+          return 'AWS_IAM';
+        case 'api-url':
+          return 'https://api.akeyless.io';
+        default:
+          return '';
+      }
+    });
+    vi.mocked(core.getBooleanInput).mockReturnValue(false);
+
+    const params = fetchAndValidateInput();
+    expect(params.accessType).toBe('aws_iam');
+  });
 });

@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import * as core from '@actions/core';
 import * as auth from '../src/auth';
 import * as awsAccess from '../src/aws_access';
 import * as secrets from '../src/secrets';
@@ -176,5 +177,160 @@ describe('Main index module', () => {
         vi.mocked(secrets.exportDynamicSecrets).mockResolvedValue(undefined);
         await expect(run()).resolves.not.toThrow();
         expect(vi.mocked(secrets.exportDynamicSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/dynamic/producer': 'dynamic_var' }, 'https://api.akeyless.io', true, true, true, 30);
+    });
+    it('handles multiple static and dynamic secrets together', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '/aws/producer',
+            staticSecrets: {
+                '/static/one': 'VAR_ONE',
+                '/static/two': 'VAR_TWO'
+            },
+            dynamicSecrets: {
+                '/dynamic/one': 'DYN_ONE',
+                '/dynamic/two': 'DYN_TWO'
+            },
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: false,
+            parseDynamicSecrets: false,
+            timeout: 45
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(awsAccess.awsLogin).mockResolvedValue(undefined);
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        vi.mocked(secrets.exportDynamicSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(awsAccess.awsLogin)).toHaveBeenCalledWith('akeyless-token-123', '/aws/producer', 'https://api.akeyless.io');
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/static/one': 'VAR_ONE', '/static/two': 'VAR_TWO' }, 'https://api.akeyless.io', true, false, 45);
+        expect(vi.mocked(secrets.exportDynamicSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/dynamic/one': 'DYN_ONE', '/dynamic/two': 'DYN_TWO' }, 'https://api.akeyless.io', true, false, false, 45);
+    });
+    it('handles debug logging throughout execution', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: {},
+            dynamicSecrets: {},
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: true,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(core.info).mockImplementation(() => { });
+        vi.mocked(core.debug).mockImplementation(() => { });
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(core.info)).toHaveBeenCalledWith(expect.stringContaining('[DEBUG]'));
+    });
+    it('parses stringified static secrets during execution', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: '{"path": "VAR"}',
+            dynamicSecrets: {},
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: true,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { path: 'VAR' }, 'https://api.akeyless.io', true, true, 30);
+    });
+    it('parses stringified dynamic secrets during execution', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: {},
+            dynamicSecrets: '{"producer": "DVAR"}',
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: true,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportDynamicSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportDynamicSecrets)).toHaveBeenCalledWith('akeyless-token-123', { producer: 'DVAR' }, 'https://api.akeyless.io', true, true, false, 30);
+    });
+    it('handles all export boolean combinations (true, true)', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: { '/static': 'VAR' },
+            dynamicSecrets: {},
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: true,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/static': 'VAR' }, 'https://api.akeyless.io', true, true, 30);
+    });
+    it('handles all export boolean combinations (true, false)', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: { '/static': 'VAR' },
+            dynamicSecrets: {},
+            exportSecretsToOutputs: true,
+            exportSecretsToEnvironment: false,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/static': 'VAR' }, 'https://api.akeyless.io', true, false, 30);
+    });
+    it('handles all export boolean combinations (false, true)', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: { '/static': 'VAR' },
+            dynamicSecrets: {},
+            exportSecretsToOutputs: false,
+            exportSecretsToEnvironment: true,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/static': 'VAR' }, 'https://api.akeyless.io', false, true, 30);
+    });
+    it('handles all export boolean combinations (false, false)', async () => {
+        vi.mocked(input.fetchAndValidateInput).mockReturnValue({
+            accessId: 'p-12345',
+            accessType: 'jwt',
+            apiUrl: 'https://api.akeyless.io',
+            producerForAwsAccess: '',
+            staticSecrets: { '/static': 'VAR' },
+            dynamicSecrets: {},
+            exportSecretsToOutputs: false,
+            exportSecretsToEnvironment: false,
+            parseDynamicSecrets: false,
+            timeout: 30
+        });
+        vi.mocked(auth.akeylessLogin).mockResolvedValue({ token: 'akeyless-token-123' });
+        vi.mocked(secrets.exportStaticSecrets).mockResolvedValue(undefined);
+        await expect(run()).resolves.not.toThrow();
+        expect(vi.mocked(secrets.exportStaticSecrets)).toHaveBeenCalledWith('akeyless-token-123', { '/static': 'VAR' }, 'https://api.akeyless.io', false, false, 30);
     });
 });
