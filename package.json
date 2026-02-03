@@ -2,19 +2,20 @@
   "name": "akeyless-action",
   "version": "5.1.2",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "clean": "rimraf node_modules package-lock.json && npm install",
-    "rebuild": "rimraf node_modules package-lock.json && npm run restore && npm run lint",
     "restore": "npm install",
+    "clean": "rimraf node_modules package-lock.json dist",
     "format": "prettier --write **/*.js",
     "lint": "eslint **/*.js",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:verbose": "jest --verbose",
     "test:coverage-verbose": "jest --coverage --verbose",
-    "precommit_nolint": "npm run restore && npm run format && npm run test",
-    "precommit": "npm run restore && npm run format && npm run lint && npm run test"
+    "build": "ncc build src/index.js -o dist --license licenses.txt",
+    "package": "npm run format && npm run lint && npm run test && npm run build",
+    "rebuild": "npm run clean && npm run package",
+    "precommit": "npm run restore && npm run package"
   },
   "repository": {
     "type": "git",
@@ -28,20 +29,14 @@
   },
   "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
   "dependencies": {
-<<<<<<< HEAD
     "@actions/core": "^3.0.0",
     "@actions/github": "^9.0.0",
-=======
-    "@actions/core": "^2.0.2",
-    "@actions/github": "^8.0.1",
->>>>>>> parent of 2adced9f3 (Merge pull request #208 from LanceMcCarthy/experimental)
     "@aws-sdk/credential-providers": "^3.972.3",
     "@aws-sdk/signature-v4": "^3.374.0",
     "akeyless": "^5.0.16",
     "fast-xml-parser": "^5.3.4"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@aws-crypto/sha256-js": "^5.2.0",
     "@babel/preset-env": "^7.29.0",
     "@eslint/eslintrc": "^3.3.1",
@@ -49,11 +44,7 @@
     "@types/aws-sdk": "^2.7.4",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.2.0",
-=======
-    "@babel/preset-env": "^7.28.6",
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.39.1",
->>>>>>> parent of 2adced9f3 (Merge pull request #208 from LanceMcCarthy/experimental)
+    "@vercel/ncc": "^0.38.4",
     "babel-jest": "^30.2.0",
     "eslint": "^9.39.1",
     "eslint-plugin-eslint-comments": "^3.2.0",
@@ -65,14 +56,9 @@
     "eslint-plugin-prettier": "^5.5.4",
     "globals": "^17.3.0",
     "jest": "^30.2.0",
-<<<<<<< HEAD
     "prettier": "3.8.1",
     "rimraf": "^6.0.1",
     "ts-jest": "^29.4.6",
     "typescript": "^5.9.3"
-=======
-    "prettier": "3.7.4",
-    "rimraf": "^6.0.1"
->>>>>>> parent of 2adced9f3 (Merge pull request #208 from LanceMcCarthy/experimental)
   }
 }
