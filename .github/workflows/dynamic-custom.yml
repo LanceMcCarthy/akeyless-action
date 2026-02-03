@@ -18,12 +18,9 @@ permissions:
   contents: read
 
 jobs:
-  ########## Option 1 ########## 
-  # Default behavior: 
-  # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
-  custom_producer_dynamic_secrets:
+  build:
     runs-on: ubuntu-latest
-    name: Custom producer (default)
+    name: Build Package
     steps:
     - name: Checkout
       uses: actions/checkout@v6
@@ -34,7 +31,29 @@ jobs:
         node-version: '20'
 
     - name: Clean install, format, lint, test, and build
-      run: npm ci && npm run build
+      run: npm ci && npm run package
+
+    - name: Upload dist folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+  ########## Option 1 ########## 
+  # Default behavior: 
+  # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
+  custom_producer_dynamic_secrets:
+    runs-on: ubuntu-latest
+    name: Custom producer (default)
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Download dist folder
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -74,13 +93,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
+    - name: Download dist folder
+      uses: actions/download-artifact@v4
       with:
-        node-version: '20'
-
-    - name: Clean install, format, lint, test, and build
-      run: npm ci && npm run build
+        name: dist
+        path: dist/
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -109,13 +126,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v6
+    - name: Download dist folder
+      uses: actions/download-artifact@v4
       with:
-        node-version: '20'
-
-    - name: Clean install, format, lint, test, and build
-      run: npm ci && npm run build
+        name: dist
+        path: dist/
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets

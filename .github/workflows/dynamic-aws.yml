@@ -16,9 +16,9 @@ permissions:
   contents: read
 
 jobs:
-  aws_dynamic_secrets:
+  build:
     runs-on: ubuntu-latest
-    name: AWS dynamic secrets (default)
+    name: Build Package
     steps:
     - name: Checkout
       uses: actions/checkout@v6
@@ -30,6 +30,25 @@ jobs:
 
     - name: Clean install, format, lint, test, and build
       run: npm ci && npm run package
+
+    - name: Upload dist folder
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+  aws_dynamic_secrets:
+    runs-on: ubuntu-latest
+    name: AWS dynamic secrets (default)
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+
+    - name: Download dist folder
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
 
     - name: Fetch dynamic secrets from Akleyless
       id: fetch-secrets
