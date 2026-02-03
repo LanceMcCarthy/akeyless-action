@@ -2,7 +2,8 @@ module.exports = {
   testEnvironment: 'node',
   testMatch: ['**/_tests_/**/*.test.js'],
   collectCoverageFrom: ['src/**/*.js'],
-  transformIgnorePatterns: ['node_modules/(?!(@actions|@octokit|before-after-hook|universal-user-agent)/)'],
+  transformIgnorePatterns: [],
+  moduleDirectories: ['node_modules', '<rootDir>'],
   transform: {
     '^.+\\.js$': [
       'babel-jest',
