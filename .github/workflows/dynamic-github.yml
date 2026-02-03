@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - main
-      - experimental
     paths:
       - 'src/**/*'
       - 'package.json'
@@ -24,16 +23,11 @@ jobs:
   github_dynamic_secrets:
     runs-on: ubuntu-latest
     name: GitHub dynamic (default)
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Build Action
-      run: |
-        npm ci
-        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -79,16 +73,11 @@ jobs:
   github_dynamic_secrets_parsed:
     runs-on: ubuntu-latest
     name: GitHub dynamic (parsed)
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Build Action
-      run: |
-        npm ci
-        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -117,16 +106,11 @@ jobs:
   github_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
     name: GitHub dynamic (prefix-parsed)
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Build Action
-      run: |
-        npm ci
-        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets

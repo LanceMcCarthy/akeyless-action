@@ -12,9 +12,6 @@ const compat = new FlatCompat({
     allConfig: js.configs.all
 });
 
-import tseslint from "@typescript-eslint/eslint-plugin";
-import tsParser from "@typescript-eslint/parser";
-
 export default [
     {
         ignores: [
@@ -31,24 +28,15 @@ export default [
         "plugin:jest/recommended",
     ),
     {
-        files: ["**/*.ts"],
         languageOptions: {
-            parser: tsParser,
-            parserOptions: {
-                project: "./tsconfig.json",
-                sourceType: "module",
-            },
             globals: {
                 ...globals.node,
                 ...globals.commonjs,
             },
             ecmaVersion: "latest",
-        },
-        plugins: {
-            "@typescript-eslint": tseslint,
+            sourceType: "commonjs",
         },
         rules: {
-            ...tseslint.configs.recommended.rules,
             "prefer-template": "warn",
             "no-unused-vars": "off",
             camelcase: "off",

@@ -4,15 +4,6 @@ name: 'Azure Code Sign'
 
 on:
   workflow_dispatch:
-#  push:
-#    branches:
-#      - main
-#      - experimental
-#    paths:
-#      - 'src/**/*'
-#      - 'package.json'
-#      - 'package-lock.json'
-#      - '.github/workflows/dynamic-aws.yml'
 
 permissions:
   id-token: write
@@ -22,16 +13,11 @@ jobs:
   code_sign:
     runs-on: windows-latest
     name: Code Signing
-
     steps:
     - name: Checkout
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-    - name: Build Action
-      run: |
-        npm ci
-        npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
