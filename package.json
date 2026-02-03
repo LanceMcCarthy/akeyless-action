@@ -1,9 +1,9 @@
 {
   "name": "akeyless-action",
-  "version": "5.2.0",
+  "version": "5.2.1",
   "type": "module",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "scripts": {
     "restore": "npm install",
     "format": "prettier --write **/*.js",
@@ -12,7 +12,7 @@
     "test:coverage": "vitest run --coverage",
     "test:verbose": "vitest run --reporter=verbose",
     "test:coverage-verbose": "vitest run --coverage --reporter=verbose",
-    "build": "ncc build src/index.js -o dist --license licenses.txt && node -e \"require('fs').writeFileSync('dist/package.json', JSON.stringify({type:'module'}, null, 2))\"",
+    "build": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\" && ncc build src/index.cjs -o dist --license licenses.txt && node -e \"require('fs').writeFileSync('dist/package.json', JSON.stringify({type:'commonjs'}, null, 2))\"",
     "rebuild": "npm ci && npm run build",
     "package": "npm run format && npm run lint && npm run test && npm run build",
     "precommit": "npm run restore && npm run package"
