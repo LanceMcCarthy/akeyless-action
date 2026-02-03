@@ -166,4 +166,3 @@ describe('AWS Access module', () => {
     ]);
   });
 });
-

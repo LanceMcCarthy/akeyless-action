@@ -144,4 +144,4 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
   }
 }
 
-export { exportDynamicSecrets, exportStaticSecrets };
+export {exportDynamicSecrets, exportStaticSecrets};

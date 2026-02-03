@@ -77,7 +77,7 @@ async function run() {
   }
 }
 
-export { run };
+export {run};
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   try {

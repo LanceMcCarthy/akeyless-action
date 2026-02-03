@@ -10,4 +10,3 @@ describe('Authentication module', () => {
     expect(typeof auth.akeylessLogin).toBe('function');
   });
 });
-

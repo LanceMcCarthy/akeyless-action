@@ -6,4 +6,4 @@ function api(url) {
   return new akeyless.V2Api(client);
 }
 
-export { api };
+export {api};

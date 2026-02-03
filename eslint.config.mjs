@@ -27,22 +27,31 @@ export default [
     },
     ...compat.extends(
         "eslint:recommended",
-        "plugin:jest/recommended",
     ),
     {
         languageOptions: {
             globals: {
                 ...globals.node,
-                ...globals.commonjs,
             },
             ecmaVersion: "latest",
-            sourceType: "commonjs",
+            sourceType: "module",
         },
         rules: {
             "prefer-template": "warn",
             "no-unused-vars": "off",
             camelcase: "off",
             "no-undef": "off",
+        },
+    },
+    {
+        files: ["**/*.test.js"],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+            },
+        },
+        rules: {
+            "no-import-assign": "off",
         },
     }
 ];

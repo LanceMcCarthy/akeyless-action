@@ -33,4 +33,4 @@ async function awsLogin(akeylessToken, producerForAwsAccess, apiUrl) {
   });
 }
 
-export { awsLogin };
+export {awsLogin};

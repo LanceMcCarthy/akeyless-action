@@ -3,9 +3,11 @@ import * as akeylessApi from '../src/akeyless_api.js';
 
 // Mock akeyless module
 vi.mock('akeyless', () => {
-  const mockApiClientConstructor = vi.fn(function() { this.basePath = ''; });
+  const mockApiClientConstructor = vi.fn(function () {
+    this.basePath = '';
+  });
   const mockV2ApiConstructor = vi.fn();
-  
+
   return {
     default: {
       ApiClient: mockApiClientConstructor,
@@ -32,10 +34,12 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-    mockApiClientConstructor.mockImplementationOnce(function() {
+    mockApiClientConstructor.mockImplementationOnce(function () {
       return mockApiClient;
     });
-    mockV2ApiConstructor.mockImplementationOnce(function() { return mockV2Api; });
+    mockV2ApiConstructor.mockImplementationOnce(function () {
+      return mockV2Api;
+    });
 
     // ACT
     const api = akeylessApi.api('https://api.akeyless.io');
@@ -54,10 +58,12 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-    mockApiClientConstructor.mockImplementationOnce(function() {
+    mockApiClientConstructor.mockImplementationOnce(function () {
       return mockApiClient;
     });
-    mockV2ApiConstructor.mockImplementationOnce(function() { return mockV2Api; });
+    mockV2ApiConstructor.mockImplementationOnce(function () {
+      return mockV2Api;
+    });
 
     // ACT
     const api = akeylessApi.api('https://custom.akeyless.io');
@@ -76,10 +82,12 @@ describe('AKeyless API module', () => {
     };
     const mockV2Api = {};
 
-    mockApiClientConstructor.mockImplementationOnce(function() {
+    mockApiClientConstructor.mockImplementationOnce(function () {
       return mockApiClient;
     });
-    mockV2ApiConstructor.mockImplementationOnce(function() { return mockV2Api; });
+    mockV2ApiConstructor.mockImplementationOnce(function () {
+      return mockV2Api;
+    });
 
     // ACT
     const api = akeylessApi.api('');
@@ -99,11 +107,19 @@ describe('AKeyless API module', () => {
     const mockV2Api2 = {client: mockApiClient2};
 
     mockApiClientConstructor
-      .mockImplementationOnce(function() { return mockApiClient1; })
-      .mockImplementationOnce(function() { return mockApiClient2; });
+      .mockImplementationOnce(function () {
+        return mockApiClient1;
+      })
+      .mockImplementationOnce(function () {
+        return mockApiClient2;
+      });
     mockV2ApiConstructor
-      .mockImplementationOnce(function() { return mockV2Api1; })
-      .mockImplementationOnce(function() { return mockV2Api2; });
+      .mockImplementationOnce(function () {
+        return mockV2Api1;
+      })
+      .mockImplementationOnce(function () {
+        return mockV2Api2;
+      });
 
     // ACT
     const api1 = akeylessApi.api('https://api1.akeyless.io');
@@ -118,5 +134,3 @@ describe('AKeyless API module', () => {
     expect(api2).toBe(mockV2Api2);
   });
 });
-
-

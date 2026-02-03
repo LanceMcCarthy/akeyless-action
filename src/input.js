@@ -99,4 +99,4 @@ const fetchAndValidateInput = () => {
   return params;
 };
 
-export { fetchAndValidateInput };
+export {fetchAndValidateInput};

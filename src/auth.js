@@ -144,4 +144,4 @@ async function akeylessLogin(accessId, accessType, apiUrl) {
   }
 }
 
-export { akeylessLogin, allowedAccessTypes };
+export {akeylessLogin, allowedAccessTypes};
