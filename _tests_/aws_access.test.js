@@ -1,30 +1,46 @@
-jest.mock('@actions/core');
-jest.mock('../src/akeyless_api');
-jest.mock('akeyless');
+import {describe, test, expect, beforeEach, vi} from 'vitest';
 
-const core = require('@actions/core');
-const akeylessApi = require('../src/akeyless_api');
-const akeyless = require('akeyless');
-const awsAccess = require('../src/aws_access');
+// Mock modules
+vi.mock('@actions/core', () => ({
+  setSecret: vi.fn(),
+  exportVariable: vi.fn()
+}));
+
+vi.mock('../src/akeyless_api.js', () => ({
+  api: vi.fn()
+}));
+
+vi.mock('akeyless', () => ({
+  default: {
+    GetDynamicSecretValue: {
+      constructFromObject: vi.fn()
+    }
+  }
+}));
+
+import * as core from '@actions/core';
+import * as akeylessApi from '../src/akeyless_api.js';
+import akeyless from 'akeyless';
+import * as awsAccess from '../src/aws_access.js';
 
 describe('AWS Access module', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('successful AWS login with session token', async () => {
-    core.setSecret = jest.fn(() => {});
-    core.exportVariable = jest.fn(() => {});
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() =>
+    vi.mocked(core.setSecret).mockImplementation(() => {});
+    vi.mocked(core.exportVariable).mockImplementation(() => {});
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() =>
       Promise.resolve({
         access_key_id: 'aws-access-key',
         secret_access_key: 'aws-secret-key',
         security_token: 'aws-session-token'
       })
     );
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    vi.mocked(akeylessApi.api).mockReturnValue(api);
+    vi.mocked(akeyless.GetDynamicSecretValue.constructFromObject).mockReturnValue('get_dynamic_secret_body');
 
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
 
@@ -42,18 +58,18 @@ describe('AWS Access module', () => {
   });
 
   test('successful AWS login without session token', async () => {
-    core.setSecret = jest.fn(() => {});
-    core.exportVariable = jest.fn(() => {});
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() =>
+    core.setSecret = vi.fn(() => {});
+    core.exportVariable = vi.fn(() => {});
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() =>
       Promise.resolve({
         access_key_id: 'aws-access-key',
         secret_access_key: 'aws-secret-key'
         // no security_token
       })
     );
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    akeylessApi.api = vi.fn(() => api);
+    akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
 
@@ -70,18 +86,18 @@ describe('AWS Access module', () => {
   });
 
   test('AWS login with empty session token', async () => {
-    core.setSecret = jest.fn(() => {});
-    core.exportVariable = jest.fn(() => {});
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() =>
+    core.setSecret = vi.fn(() => {});
+    core.exportVariable = vi.fn(() => {});
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() =>
       Promise.resolve({
         access_key_id: 'aws-access-key',
         secret_access_key: 'aws-secret-key',
         security_token: '' // empty string
       })
     );
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    akeylessApi.api = vi.fn(() => api);
+    akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
 
@@ -93,18 +109,18 @@ describe('AWS Access module', () => {
   });
 
   test('AWS login with null session token', async () => {
-    core.setSecret = jest.fn(() => {});
-    core.exportVariable = jest.fn(() => {});
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() =>
+    core.setSecret = vi.fn(() => {});
+    core.exportVariable = vi.fn(() => {});
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() =>
       Promise.resolve({
         access_key_id: 'aws-access-key',
         secret_access_key: 'aws-secret-key',
         security_token: null // null value
       })
     );
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    akeylessApi.api = vi.fn(() => api);
+    akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
 
@@ -116,10 +132,10 @@ describe('AWS Access module', () => {
   });
 
   test('AWS login fails when API call fails', async () => {
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() => Promise.reject(new Error('API call failed')));
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() => Promise.reject(new Error('API call failed')));
+    akeylessApi.api = vi.fn(() => api);
+    akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
     await expect(awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io')).rejects.toThrow('API call failed');
 
@@ -127,18 +143,18 @@ describe('AWS Access module', () => {
   });
 
   test('AWS login handles missing access_key_id', async () => {
-    core.setSecret = jest.fn(() => {});
-    core.exportVariable = jest.fn(() => {});
-    const api = jest.fn(() => {});
-    api.getDynamicSecretValue = jest.fn(() =>
+    core.setSecret = vi.fn(() => {});
+    core.exportVariable = vi.fn(() => {});
+    const api = vi.fn(() => {});
+    api.getDynamicSecretValue = vi.fn(() =>
       Promise.resolve({
         // missing access_key_id
         secret_access_key: 'aws-secret-key',
         security_token: 'aws-session-token'
       })
     );
-    akeylessApi.api = jest.fn(() => api);
-    akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+    akeylessApi.api = vi.fn(() => api);
+    akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
     await awsAccess.awsLogin('akeyless-token', '/path/to/dynamic/producer', 'https://api.akeyless.io');
 
@@ -150,3 +166,4 @@ describe('AWS Access module', () => {
     ]);
   });
 });
+

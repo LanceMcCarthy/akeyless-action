@@ -1,21 +1,21 @@
-jest.mock('@actions/core');
-jest.mock('@actions/github');
-jest.mock('../src/auth');
-jest.mock('../src/aws_access');
-jest.mock('../src/secrets');
-jest.mock('../src/input');
+vi.mock('@actions/core');
+vi.mock('@actions/github');
+vi.mock('../src/auth');
+vi.mock('../src/aws_access');
+vi.mock('../src/secrets');
+vi.mock('../src/input');
 
-const core = require('@actions/core');
-const github = require('@actions/github');
-const auth = require('../src/auth');
-const awsAccess = require('../src/aws_access');
-const secrets = require('../src/secrets');
-const input = require('../src/input');
-const index = require('../src/index');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import * as auth from '../src/auth.js';
+import * as awsAccess from '../src/aws_access.js';
+import * as secrets from '../src/secrets.js';
+import * as input from '../src/input.js';
+import * as index from '../src/index.js';
 
 describe('Main index module', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('successful complete flow with all features', async () => {
@@ -33,12 +33,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -66,12 +66,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -97,12 +97,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -128,12 +128,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -159,14 +159,14 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.reject(new Error('Login failed')));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.reject(new Error('Login failed')));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -198,11 +198,11 @@ describe('Main index module', () => {
     const errorWithToken = new Error('ACTIONS_ID_TOKEN_REQUEST_URL not set');
     errorWithToken.cause = 'ACTIONS_ID_TOKEN_REQUEST_URL';
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.reject(errorWithToken));
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.reject(errorWithToken));
 
     // ACT
     await index.run();
@@ -228,12 +228,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.reject(new Error('AWS access failed')));
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.reject(new Error('AWS access failed')));
 
     // ACT
     await index.run();
@@ -258,12 +258,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    secrets.exportStaticSecrets = jest.fn(() => Promise.reject(new Error('Static secrets failed')));
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    secrets.exportStaticSecrets = vi.fn(() => Promise.reject(new Error('Static secrets failed')));
 
     // ACT
     await index.run();
@@ -288,12 +288,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.reject(new Error('Dynamic secrets failed')));
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.reject(new Error('Dynamic secrets failed')));
 
     // ACT
     await index.run();
@@ -318,12 +318,12 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.resolve());
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.resolve());
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -350,11 +350,11 @@ describe('Main index module', () => {
       timeout: 60
     };
 
-    core.debug = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();
@@ -379,14 +379,14 @@ describe('Main index module', () => {
       timeout: 30
     };
 
-    core.debug = jest.fn();
-    core.error = jest.fn();
-    core.setFailed = jest.fn();
-    input.fetchAndValidateInput = jest.fn(() => mockParams);
-    auth.akeylessLogin = jest.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
-    awsAccess.awsLogin = jest.fn(() => Promise.reject(new Error('AWS access failed')));
-    secrets.exportStaticSecrets = jest.fn(() => Promise.resolve());
-    secrets.exportDynamicSecrets = jest.fn(() => Promise.resolve());
+    core.debug = vi.fn();
+    core.error = vi.fn();
+    core.setFailed = vi.fn();
+    input.fetchAndValidateInput = vi.fn(() => mockParams);
+    auth.akeylessLogin = vi.fn(() => Promise.resolve({token: 'akeyless-token-123'}));
+    awsAccess.awsLogin = vi.fn(() => Promise.reject(new Error('AWS access failed')));
+    secrets.exportStaticSecrets = vi.fn(() => Promise.resolve());
+    secrets.exportDynamicSecrets = vi.fn(() => Promise.resolve());
 
     // ACT
     await index.run();

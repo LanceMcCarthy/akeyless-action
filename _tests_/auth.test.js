@@ -1,4 +1,5 @@
-const auth = require('../src/auth');
+import {describe, test, expect} from 'vitest';
+import * as auth from '../src/auth.js';
 
 describe('Authentication module', () => {
   test('exports allowed access types', () => {
@@ -9,3 +10,4 @@ describe('Authentication module', () => {
     expect(typeof auth.akeylessLogin).toBe('function');
   });
 });
+

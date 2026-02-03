@@ -1,10 +1,9 @@
-const core = require('@actions/core');
-const akeylessApi = require('./akeyless_api');
-const akeyless = require('akeyless');
-
-const {fromNodeProviderChain} = require('@aws-sdk/credential-providers');
-const {SignatureV4} = require('@aws-sdk/signature-v4');
-const {createHash} = require('crypto');
+import * as core from '@actions/core';
+import * as akeylessApi from './akeyless_api.js';
+import akeyless from 'akeyless';
+import {fromNodeProviderChain} from '@aws-sdk/credential-providers';
+import {SignatureV4} from '@aws-sdk/signature-v4';
+import {createHash} from 'crypto';
 
 function action_fail(message) {
   core.debug(message);
@@ -145,5 +144,4 @@ async function akeylessLogin(accessId, accessType, apiUrl) {
   }
 }
 
-exports.akeylessLogin = akeylessLogin;
-exports.allowedAccessTypes = allowedAccessTypes;
+export { akeylessLogin, allowedAccessTypes };

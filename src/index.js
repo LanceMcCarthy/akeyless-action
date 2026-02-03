@@ -1,9 +1,9 @@
-const core = require('@actions/core');
-const github = require('@actions/github');
-const auth = require('./auth');
-const awsAccess = require('./aws_access');
-const secrets = require('./secrets');
-const input = require('./input');
+import * as core from '@actions/core';
+import * as github from '@actions/github';
+import * as auth from './auth.js';
+import * as awsAccess from './aws_access.js';
+import * as secrets from './secrets.js';
+import * as input from './input.js';
 
 async function run() {
   core.debug('Fetching input');
@@ -77,9 +77,9 @@ async function run() {
   }
 }
 
-exports.run = run;
+export { run };
 
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   try {
     core.debug('Starting main run');
     core.info(`Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they're addressed, this action will automatically inherit those fixes in the next update.`);

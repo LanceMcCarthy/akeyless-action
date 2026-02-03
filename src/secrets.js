@@ -1,6 +1,6 @@
-const core = require('@actions/core');
-const akeylessApi = require('./akeyless_api');
-const akeyless = require('akeyless');
+import * as core from '@actions/core';
+import * as akeylessApi from './akeyless_api.js';
+import akeyless from 'akeyless';
 
 async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, timeout) {
   const api = akeylessApi.api(apiUrl);
@@ -144,5 +144,4 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
   }
 }
 
-exports.exportDynamicSecrets = exportDynamicSecrets;
-exports.exportStaticSecrets = exportStaticSecrets;
+export { exportDynamicSecrets, exportStaticSecrets };

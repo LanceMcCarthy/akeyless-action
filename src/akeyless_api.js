@@ -1,4 +1,4 @@
-const akeyless = require('akeyless');
+import akeyless from 'akeyless';
 
 function api(url) {
   const client = new akeyless.ApiClient();
@@ -6,4 +6,4 @@ function api(url) {
   return new akeyless.V2Api(client);
 }
 
-exports.api = api;
+export { api };

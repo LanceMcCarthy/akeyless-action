@@ -1,15 +1,15 @@
-jest.mock('@actions/core');
-jest.mock('../src/akeyless_api');
-jest.mock('akeyless');
+vi.mock('@actions/core');
+vi.mock('../src/akeyless_api');
+vi.mock('akeyless');
 
-const core = require('@actions/core');
-const akeylessApi = require('../src/akeyless_api');
-const akeyless = require('akeyless');
-const secrets = require('../src/secrets');
+import * as core from '@actions/core';
+import * as akeylessApi from '../src/akeyless_api.js';
+import akeyless from 'akeyless';
+import * as secrets from '../src/secrets.js';
 
 describe('Secrets module', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe('Dynamic Secrets', () => {
@@ -21,15 +21,15 @@ describe('Secrets module', () => {
         session_token: 'aws-session-token'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(dynamicSecret));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30);
@@ -54,15 +54,15 @@ describe('Secrets module', () => {
         session_token: 'aws-session-token'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(dynamicSecret));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'aws'}, 'https://api.akeyless.io', true, true, true, 30);
@@ -96,15 +96,15 @@ describe('Secrets module', () => {
         password: 'secret123'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(dynamicSecret));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': ''}, 'https://api.akeyless.io', true, true, true, 30);
@@ -122,15 +122,15 @@ describe('Secrets module', () => {
         token: 'secret-token'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(dynamicSecret));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, false, false, 30);
@@ -147,15 +147,15 @@ describe('Secrets module', () => {
         token: 'secret-token'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(dynamicSecret));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(dynamicSecret));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', false, true, false, 30);
@@ -168,13 +168,13 @@ describe('Secrets module', () => {
 
     test('export dynamic secrets - handles null response', async () => {
       // ARRANGE
-      core.info = jest.fn(() => {});
-      core.notice = jest.fn(() => {});
+      core.info = vi.fn(() => {});
+      core.notice = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => Promise.resolve(null));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => Promise.resolve(null));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, 30);
@@ -185,15 +185,15 @@ describe('Secrets module', () => {
 
     test('export dynamic secrets - handles API error', async () => {
       // ARRANGE
-      core.error = jest.fn(() => {});
-      core.setFailed = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.error = vi.fn(() => {});
+      core.setFailed = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
+      const api = vi.fn(() => {});
       const apiError = new Error('API error');
-      api.getDynamicSecretValue = jest.fn(() => Promise.reject(apiError));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      api.getDynamicSecretValue = vi.fn(() => Promise.reject(apiError));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, 30);
@@ -205,16 +205,16 @@ describe('Secrets module', () => {
 
     test('export dynamic secrets - handles general error', async () => {
       // ARRANGE
-      core.error = jest.fn(() => {});
-      core.setFailed = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.error = vi.fn(() => {});
+      core.setFailed = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getDynamicSecretValue = jest.fn(() => {
+      const api = vi.fn(() => {});
+      api.getDynamicSecretValue = vi.fn(() => {
         throw new Error('General error');
       });
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetDynamicSecretValue.constructFromObject = jest.fn(() => 'get_dynamic_secret_body');
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
       await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, 30);
@@ -232,15 +232,15 @@ describe('Secrets module', () => {
         '/path/to/static/secret': 'super secret value'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn(() => Promise.resolve(staticSecretResponse));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(staticSecretResponse));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
@@ -263,15 +263,15 @@ describe('Secrets module', () => {
         '/path/to/static/secret': 'super secret value'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn(() => Promise.resolve(staticSecretResponse));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(staticSecretResponse));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, false, 30);
@@ -288,15 +288,15 @@ describe('Secrets module', () => {
         '/path/to/static/secret': 'super secret value'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn(() => Promise.resolve(staticSecretResponse));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(staticSecretResponse));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', false, true, 30);
@@ -309,13 +309,13 @@ describe('Secrets module', () => {
 
     test('export static secrets - handles undefined response', async () => {
       // ARRANGE
-      core.info = jest.fn(() => {});
-      core.notice = jest.fn(() => {});
+      core.info = vi.fn(() => {});
+      core.notice = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn(() => Promise.resolve(undefined));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(undefined));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
@@ -326,15 +326,15 @@ describe('Secrets module', () => {
 
     test('export static secrets - handles API error', async () => {
       // ARRANGE
-      core.error = jest.fn(() => {});
-      core.setFailed = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.error = vi.fn(() => {});
+      core.setFailed = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
+      const api = vi.fn(() => {});
       const apiError = new Error('API error');
-      api.getSecretValue = jest.fn(() => Promise.reject(apiError));
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      api.getSecretValue = vi.fn(() => Promise.reject(apiError));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
@@ -351,15 +351,15 @@ describe('Secrets module', () => {
         '/secret2': 'secret2_name'
       };
 
-      core.setSecret = jest.fn(() => {});
-      core.setOutput = jest.fn(() => {});
-      core.exportVariable = jest.fn(() => {});
-      core.info = jest.fn(() => {});
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
 
-      const api = jest.fn(() => {});
-      api.getSecretValue = jest.fn().mockResolvedValueOnce({'/secret1': 'value1'}).mockResolvedValueOnce({'/secret2': 'value2'});
-      akeylessApi.api = jest.fn(() => api);
-      akeyless.GetSecretValue.constructFromObject = jest.fn(() => 'get_static_secret_body');
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn().mockResolvedValueOnce({'/secret1': 'value1'}).mockResolvedValueOnce({'/secret2': 'value2'});
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
       await secrets.exportStaticSecrets('akeyless-token', staticSecrets, 'https://api.akeyless.io', true, true, 30);

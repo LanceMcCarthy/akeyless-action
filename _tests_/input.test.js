@@ -1,26 +1,26 @@
-jest.mock('@actions/core');
-jest.mock('../src/auth');
+vi.mock('@actions/core');
+vi.mock('../src/auth');
 
-const core = require('@actions/core');
-const auth = require('../src/auth');
-const input = require('../src/input');
+import * as core from '@actions/core';
+import * as auth from '../src/auth.js';
+import * as input from '../src/input.js';
 
 describe('Input validation module', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     // Mock the auth module to return allowed access types
     auth.allowedAccessTypes = ['jwt', 'aws_iam'];
   });
 
   test('valid input with all parameters', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('JWT');
     core.getInput.mockReturnValueOnce('https://api.akeyless.io');
     core.getInput.mockReturnValueOnce('/path/to/aws/producer');
     core.getInput.mockReturnValueOnce('{"/some/static/secret":"secret_key"}');
     core.getInput.mockReturnValueOnce('{"/some/dynamic/secret":"other_key"}');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -59,14 +59,14 @@ describe('Input validation module', () => {
   });
 
   test('valid input with minimal parameters', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('{}'); // Use valid empty JSON instead of empty string
     core.getInput.mockReturnValueOnce('{}'); // Use valid empty JSON instead of empty string
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -89,7 +89,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when access-id is missing', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('');
 
     expect(() => {
@@ -98,7 +98,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when access-type is not a string', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce(343);
     core.getInput.mockReturnValue('sup');
@@ -109,14 +109,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid access type', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('invalid-type');
     core.getInput.mockReturnValueOnce('https://api.akeyless.io');
     core.getInput.mockReturnValueOnce('/path/to/aws/producer');
     core.getInput.mockReturnValueOnce('{}');
     core.getInput.mockReturnValueOnce('{}');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -128,14 +128,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error when boolean input is not boolean', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce('not-a-boolean'); // Invalid boolean
 
     expect(() => {
@@ -144,14 +144,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid JSON in static-secrets', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('invalid-json');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -163,14 +163,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid JSON dictionary in dynamic-secrets', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('["not", "a", "dict"]'); // Array instead of object
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -182,14 +182,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is not a number', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -201,14 +201,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is below minimum', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -220,14 +220,14 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is above maximum', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -239,14 +239,14 @@ describe('Input validation module', () => {
   });
 
   test('converts access type to lowercase', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('AWS_IAM'); // Uppercase
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
@@ -258,14 +258,14 @@ describe('Input validation module', () => {
   });
 
   test('uses default timeout when empty', () => {
-    core.getInput = jest.fn();
+    core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
     core.getInput.mockReturnValueOnce('');
-    core.getBooleanInput = jest.fn();
+    core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);

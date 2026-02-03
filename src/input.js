@@ -1,5 +1,5 @@
-const core = require('@actions/core');
-const auth = require('./auth');
+import * as core from '@actions/core';
+import * as auth from './auth.js';
 
 const stringInputs = {
   accessId: 'access-id',
@@ -99,4 +99,4 @@ const fetchAndValidateInput = () => {
   return params;
 };
 
-exports.fetchAndValidateInput = fetchAndValidateInput;
+export { fetchAndValidateInput };

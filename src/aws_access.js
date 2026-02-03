@@ -1,6 +1,6 @@
-const core = require('@actions/core');
-const akeylessApi = require('./akeyless_api');
-const akeyless = require('akeyless');
+import * as core from '@actions/core';
+import * as akeylessApi from './akeyless_api.js';
+import akeyless from 'akeyless';
 
 async function awsLogin(akeylessToken, producerForAwsAccess, apiUrl) {
   const api = akeylessApi.api(apiUrl);
@@ -33,4 +33,4 @@ async function awsLogin(akeylessToken, producerForAwsAccess, apiUrl) {
   });
 }
 
-exports.awsLogin = awsLogin;
+export { awsLogin };
