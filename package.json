@@ -12,7 +12,7 @@
     "test:coverage": "vitest run --coverage",
     "test:verbose": "vitest run --reporter=verbose",
     "test:coverage-verbose": "vitest run --coverage --reporter=verbose",
-    "build": "ncc build src/index.js -o dist --license licenses.txt && node -e \"require('fs').writeFileSync('dist/package.json', JSON.stringify({type:'commonjs'}, null, 2))\"",
+    "build": "ncc build src/index.js -o dist --license licenses.txt && node -e \"require('fs').writeFileSync('dist/package.json', JSON.stringify({type:'module'}, null, 2))\"",
     "rebuild": "npm ci && npm run build",
     "package": "npm run format && npm run lint && npm run test && npm run build",
     "precommit": "npm run restore && npm run package"
