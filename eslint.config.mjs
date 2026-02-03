@@ -17,6 +17,8 @@ export default [
         ignores: [
             "**/node_modules/",
             "**/.vscode/",
+            "**/dist/",
+            "**/coverage/",
             "**/action.yml",
             "**/package.json",
             "**/package-lock.json",
