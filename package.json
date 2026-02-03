@@ -6,7 +6,6 @@
   "main": "dist/index.js",
   "scripts": {
     "restore": "npm install",
-    "clean": "rimraf node_modules package-lock.json dist",
     "format": "prettier --write **/*.js",
     "lint": "eslint **/*.js",
     "test": "vitest run",
@@ -14,8 +13,8 @@
     "test:verbose": "vitest run --reporter=verbose",
     "test:coverage-verbose": "vitest run --coverage --reporter=verbose",
     "build": "ncc build src/index.js -o dist --license licenses.txt",
+    "rebuild": "npm ci && npm run build",
     "package": "npm run format && npm run lint && npm run test && npm run build",
-    "rebuild": "npm run clean && npm run package",
     "precommit": "npm run restore && npm run package"
   },
   "repository": {

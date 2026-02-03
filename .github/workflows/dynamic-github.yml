@@ -26,15 +26,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
 
-    - name: Install dependencies and build
+    - name: Clean install, format, lint, test, and build
       run: npm ci && npm run build
+
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
@@ -82,8 +82,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        fetch-depth: 0
+        node-version: '20'
+
+    - name: Clean install, format, lint, test, and build
+      run: npm ci && npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
@@ -107,7 +113,7 @@ jobs:
 
   ########## Option 3 ##########
   # - Uses 'parse-dynamic-secrets: true'
-  # - Uses 'WEB' as a prefix to the output names
+  # - Uses 'GH' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   github_dynamic_secrets_prefixed:
     runs-on: ubuntu-latest
@@ -115,8 +121,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
       with:
-        fetch-depth: 0
+        node-version: '20'
+
+    - name: Clean install, format, lint, test, and build
+      run: npm ci && npm run build
 
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
