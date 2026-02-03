@@ -28,7 +28,13 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
+    - name: Install dependencies and build
+      run: npm ci && npm run build
     - name: Fetch dynamic secret from Akleyless
       id: fetch-secrets
       uses: ./
