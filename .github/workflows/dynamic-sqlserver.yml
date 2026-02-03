@@ -37,11 +37,13 @@ jobs:
       with:
         name: dist
         path: dist/
+        retention-days: 1
 
   ########## Option 1 ########## 
   # Default behavior: 
   # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   sql_dynamic_secrets:
+    needs: build
     runs-on: ubuntu-latest
     name: SQL dynamic (default)
     steps:
@@ -101,6 +103,7 @@ jobs:
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   sql_dynamic_secrets_parsed:
+    needs: build
     runs-on: ubuntu-latest
     name: SQL dynamic (parsed)
     steps:
@@ -140,6 +143,7 @@ jobs:
   # - Uses 'WEB' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   sql_dynamic_secrets_prefixed:
+    needs: build
     runs-on: ubuntu-latest
     name: SQL dynamic (prefix-parsed)
     steps:

@@ -30,8 +30,10 @@ jobs:
       with:
         name: dist
         path: dist/
+        retention-days: 1
 
   code_sign:
+    needs: build
     runs-on: windows-latest
     name: Code Signing
     steps:

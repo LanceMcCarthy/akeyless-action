@@ -37,11 +37,13 @@ jobs:
       with:
         name: dist
         path: dist/
+        retention-days: 1
 
   ########## Option 1 ########## 
   # Default behavior: 
   # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   fetch_dynamic_secrets:
+    needs: build
     runs-on: ubuntu-latest
     name: EntraID dynamic (default)
     steps:
@@ -78,6 +80,7 @@ jobs:
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   auto_parsed_secrets:
+    needs: build
     runs-on: ubuntu-latest
     name: EntraID dynamic (parsed)
     steps:
@@ -117,6 +120,7 @@ jobs:
   # - Uses 'WEB' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   auto_parsed_secrets_with_prefix:
+    needs: build
     runs-on: ubuntu-latest
     name: EntraID dynamic (prefix-parsed)
     steps:

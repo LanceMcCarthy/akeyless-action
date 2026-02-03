@@ -37,11 +37,13 @@ jobs:
       with:
         name: dist
         path: dist/
+        retention-days: 1
 
   ########## Option 1 ########## 
   # Default behavior: 
   # The response from Akeyless is kept in it's original JSON string, so it is your responsibility to parse it.
   github_dynamic_secrets:
+    needs: build
     runs-on: ubuntu-latest
     name: GitHub dynamic (default)
     steps:
@@ -96,6 +98,7 @@ jobs:
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   github_dynamic_secrets_parsed:
+    needs: build
     runs-on: ubuntu-latest
     name: GitHub dynamic (parsed)
     steps:
@@ -133,6 +136,7 @@ jobs:
   # - Uses 'GH' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   github_dynamic_secrets_prefixed:
+    needs: build
     runs-on: ubuntu-latest
     name: GitHub dynamic (prefix-parsed)
     steps:
