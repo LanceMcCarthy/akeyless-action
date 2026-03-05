@@ -30,6 +30,7 @@ describe('Main index module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
+      exportSecretsAsBase64: false,
       timeout: 30
     };
 
@@ -47,8 +48,8 @@ describe('Main index module', () => {
     expect(input.fetchAndValidateInput).toHaveBeenCalledTimes(1);
     expect(auth.akeylessLogin).toHaveBeenCalledWith('p-12345', 'jwt', 'https://api.akeyless.io');
     expect(awsAccess.awsLogin).toHaveBeenCalledWith('akeyless-token-123', '/aws/producer', 'https://api.akeyless.io');
-    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true);
-    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, false);
+    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true, false, 30);
+    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, false, false, 30);
   });
 
   test('successful flow without AWS producer', async () => {
@@ -347,6 +348,7 @@ describe('Main index module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: true,
+      exportSecretsAsBase64: true,
       timeout: 60
     };
 
@@ -360,8 +362,8 @@ describe('Main index module', () => {
     await index.run();
 
     // ASSERT
-    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true);
-    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, true);
+    expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true, true, 60);
+    expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, true, true, 60);
   });
 
   test('continues execution after AWS access failure', async () => {

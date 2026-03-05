@@ -227,7 +227,12 @@ async function awsLogin(akeylessToken, producerForAwsAccess, apiUrl) {
 
 
 
-async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, timeout) {
+const toBase64Value = (value) => {
+  const normalizedValue = (value !== null && typeof value === 'object') ? JSON.stringify(value) : String(value);
+  return Buffer.from(normalizedValue, 'utf8').toString('base64');
+};
+
+async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, exportSecretsAsBase64, timeout) {
   const api = akeyless_api_api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
@@ -259,20 +264,22 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // Switch 1 -
         // set outputs
         if (exportSecretsToOutputs) {
+          const outputValue = exportSecretsAsBase64 ? toBase64Value(dynamicSecret) : dynamicSecret;
           // obscure values in visible output and logs
-          core.setSecret(dynamicSecret);
+          core.setSecret(outputValue);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.setOutput(variableName, dynamicSecret);
+          core.setOutput(variableName, outputValue);
         }
 
         // Switch 2 -
         // export env variables
         if (exportSecretsToEnvironment) {
-          const toEnvironment = dynamicSecret;
+          let toEnvironment = dynamicSecret;
           // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
           //   toEnvironment = JSON.stringify(dynamicSecret);
           // }
+          toEnvironment = exportSecretsAsBase64 ? toBase64Value(toEnvironment) : toEnvironment;
           // obscure values in visible output and logs
           core.setSecret(toEnvironment);
 
@@ -286,7 +293,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
         for (const key in dynamicSecret) {
           // get the value for the key
-          const value = dynamicSecret[key];
+          const value = exportSecretsAsBase64 ? toBase64Value(dynamicSecret[key]) : dynamicSecret[key];
 
           // obscure value in visible output and logs
           core.setSecret(value);
@@ -326,7 +333,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   }
 }
 
-async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, timeout) {
+async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, exportSecretsAsBase64, timeout) {
   const api = akeyless_api_api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
@@ -351,7 +358,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
       return;
     }
 
-    const secretValue = staticSecret[name];
+    const secretValueRaw = staticSecret[name];
+    const secretValue = exportSecretsAsBase64 ? toBase64Value(secretValueRaw) : secretValueRaw;
 
     core.setSecret(secretValue);
 
@@ -385,7 +393,8 @@ const stringInputs = {
 const boolInputs = {
   exportSecretsToOutputs: 'export-secrets-to-outputs',
   exportSecretsToEnvironment: 'export-secrets-to-environment',
-  parseDynamicSecrets: 'parse-dynamic-secrets'
+  parseDynamicSecrets: 'parse-dynamic-secrets',
+  exportSecretsAsBase64: 'export-secrets-as-base64'
 };
 
 const dictInputs = {
@@ -408,6 +417,7 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
+    exportSecretsAsBase64: core.getBooleanInput('export-secrets-as-base64', {default: false}),
     timeout: Number(core.getInput('timeout') || '15')
   };
 
@@ -486,7 +496,7 @@ const fetchAndValidateInput = () => {
 async function run() {
   core.debug('Fetching input');
 
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
+  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, exportSecretsAsBase64, timeout} =
     fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
@@ -531,7 +541,7 @@ async function run() {
     core.debug(`Static Secrets: Fetching!`);
 
     try {
-      await exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment);
+      await exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, exportSecretsAsBase64, timeout);
     } catch (error) {
       core.error(`Failed to fetch static secrets: ${JSON.stringify(error)}`);
       core.setFailed(`Failed to fetch static secrets: ${JSON.stringify(error)}`);
@@ -545,7 +555,7 @@ async function run() {
     core.debug(`Dynamic Secrets: Fetching!`);
 
     try {
-      await exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets);
+      await exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, exportSecretsAsBase64, timeout);
     } catch (error) {
       core.error(`Failed to fetch dynamic secrets: ${JSON.stringify(error)}`);
       core.setFailed(`Failed to fetch dynamic secrets: ${JSON.stringify(error)}`);

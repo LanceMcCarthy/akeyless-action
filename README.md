@@ -28,6 +28,7 @@ This action will login to AKeyless using JWT or IAM authentication and then fetc
 | **export-secrets-to-outputs** | No | `boolean` | Default: `true`. True/False to denote if static/dynamic secrets should be exported as environment variables.  |
 | **export-secrets-to-environment** | No | `boolean` | Default: `true`. True/False to denote if static/dynamic secrets should be exported as action outputs. |
 | **parse-dynamic-secrets** | No | `boolean` | Default: `false`. True/False to denote if dynamic secrets will be broken up into individual outputs/env vars, see the [parsed dynamic secrets demos](#parsed-dynamic-secrets). |
+| **export-secrets-as-base64** | No | `boolean` | Default: `false`. When `true`, exported secret values are base64-encoded before masking/output/env export. Useful for multiline values like PEM/RSA keys. |
 | **timeout** | No | `Number`  | Overrides the default gateway request timeout of 15 seconds. |
 
 > It is important that you follow the instructions in the [AKeyless Setup](#akeyless-setup) and [Job Permissions Requirement](#job-permissions-requirement) sections **before** using this Action.

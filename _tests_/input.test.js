@@ -24,6 +24,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
 
     const params = input.fetchAndValidateInput();
@@ -38,6 +39,7 @@ describe('Input validation module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
+      exportSecretsAsBase64: false,
       timeout: 30
     });
 
@@ -54,7 +56,8 @@ describe('Input validation module', () => {
     expect(core.getBooleanInput.mock.calls).toEqual([
       ['export-secrets-to-outputs', {default: true}],
       ['export-secrets-to-environment', {default: true}],
-      ['parse-dynamic-secrets', {default: false}]
+      ['parse-dynamic-secrets', {default: false}],
+      ['export-secrets-as-base64', {default: false}]
     ]);
   });
 
@@ -70,6 +73,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('');
 
     const params = input.fetchAndValidateInput();
@@ -84,6 +88,7 @@ describe('Input validation module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
+      exportSecretsAsBase64: false,
       timeout: 15
     });
   });
@@ -120,6 +125,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
 
     expect(() => {
@@ -155,6 +161,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
 
     expect(() => {
@@ -173,6 +180,7 @@ describe('Input validation module', () => {
     core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
 
@@ -193,6 +201,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('not-a-number');
 
     expect(() => {
@@ -211,6 +220,7 @@ describe('Input validation module', () => {
     core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('10'); // Below minimum of 15
 
@@ -231,6 +241,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('150'); // Above maximum of 120
 
     expect(() => {
@@ -250,6 +261,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
 
     const params = input.fetchAndValidateInput();
@@ -268,6 +280,7 @@ describe('Input validation module', () => {
     core.getBooleanInput = vi.fn();
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(true);
+    core.getBooleanInput.mockReturnValueOnce(false);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce(''); // Empty timeout
 

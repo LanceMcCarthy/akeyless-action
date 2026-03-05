@@ -8,7 +8,7 @@ import * as input from './input.js';
 async function run() {
   core.debug('Fetching input');
 
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
+  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, exportSecretsAsBase64, timeout} =
     input.fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
@@ -53,7 +53,7 @@ async function run() {
     core.debug(`Static Secrets: Fetching!`);
 
     try {
-      await secrets.exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment);
+      await secrets.exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, exportSecretsAsBase64, timeout);
     } catch (error) {
       core.error(`Failed to fetch static secrets: ${JSON.stringify(error)}`);
       core.setFailed(`Failed to fetch static secrets: ${JSON.stringify(error)}`);
@@ -67,7 +67,7 @@ async function run() {
     core.debug(`Dynamic Secrets: Fetching!`);
 
     try {
-      await secrets.exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets);
+      await secrets.exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, exportSecretsAsBase64, timeout);
     } catch (error) {
       core.error(`Failed to fetch dynamic secrets: ${JSON.stringify(error)}`);
       core.setFailed(`Failed to fetch dynamic secrets: ${JSON.stringify(error)}`);

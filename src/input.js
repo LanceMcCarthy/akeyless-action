@@ -11,7 +11,8 @@ const stringInputs = {
 const boolInputs = {
   exportSecretsToOutputs: 'export-secrets-to-outputs',
   exportSecretsToEnvironment: 'export-secrets-to-environment',
-  parseDynamicSecrets: 'parse-dynamic-secrets'
+  parseDynamicSecrets: 'parse-dynamic-secrets',
+  exportSecretsAsBase64: 'export-secrets-as-base64'
 };
 
 const dictInputs = {
@@ -34,6 +35,7 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
+    exportSecretsAsBase64: core.getBooleanInput('export-secrets-as-base64', {default: false}),
     timeout: Number(core.getInput('timeout') || '15')
   };
 

@@ -2,7 +2,12 @@ import * as core from '@actions/core';
 import * as akeylessApi from './akeyless_api.js';
 import akeyless from 'akeyless';
 
-async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, timeout) {
+const toBase64Value = (value) => {
+  const normalizedValue = (value !== null && typeof value === 'object') ? JSON.stringify(value) : String(value);
+  return Buffer.from(normalizedValue, 'utf8').toString('base64');
+};
+
+async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, generateSeparateOutputs, exportSecretsAsBase64, timeout) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(dynamicSecrets)) {
@@ -34,20 +39,22 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
         // Switch 1 -
         // set outputs
         if (exportSecretsToOutputs) {
+          const outputValue = exportSecretsAsBase64 ? toBase64Value(dynamicSecret) : dynamicSecret;
           // obscure values in visible output and logs
-          core.setSecret(dynamicSecret);
+          core.setSecret(outputValue);
 
           // KEY TAKAWAY: Set the output using the entire dynamic secret object
-          core.setOutput(variableName, dynamicSecret);
+          core.setOutput(variableName, outputValue);
         }
 
         // Switch 2 -
         // export env variables
         if (exportSecretsToEnvironment) {
-          const toEnvironment = dynamicSecret;
+          let toEnvironment = dynamicSecret;
           // if (dynamicSecret.constructor === Array || dynamicSecret.constructor === Object) {
           //   toEnvironment = JSON.stringify(dynamicSecret);
           // }
+          toEnvironment = exportSecretsAsBase64 ? toBase64Value(toEnvironment) : toEnvironment;
           // obscure values in visible output and logs
           core.setSecret(toEnvironment);
 
@@ -61,7 +68,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
 
         for (const key in dynamicSecret) {
           // get the value for the key
-          const value = dynamicSecret[key];
+          const value = exportSecretsAsBase64 ? toBase64Value(dynamicSecret[key]) : dynamicSecret[key];
 
           // obscure value in visible output and logs
           core.setSecret(value);
@@ -101,7 +108,7 @@ async function exportDynamicSecrets(akeylessToken, dynamicSecrets, apiUrl, expor
   }
 }
 
-async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, timeout) {
+async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportSecretsToOutputs, exportSecretsToEnvironment, exportSecretsAsBase64, timeout) {
   const api = akeylessApi.api(apiUrl);
 
   for (const [akeylessPath, variableName] of Object.entries(staticSecrets)) {
@@ -126,7 +133,8 @@ async function exportStaticSecrets(akeylessToken, staticSecrets, apiUrl, exportS
       return;
     }
 
-    const secretValue = staticSecret[name];
+    const secretValueRaw = staticSecret[name];
+    const secretValue = exportSecretsAsBase64 ? toBase64Value(secretValueRaw) : secretValueRaw;
 
     core.setSecret(secretValue);
 

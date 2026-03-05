@@ -38,6 +38,10 @@ inputs:
     description: 'True/False to denote if dynamic secrets will exported as a single object, or parsed into individual outputs/env variables. Please visit the demos in ci.yml for clarification.'
     required: false
     default: false
+  export-secrets-as-base64:
+    description: 'True/False to export static/dynamic secret values as base64-encoded text before masking/output/environment export. Useful for multiline values like RSA keys.'
+    required: false
+    default: false
   timeout:
     description: 'Timeout for API requests in seconds (15-120), default: 15.'
     required: false

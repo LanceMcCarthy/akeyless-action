@@ -32,7 +32,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_secret'}, 'https://api.akeyless.io', true, true, false, false, 30);
 
       // ASSERT
       expect(api.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
@@ -65,7 +65,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'aws'}, 'https://api.akeyless.io', true, true, true, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'aws'}, 'https://api.akeyless.io', true, true, true, false, 30);
 
       // ASSERT
       expect(api.getDynamicSecretValue).toHaveBeenCalledWith('get_dynamic_secret_body');
@@ -107,7 +107,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': ''}, 'https://api.akeyless.io', true, true, true, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': ''}, 'https://api.akeyless.io', true, true, true, false, 30);
 
       // ASSERT
       expect(core.setOutput).toHaveBeenCalledWith('username', 'admin');
@@ -133,7 +133,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, false, false, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, false, false, false, 30);
 
       // ASSERT
       expect(core.setSecret).toHaveBeenCalledWith(dynamicSecret);
@@ -158,7 +158,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', false, true, false, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', false, true, false, false, 30);
 
       // ASSERT
       expect(core.setSecret).toHaveBeenCalledWith(dynamicSecret);
@@ -177,7 +177,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, false, 30);
 
       // ASSERT
       expect(core.notice).toHaveBeenCalledWith('Notice: /path/to/dynamic/producer was not found in Akeyless. Skipped.');
@@ -196,7 +196,7 @@ describe('Secrets module', () => {
       akeyless.GetDynamicSecretValue.constructFromObject = vi.fn(() => 'get_dynamic_secret_body');
 
       // ACT
-      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, 30);
+      await secrets.exportDynamicSecrets('akeyless-token', {'/path/to/dynamic/producer': 'my_token'}, 'https://api.akeyless.io', true, true, false, false, 30);
 
       // ASSERT
       expect(core.error).toHaveBeenCalledWith(`getDynamicSecretValue Failed: ${JSON.stringify(apiError)}`);
@@ -243,7 +243,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30);
 
       // ASSERT
       expect(api.getSecretValue).toHaveBeenCalledWith('get_static_secret_body');
@@ -274,7 +274,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, false, 30);
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, false, false, 30);
 
       // ASSERT
       expect(core.setSecret).toHaveBeenCalledWith('super secret value');
@@ -299,7 +299,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', false, true, 30);
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', false, true, false, 30);
 
       // ASSERT
       expect(core.setSecret).toHaveBeenCalledWith('super secret value');
@@ -318,7 +318,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30);
 
       // ASSERT
       expect(core.notice).toHaveBeenCalledWith('Notice: /path/to/static/secret was not found in Akeyless. Skipped.');
@@ -337,7 +337,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, false, 30);
 
       // ASSERT
       expect(core.error).toHaveBeenCalledWith(`getSecretValue Failed: ${JSON.stringify(apiError)}`);
@@ -362,7 +362,7 @@ describe('Secrets module', () => {
       akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
 
       // ACT
-      await secrets.exportStaticSecrets('akeyless-token', staticSecrets, 'https://api.akeyless.io', true, true, 30);
+      await secrets.exportStaticSecrets('akeyless-token', staticSecrets, 'https://api.akeyless.io', true, true, false, 30);
 
       // ASSERT
       expect(api.getSecretValue).toHaveBeenCalledTimes(2);
@@ -370,6 +370,33 @@ describe('Secrets module', () => {
       expect(core.setOutput).toHaveBeenCalledWith('secret2_name', 'value2');
       expect(core.exportVariable).toHaveBeenCalledWith('secret1_name', 'value1');
       expect(core.exportVariable).toHaveBeenCalledWith('secret2_name', 'value2');
+    });
+
+    test('export static multiline secret as base64 when enabled', async () => {
+      // ARRANGE
+      const multilineSecret = '-----BEGIN PRIVATE KEY-----\nline1\nline2\n-----END PRIVATE KEY-----';
+      const staticSecretResponse = {
+        '/path/to/static/secret': multilineSecret
+      };
+      const expectedBase64 = Buffer.from(multilineSecret, 'utf8').toString('base64');
+
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
+
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(staticSecretResponse));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
+
+      // ACT
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, true, 30);
+
+      // ASSERT
+      expect(core.setSecret).toHaveBeenCalledWith(expectedBase64);
+      expect(core.setOutput).toHaveBeenCalledWith('my_secret', expectedBase64);
+      expect(core.exportVariable).toHaveBeenCalledWith('my_secret', expectedBase64);
     });
   });
 });
