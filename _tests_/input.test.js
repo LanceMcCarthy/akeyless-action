@@ -162,6 +162,25 @@ describe('Input validation module', () => {
     }).toThrow("Input 'static-secrets' did not contain valid JSON");
   });
 
+  test('throws error when static-secrets is not a string', () => {
+    core.getInput = vi.fn();
+    core.getInput.mockReturnValueOnce('p-asdf');
+    core.getInput.mockReturnValueOnce('jwt');
+    core.getInput.mockReturnValueOnce('');
+    core.getInput.mockReturnValueOnce('');
+    core.getInput.mockReturnValueOnce({not: 'a-string'});
+    core.getInput.mockReturnValueOnce('{}');
+    core.getBooleanInput = vi.fn();
+    core.getBooleanInput.mockReturnValueOnce(true);
+    core.getBooleanInput.mockReturnValueOnce(true);
+    core.getBooleanInput.mockReturnValueOnce(false);
+    core.getInput.mockReturnValueOnce('30');
+
+    expect(() => {
+      input.fetchAndValidateInput();
+    }).toThrow("Input 'static-secrets' should be a serialized JSON dictionary with the secret path as a key and the output name as the value");
+  });
+
   test('throws error for invalid JSON dictionary in dynamic-secrets', () => {
     core.getInput = vi.fn();
     core.getInput.mockReturnValueOnce('p-asdf');

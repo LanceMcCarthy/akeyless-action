@@ -79,14 +79,26 @@ async function run() {
 
 export {run};
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+async function main(runner = run) {
   try {
     core.debug('Starting main run');
     core.info(`Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they're addressed, this action will automatically inherit those fixes in the next update.`);
-    run();
+    await runner();
   } catch (error) {
     core.debug(error.stack);
     core.setFailed(error.message);
     core.debug(error.message);
   }
 }
+
+export {main};
+
+function bootstrap(importMetaUrl = import.meta.url, argvPath = process.argv[1], runMain = main) {
+  if (importMetaUrl === `file://${argvPath}`) {
+    runMain();
+  }
+}
+
+export {bootstrap};
+
+bootstrap();
