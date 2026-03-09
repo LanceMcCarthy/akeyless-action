@@ -406,9 +406,7 @@ describe('Main index module', () => {
     await index.main(runSpy);
 
     expect(core.debug).toHaveBeenCalledWith('Starting main run');
-    expect(core.info).toHaveBeenCalledWith(
-      expect.stringContaining('Any AWS SDK warnings come from the Akeyless dependencies')
-    );
+    expect(core.info).toHaveBeenCalledWith(expect.stringContaining('Any AWS SDK warnings come from the Akeyless dependencies'));
     expect(runSpy).toHaveBeenCalledTimes(1);
   });
 

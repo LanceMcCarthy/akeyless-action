@@ -12,6 +12,8 @@ __webpack_require__.d(__webpack_exports__, {
   run: () => (/* binding */ run)
 });
 
+// UNUSED EXPORTS: bootstrap, main
+
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js + 14 modules
 var core = __webpack_require__(96421);
 // EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js + 20 modules
@@ -141,16 +143,12 @@ async function jwtLogin(apiUrl, accessId) {
 
 async function awsIamLogin(apiUrl, accessId) {
   const api = akeyless_api_api(apiUrl);
-  let cloudId = undefined;
+  let cloudId;
 
   try {
     cloudId = await getAwsCloudIdV3();
   } catch (error) {
     action_fail(`Failed to fetch cloud id: ${error.message}`);
-  }
-
-  if (cloudId === undefined) {
-    action_fail(`CloudId is undefined.`);
   }
 
   try {
@@ -557,17 +555,29 @@ async function run() {
 
 
 
-if (require("url").pathToFileURL(__filename).href === `file://${process.argv[1]}`) {
+async function main(runner = run) {
   try {
     core.debug('Starting main run');
     core.info(`Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they're addressed, this action will automatically inherit those fixes in the next update.`);
-    run();
+    await runner();
   } catch (error) {
     core.debug(error.stack);
     core.setFailed(error.message);
     core.debug(error.message);
   }
 }
+
+
+
+function bootstrap(importMetaUrl = require("url").pathToFileURL(__filename).href, argvPath = process.argv[1], runMain = main) {
+  if (importMetaUrl === `file://${argvPath}`) {
+    runMain();
+  }
+}
+
+
+
+bootstrap();
 
 
 /***/ })

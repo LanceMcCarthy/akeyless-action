@@ -156,9 +156,7 @@ describe('Authentication module', () => {
   });
 
   test('akeylessLogin fails for unsupported access type', async () => {
-    await expect(auth.akeylessLogin('p-access', 'invalid', 'https://api.akeyless.io')).rejects.toThrow(
-      'login[accessType] is not a function'
-    );
+    await expect(auth.akeylessLogin('p-access', 'invalid', 'https://api.akeyless.io')).rejects.toThrow('login[accessType] is not a function');
     expect(core.setFailed).toHaveBeenCalled();
   });
 });
