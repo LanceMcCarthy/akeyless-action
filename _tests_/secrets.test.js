@@ -371,5 +371,64 @@ describe('Secrets module', () => {
       expect(core.exportVariable).toHaveBeenCalledWith('secret1_name', 'value1');
       expect(core.exportVariable).toHaveBeenCalledWith('secret2_name', 'value2');
     });
+
+    test('export static secrets - multiline value succeeds', async () => {
+      const multilineSecret = `-----BEGIN RSA PRIVATE KEY-----
+8P9d61xphReeoxlOrHZLKHwri/JOiIB3/pvnTeT9gbk8lrf1wvC3CtHzS8EW+MzU
+JClyiR3qPndT4JzeC9bgRCOS8qWmF8KeDtgmGkr6NcNnFELq7AFP4FxgUwY7s5Lb
+NtqS8Vx4ewijN8YF3GYOg6+2+WGiqMLbMGDFjpywkqpsmB0ZGtsaW6NNxIoeJ/ni
+2HiHmv1eNlj5DEt7Qxjm37iDPoArfHAIQrAQBwIDAQABAoIBAEeDe2ES9U+nQgbq
+8tHKrW/erwi6V8J6m3C5JtrOfZXUpiVV5//Uz4qKWiK1woqcv/jUfallPJQqAIZj
+tjmpfjbAgdRUrUa9YtvV79eGofup4H9+6fP1ZrNwHUnMw33ADbJtn99poL3emWq5
+Iojzi6O3qN/FrAufLD4g7rbTB+0VMxMnLTqDiKVv0MBrfG73j2yxx0iVnh8or2PY
+APEoB0K71MKH32M/WHtnQKPBzKOnO0ya9ZHVttsW3nJB8pzESDic8KuE4u7DjLVq
+MIIEowIBAAKCAQEAld8l0zD5JRrMk1PXXpzGyF4I1hkFaN5i+4TPX5fwlGsbyLG3
+XsfwqLWaC4JZvBploj9DWa4wceIWo6btQP0TNurKxNfk7LQFJK+N0Id2uqT0LQtV
+Oks2hwKWxCSzOE7sEYQEoN+B01CHQk1MxLw79SjYYxcW9qqXTx3lPetDNQT08rfi
+63XPC0ECgYEAx0HjhxwtLp5VqFMHnUG+oQSib5ByVTu2RTSo+ZAhC/z1JX5Jsq6C
+20lpRekX1AU2OHqWH0NtvHveByalvX9FjLZ1Iie2yekyv+/3eZWqxnpKZYDnmjC2
+uyr/DAS5qdxp+Xme6WInayz8HhN4MCb+iF3P0Ducxr+uRXHEbFnfW5UCgYEAwIz6
+t9TU4UgJPQGJismqcvT9IltObWrpO/qudj/nCYXlt2QA3DCVMz03vFXyOVlfYOhA
+oSBTB3BWvkViyr/YhC0JiXc8dXLjizguVsEECsr9sM/y6nyVMEovczm/YE1JUDHN
+G0/vIHNlJ+jFjy+2s3V1ZNT0X+Quoowpx9jhdisCgYEAxMkZwFHffW76AacemfxY
+HAXLtordn7e9J1P+nZnuSTylj0XN2x3mNlOmGFlAIzCSf+zxXibltYRPnphYj3Gm
+anW38Odv6rDYYh7INdfONP6Jgv1vviPmE6s+/8ua4VrBfpTSkINTktF2nO11gXjB
+YEPl/S0ihFbB8euNpcSMhpECgYAonNO4+HQaPDZunqdjFZwU+SV3HKkTHQyqsPoh
+SOMzOAG2x6oCx2CA2TWrTLl1bStX5kTTd1zr4b76DOqEdyh04Ib1bqfa4euqjqP/
+emCe4ifWJlZHLRXOhKczd4etCUAgYRCw5RA72PsKCue4hsjTWz/yj5QnsZpAgK3D
+vwIGaaaUPr0L/NnGaiFSbzm+2VlunZp2g+Tzn9mxc6SW2egb+WRcUepVz4DrDfHM
+UDRl1wKBgBWmY6RcjaF4XzJsa4WAl5YSZTR0Z+3RYJp2Z4nTH1q5RNnRLFoE1LC4
+vp2PSQ3Hm+TnwqIENf5hgbbSun123Tjw8wrpM6zczcmKwUbV0h6/
+-----END RSA PRIVATE KEY-----`;
+
+      // ARRANGE
+      const staticSecretResponse = {
+        '/path/to/static/secret': multilineSecret
+      };
+
+      core.setSecret = vi.fn(() => {});
+      core.setOutput = vi.fn(() => {});
+      core.exportVariable = vi.fn(() => {});
+      core.info = vi.fn(() => {});
+
+      const api = vi.fn(() => {});
+      api.getSecretValue = vi.fn(() => Promise.resolve(staticSecretResponse));
+      akeylessApi.api = vi.fn(() => api);
+      akeyless.GetSecretValue.constructFromObject = vi.fn(() => 'get_static_secret_body');
+
+      // ACT
+      await secrets.exportStaticSecrets('akeyless-token', {'/path/to/static/secret': 'my_secret'}, 'https://api.akeyless.io', true, true, 30);
+
+      // ASSERT
+      expect(api.getSecretValue).toHaveBeenCalledWith('get_static_secret_body');
+      expect(akeyless.GetSecretValue.constructFromObject).toHaveBeenCalledWith({
+        token: 'akeyless-token',
+        names: ['/path/to/static/secret'],
+        timeout: 30
+      });
+      expect(core.setSecret).toHaveBeenCalledWith(multilineSecret);
+      expect(core.setOutput).toHaveBeenCalledWith('my_secret', multilineSecret);
+      expect(core.exportVariable).toHaveBeenCalledWith('my_secret', multilineSecret);
+    });
   });
 });
