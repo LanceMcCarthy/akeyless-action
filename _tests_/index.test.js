@@ -397,4 +397,39 @@ describe('Main index module', () => {
     expect(secrets.exportStaticSecrets).toHaveBeenCalled(); // Should continue after AWS failure
     expect(secrets.exportDynamicSecrets).toHaveBeenCalled(); // Should continue after AWS failure
   });
+
+  test('main logs startup and invokes run', async () => {
+    core.debug = vi.fn();
+    core.info = vi.fn();
+    const runSpy = vi.fn(async () => undefined);
+
+    await index.main(runSpy);
+
+    expect(core.debug).toHaveBeenCalledWith('Starting main run');
+    expect(core.info).toHaveBeenCalledWith(expect.stringContaining('Any AWS SDK warnings come from the Akeyless dependencies'));
+    expect(runSpy).toHaveBeenCalledTimes(1);
+  });
+
+  test('main catches run error and marks action failed', async () => {
+    const boom = new Error('boom from main');
+    core.debug = vi.fn();
+    core.info = vi.fn();
+    core.setFailed = vi.fn();
+    const failingRun = vi.fn(async () => {
+      throw boom;
+    });
+
+    await index.main(failingRun);
+
+    expect(core.setFailed).toHaveBeenCalledWith('boom from main');
+    expect(core.debug).toHaveBeenCalledWith(boom.message);
+  });
+
+  test('bootstrap executes main callback when run as entry script', () => {
+    const runMain = vi.fn();
+
+    index.bootstrap('file:///tmp/index.js', '/tmp/index.js', runMain);
+
+    expect(runMain).toHaveBeenCalledTimes(1);
+  });
 });

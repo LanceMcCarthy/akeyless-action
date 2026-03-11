@@ -113,6 +113,14 @@ module.exports = require("node:buffer");
 
 /***/ }),
 
+/***/ 31421:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:child_process");
+
+/***/ }),
+
 /***/ 37540:
 /***/ ((module) => {
 
@@ -217,6 +225,14 @@ module.exports = require("node:perf_hooks");
 
 /***/ }),
 
+/***/ 1708:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:process");
+
+/***/ }),
+
 /***/ 41792:
 /***/ ((module) => {
 
@@ -294,14 +310,6 @@ module.exports = require("os");
 
 "use strict";
 module.exports = require("path");
-
-/***/ }),
-
-/***/ 932:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("process");
 
 /***/ }),
 

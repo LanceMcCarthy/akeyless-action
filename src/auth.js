@@ -103,16 +103,12 @@ async function jwtLogin(apiUrl, accessId) {
 
 async function awsIamLogin(apiUrl, accessId) {
   const api = akeylessApi.api(apiUrl);
-  let cloudId = undefined;
+  let cloudId;
 
   try {
     cloudId = await getAwsCloudIdV3();
   } catch (error) {
     action_fail(`Failed to fetch cloud id: ${error.message}`);
-  }
-
-  if (cloudId === undefined) {
-    action_fail(`CloudId is undefined.`);
   }
 
   try {
