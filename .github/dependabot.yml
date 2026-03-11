@@ -8,6 +8,8 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
+      - dependency-name: "eslint"
+      - dependency-name: "@eslint/js"
     groups:
        dependencies:
           applies-to: version-updates
