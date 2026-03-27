@@ -193,6 +193,14 @@ module.exports = require("node:http2");
 
 /***/ }),
 
+/***/ 44708:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("node:https");
+
+/***/ }),
+
 /***/ 77030:
 /***/ ((module) => {
 
