@@ -8,7 +8,7 @@ exports.modules = {
 
 
 
-var utilUtf8 = __webpack_require__(71577);
+var utilUtf8 = __webpack_require__(34989);
 
 class EventStreamSerde {
     marshaller;

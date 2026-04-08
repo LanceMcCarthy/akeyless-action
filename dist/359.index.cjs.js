@@ -16,8 +16,8 @@ __webpack_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js + 14 modules
 var core = __webpack_require__(96421);
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js + 20 modules
-var github = __webpack_require__(26474);
+// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js + 21 modules
+var github = __webpack_require__(50157);
 // EXTERNAL MODULE: ./node_modules/akeyless/dist/index.js
 var dist = __webpack_require__(94896);
 ;// CONCATENATED MODULE: ./src/akeyless_api.js
@@ -33,10 +33,10 @@ function akeyless_api_api(url) {
 
 // EXTERNAL MODULE: ./node_modules/@aws-sdk/credential-providers/dist-cjs/index.js
 var dist_cjs = __webpack_require__(29719);
-// EXTERNAL MODULE: ./node_modules/@aws-sdk/signature-v4/dist-cjs/index.js
-var signature_v4_dist_cjs = __webpack_require__(40932);
-// EXTERNAL MODULE: external "crypto"
-var external_crypto_ = __webpack_require__(76982);
+// EXTERNAL MODULE: ./node_modules/@smithy/signature-v4/dist-cjs/index.js
+var signature_v4_dist_cjs = __webpack_require__(75118);
+// EXTERNAL MODULE: ./node_modules/@aws-crypto/sha256-js/build/main/index.js
+var main = __webpack_require__(23156);
 ;// CONCATENATED MODULE: ./src/auth.js
 
 
@@ -67,7 +67,7 @@ async function getAwsCloudIdV3() {
       credentials: credentials,
       region: region,
       service: 'sts',
-      sha256: data => (0,external_crypto_.createHash)('sha256').update(data).digest('hex')
+      sha256: main.Sha256
     });
 
     // Sign the request
@@ -555,7 +555,7 @@ async function run() {
 
 
 
-async function main(runner = run) {
+async function src_main(runner = run) {
   try {
     core.debug('Starting main run');
     core.info(`Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they're addressed, this action will automatically inherit those fixes in the next update.`);
@@ -569,7 +569,7 @@ async function main(runner = run) {
 
 
 
-function bootstrap(importMetaUrl = require("url").pathToFileURL(__filename).href, argvPath = process.argv[1], runMain = main) {
+function bootstrap(importMetaUrl = require("url").pathToFileURL(__filename).href, argvPath = process.argv[1], runMain = src_main) {
   if (importMetaUrl === `file://${argvPath}`) {
     runMain();
   }

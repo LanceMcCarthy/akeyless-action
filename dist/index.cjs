@@ -561,7 +561,7 @@ let core;
 
 const runAction = async () => {
   core = await __nccwpck_require__.e(/* import() */ 421).then(__nccwpck_require__.bind(__nccwpck_require__, 96421));
-  const {run} = await Promise.all(/* import() */[__nccwpck_require__.e(421), __nccwpck_require__.e(410), __nccwpck_require__.e(359)]).then(__nccwpck_require__.bind(__nccwpck_require__, 42359));
+  const {run} = await Promise.all(/* import() */[__nccwpck_require__.e(421), __nccwpck_require__.e(741), __nccwpck_require__.e(359)]).then(__nccwpck_require__.bind(__nccwpck_require__, 42359));
 
   core.debug('Starting main run');
   core.info('Note: Any AWS SDK warnings come from the Akeyless dependencies. Once they\'re addressed, this action will automatically inherit those fixes in the next update.');

@@ -10,7 +10,7 @@ vi.mock('akeyless', () => ({
 vi.mock('@aws-sdk/credential-providers', () => ({
   fromNodeProviderChain: vi.fn()
 }));
-vi.mock('@aws-sdk/signature-v4', () => ({
+vi.mock('@smithy/signature-v4', () => ({
   SignatureV4: vi.fn()
 }));
 
@@ -18,7 +18,7 @@ import * as core from '@actions/core';
 import * as akeylessApi from '../src/akeyless_api.js';
 import akeyless from 'akeyless';
 import {fromNodeProviderChain} from '@aws-sdk/credential-providers';
-import {SignatureV4} from '@aws-sdk/signature-v4';
+import {SignatureV4} from '@smithy/signature-v4';
 import * as auth from '../src/auth.js';
 
 describe('Authentication module', () => {
@@ -36,8 +36,7 @@ describe('Authentication module', () => {
       secretAccessKey: 'SECRET123',
       sessionToken: 'SESSION123'
     }));
-    SignatureV4.mockImplementation(function (options) {
-      options.sha256('cover-sha256-callback');
+    SignatureV4.mockImplementation(function () {
       return {
         sign: vi.fn(async request => ({
           ...request,
@@ -109,8 +108,7 @@ describe('Authentication module', () => {
   });
 
   test('aws iam login supports missing session token header', async () => {
-    SignatureV4.mockImplementation(function (options) {
-      options.sha256('cover-sha256-callback');
+    SignatureV4.mockImplementation(function () {
       return {
         sign: vi.fn(async request => ({
           ...request,

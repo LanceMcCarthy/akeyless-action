@@ -2,8 +2,8 @@ import * as core from '@actions/core';
 import * as akeylessApi from './akeyless_api.js';
 import akeyless from 'akeyless';
 import {fromNodeProviderChain} from '@aws-sdk/credential-providers';
-import {SignatureV4} from '@aws-sdk/signature-v4';
-import {createHash} from 'crypto';
+import {SignatureV4} from '@smithy/signature-v4';
+import {Sha256} from '@aws-crypto/sha256-js';
 
 function action_fail(message) {
   core.debug(message);
@@ -27,7 +27,7 @@ async function getAwsCloudIdV3() {
       credentials: credentials,
       region: region,
       service: 'sts',
-      sha256: data => createHash('sha256').update(data).digest('hex')
+      sha256: Sha256
     });
 
     // Sign the request
