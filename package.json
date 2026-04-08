@@ -30,7 +30,7 @@
   "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
   "devDependencies": {
     "@actions/core": "^3.0.0",
-    "@actions/github": "^9.0.0",
+    "@actions/github": "^9.1.0",
     "@aws-crypto/sha256-js": "^5.2.0",
     "@aws-sdk/credential-providers": "^3.1018.0",
     "@babel/preset-env": "^7.29.0",
