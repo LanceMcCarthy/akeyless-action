@@ -61,7 +61,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/entra-id-dvlup":"entra_dynamic_secret"}'
+        dynamic-secrets: '{"/entra-id-live":"entra_dynamic_secret"}'
 
     # See other example workflows on how to manually parse each key value => https://github.com/LanceMcCarthy/akeyless-action/blob/main/.github/workflows/dynamic-github.yml#L35-L53
     # For this demo we'll just use jq and export them to custom env vars directly
@@ -98,7 +98,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/entra-id-dvlup":""}' #no prefix, all output fields are dynamically parsed from source
+        dynamic-secrets: '{"/entra-id-live":""}' #no prefix, all output fields are dynamically parsed from source
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed)
@@ -138,7 +138,7 @@ jobs:
       uses: ./
       with:
         access-id: ${{secrets.AKEYLESS_ACCESS_ID_PERSONAL}}
-        dynamic-secrets: '{"/entra-id-dvlup":"ENTRA_ID"}' # added the "ENTRA_ID_" prefix to dynamically parsed output names
+        dynamic-secrets: '{"/entra-id-live":"ENTRA_ID"}' # added the "ENTRA_ID_" prefix to dynamically parsed output names
         parse-dynamic-secrets: true
 
     - name: Verify Job Outputs (to known field names, pre-parsed with prefix)
