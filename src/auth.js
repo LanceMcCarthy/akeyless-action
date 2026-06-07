@@ -71,7 +71,7 @@ async function getAwsCloudIdV3() {
     const awsData = JSON.stringify(cloudIdObj);
     return Buffer.from(awsData).toString('base64');
   } catch (error) {
-    throw new Error(`Failed to get AWS cloud ID: ${error.message}`);
+    throw new Error(`Failed to get AWS cloud ID: ${error.message}`, {cause: error});
   }
 }
 

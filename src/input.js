@@ -72,7 +72,7 @@ const fetchAndValidateInput = () => {
       params[paramKey] = parsed;
     } catch (e) {
       if (e instanceof SyntaxError) {
-        throw new Error(`Input '${inputId}' did not contain valid JSON`);
+        throw new Error(`Input '${inputId}' did not contain valid JSON`, {cause: e});
       } else {
         throw e;
       }
