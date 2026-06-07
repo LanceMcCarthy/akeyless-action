@@ -80,7 +80,7 @@ jobs:
   # Uses 'parse-dynamic-secrets: true' 
   # This will automatically parse the JSON string into individual outputs
   auto_parsed_secrets:
-    needs: build
+    needs: [build, fetch_dynamic_secrets]
     runs-on: ubuntu-latest
     name: EntraID dynamic (parsed)
     steps:
@@ -120,7 +120,7 @@ jobs:
   # - Uses 'WEB' as a prefix to the output names
   # This is the same as Option 2, but with a known prefix to help avoid conflicts with other variable names
   auto_parsed_secrets_with_prefix:
-    needs: build
+    needs: [build, auto_parsed_secrets]
     runs-on: ubuntu-latest
     name: EntraID dynamic (prefix-parsed)
     steps:
