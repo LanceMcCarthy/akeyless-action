@@ -16,8 +16,6 @@ __webpack_require__.d(__webpack_exports__, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js + 14 modules
 var core = __webpack_require__(96421);
-// EXTERNAL MODULE: ./node_modules/@actions/github/lib/github.js + 21 modules
-var github = __webpack_require__(50157);
 // EXTERNAL MODULE: ./node_modules/akeyless/dist/index.js
 var dist = __webpack_require__(94896);
 ;// CONCATENATED MODULE: ./src/akeyless_api.js
@@ -111,7 +109,7 @@ async function getAwsCloudIdV3() {
     const awsData = JSON.stringify(cloudIdObj);
     return Buffer.from(awsData).toString('base64');
   } catch (error) {
-    throw new Error(`Failed to get AWS cloud ID: ${error.message}`);
+    throw new Error(`Failed to get AWS cloud ID: ${error.message}`, {cause: error});
   }
 }
 
@@ -444,7 +442,7 @@ const fetchAndValidateInput = () => {
       params[paramKey] = parsed;
     } catch (e) {
       if (e instanceof SyntaxError) {
-        throw new Error(`Input '${inputId}' did not contain valid JSON`);
+        throw new Error(`Input '${inputId}' did not contain valid JSON`, {cause: e});
       } else {
         throw e;
       }
@@ -474,7 +472,6 @@ const fetchAndValidateInput = () => {
 
 
 ;// CONCATENATED MODULE: ./src/index.js
-
 
 
 

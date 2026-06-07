@@ -14,6 +14,7 @@ module.exports = __webpack_require__(20218);
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
 
 var net = __webpack_require__(69278);
@@ -277,7 +278,7 @@ if (process.env.NODE_DEBUG && /\btunnel\b/.test(process.env.NODE_DEBUG)) {
 } else {
   debug = function() {};
 }
-exports.debug = debug; // for test
+__webpack_unused_export__ = debug; // for test
 
 
 /***/ }),
@@ -286,6 +287,7 @@ exports.debug = debug; // for test
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
+var __webpack_unused_export__;
 
 
 const Client = __webpack_require__(23701)
@@ -313,29 +315,29 @@ const createRedirectInterceptor = __webpack_require__(25092)
 
 Object.assign(Dispatcher.prototype, api)
 
-module.exports.Dispatcher = Dispatcher
-module.exports.Client = Client
-module.exports.Pool = Pool
-module.exports.BalancedPool = BalancedPool
-module.exports.Agent = Agent
-module.exports.ProxyAgent = ProxyAgent
-module.exports.EnvHttpProxyAgent = EnvHttpProxyAgent
-module.exports.RetryAgent = RetryAgent
-module.exports.RetryHandler = RetryHandler
+__webpack_unused_export__ = Dispatcher
+__webpack_unused_export__ = Client
+__webpack_unused_export__ = Pool
+__webpack_unused_export__ = BalancedPool
+__webpack_unused_export__ = Agent
+module.exports.kT = ProxyAgent
+__webpack_unused_export__ = EnvHttpProxyAgent
+__webpack_unused_export__ = RetryAgent
+__webpack_unused_export__ = RetryHandler
 
-module.exports.DecoratorHandler = DecoratorHandler
-module.exports.RedirectHandler = RedirectHandler
-module.exports.createRedirectInterceptor = createRedirectInterceptor
-module.exports.interceptors = {
+__webpack_unused_export__ = DecoratorHandler
+__webpack_unused_export__ = RedirectHandler
+__webpack_unused_export__ = createRedirectInterceptor
+__webpack_unused_export__ = {
   redirect: __webpack_require__(21514),
   retry: __webpack_require__(92026),
   dump: __webpack_require__(88060),
   dns: __webpack_require__(70379)
 }
 
-module.exports.buildConnector = buildConnector
-module.exports.errors = errors
-module.exports.util = {
+__webpack_unused_export__ = buildConnector
+__webpack_unused_export__ = errors
+__webpack_unused_export__ = {
   parseHeaders: util.parseHeaders,
   headerNameToString: util.headerNameToString
 }
@@ -389,11 +391,11 @@ function makeDispatcher (fn) {
   }
 }
 
-module.exports.setGlobalDispatcher = setGlobalDispatcher
-module.exports.getGlobalDispatcher = getGlobalDispatcher
+__webpack_unused_export__ = setGlobalDispatcher
+__webpack_unused_export__ = getGlobalDispatcher
 
 const fetchImpl = (__webpack_require__(54398).fetch)
-module.exports.fetch = async function fetch (init, options = undefined) {
+__webpack_unused_export__ = async function fetch (init, options = undefined) {
   try {
     return await fetchImpl(init, options)
   } catch (err) {
@@ -404,57 +406,57 @@ module.exports.fetch = async function fetch (init, options = undefined) {
     throw err
   }
 }
-module.exports.Headers = __webpack_require__(60660).Headers
-module.exports.Response = __webpack_require__(99051).Response
-module.exports.Request = __webpack_require__(9967).Request
-module.exports.FormData = __webpack_require__(35910).FormData
-module.exports.File = globalThis.File ?? (__webpack_require__(4573).File)
-module.exports.FileReader = __webpack_require__(48355).FileReader
+/* unused reexport */ __webpack_require__(60660).Headers
+/* unused reexport */ __webpack_require__(99051).Response
+/* unused reexport */ __webpack_require__(9967).Request
+/* unused reexport */ __webpack_require__(35910).FormData
+__webpack_unused_export__ = globalThis.File ?? (__webpack_require__(4573).File)
+/* unused reexport */ __webpack_require__(48355).FileReader
 
 const { setGlobalOrigin, getGlobalOrigin } = __webpack_require__(51059)
 
-module.exports.setGlobalOrigin = setGlobalOrigin
-module.exports.getGlobalOrigin = getGlobalOrigin
+__webpack_unused_export__ = setGlobalOrigin
+__webpack_unused_export__ = getGlobalOrigin
 
 const { CacheStorage } = __webpack_require__(3245)
 const { kConstruct } = __webpack_require__(20109)
 
 // Cache & CacheStorage are tightly coupled with fetch. Even if it may run
 // in an older version of Node, it doesn't have any use without fetch.
-module.exports.caches = new CacheStorage(kConstruct)
+__webpack_unused_export__ = new CacheStorage(kConstruct)
 
 const { deleteCookie, getCookies, getSetCookies, setCookie } = __webpack_require__(79061)
 
-module.exports.deleteCookie = deleteCookie
-module.exports.getCookies = getCookies
-module.exports.getSetCookies = getSetCookies
-module.exports.setCookie = setCookie
+__webpack_unused_export__ = deleteCookie
+__webpack_unused_export__ = getCookies
+__webpack_unused_export__ = getSetCookies
+__webpack_unused_export__ = setCookie
 
 const { parseMIMEType, serializeAMimeType } = __webpack_require__(51900)
 
-module.exports.parseMIMEType = parseMIMEType
-module.exports.serializeAMimeType = serializeAMimeType
+__webpack_unused_export__ = parseMIMEType
+__webpack_unused_export__ = serializeAMimeType
 
 const { CloseEvent, ErrorEvent, MessageEvent } = __webpack_require__(15188)
-module.exports.WebSocket = __webpack_require__(13726).WebSocket
-module.exports.CloseEvent = CloseEvent
-module.exports.ErrorEvent = ErrorEvent
-module.exports.MessageEvent = MessageEvent
+/* unused reexport */ __webpack_require__(13726).WebSocket
+__webpack_unused_export__ = CloseEvent
+__webpack_unused_export__ = ErrorEvent
+__webpack_unused_export__ = MessageEvent
 
-module.exports.request = makeDispatcher(api.request)
-module.exports.stream = makeDispatcher(api.stream)
-module.exports.pipeline = makeDispatcher(api.pipeline)
-module.exports.connect = makeDispatcher(api.connect)
-module.exports.upgrade = makeDispatcher(api.upgrade)
+__webpack_unused_export__ = makeDispatcher(api.request)
+__webpack_unused_export__ = makeDispatcher(api.stream)
+__webpack_unused_export__ = makeDispatcher(api.pipeline)
+__webpack_unused_export__ = makeDispatcher(api.connect)
+__webpack_unused_export__ = makeDispatcher(api.upgrade)
 
-module.exports.MockClient = MockClient
-module.exports.MockPool = MockPool
-module.exports.MockAgent = MockAgent
-module.exports.mockErrors = mockErrors
+__webpack_unused_export__ = MockClient
+__webpack_unused_export__ = MockPool
+__webpack_unused_export__ = MockAgent
+__webpack_unused_export__ = mockErrors
 
 const { EventSource } = __webpack_require__(21238)
 
-module.exports.EventSource = EventSource
+__webpack_unused_export__ = EventSource
 
 
 /***/ }),
@@ -28693,7 +28695,7 @@ class HttpClient {
             return proxyAgent;
         }
         const usingSsl = parsedUrl.protocol === 'https:';
-        proxyAgent = new undici.ProxyAgent(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, ((proxyUrl.username || proxyUrl.password) && {
+        proxyAgent = new undici/* ProxyAgent */.kT(Object.assign({ uri: proxyUrl.href, pipelining: !this._keepAlive ? 0 : 1 }, ((proxyUrl.username || proxyUrl.password) && {
             token: `Basic ${Buffer.from(`${proxyUrl.username}:${proxyUrl.password}`).toString('base64')}`
         })));
         this._proxyAgentDispatcher = proxyAgent;
