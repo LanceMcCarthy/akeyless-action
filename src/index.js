@@ -1,5 +1,4 @@
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import * as auth from './auth.js';
 import * as awsAccess from './aws_access.js';
 import * as secrets from './secrets.js';

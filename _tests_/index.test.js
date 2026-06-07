@@ -1,12 +1,10 @@
 vi.mock('@actions/core');
-vi.mock('@actions/github');
 vi.mock('../src/auth');
 vi.mock('../src/aws_access');
 vi.mock('../src/secrets');
 vi.mock('../src/input');
 
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import * as auth from '../src/auth.js';
 import * as awsAccess from '../src/aws_access.js';
 import * as secrets from '../src/secrets.js';
