@@ -21,6 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Package
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      with:
+        egress-policy: audit
+
     - name: Checkout
       uses: actions/checkout@v6
 
@@ -47,6 +52,11 @@ jobs:
     runs-on: ubuntu-latest
     name: SQL dynamic (default)
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      with:
+        egress-policy: audit
+
     - name: Checkout
       uses: actions/checkout@v6
 
@@ -107,6 +117,11 @@ jobs:
     runs-on: ubuntu-latest
     name: SQL dynamic (parsed)
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      with:
+        egress-policy: audit
+
     - name: Checkout
       uses: actions/checkout@v6
 
@@ -147,6 +162,11 @@ jobs:
     runs-on: ubuntu-latest
     name: SQL dynamic (prefix-parsed)
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      with:
+        egress-policy: audit
+
     - name: Checkout
       uses: actions/checkout@v6
 
