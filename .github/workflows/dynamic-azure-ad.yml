@@ -12,6 +12,12 @@ on:
       - 'package-lock.json'
       - '.github/workflows/dynamic-azure-ad.yml'
 
+env:
+  ALLOWED_ENDPOINTS: |
+    github.com:443
+    registry.npmjs.org:443
+    api.akeyless.io:443
+
 permissions:
   id-token: write
   contents: read
@@ -24,7 +30,8 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
       uses: actions/checkout@v6
@@ -55,7 +62,8 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
       uses: actions/checkout@v6
@@ -97,7 +105,8 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
       uses: actions/checkout@v6
@@ -142,7 +151,8 @@ jobs:
     - name: Harden Runner
       uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
       with:
-        egress-policy: audit
+        egress-policy: block
+        allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
       uses: actions/checkout@v6
