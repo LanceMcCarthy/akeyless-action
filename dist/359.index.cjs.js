@@ -52,7 +52,7 @@ function action_fail(message) {
 async function getAwsCloudIdV3() {
   try {
     // Get AWS credentials using the v3 credential provider
-    const credentialsProvider = (0,dist_cjs.fromNodeProviderChain)();
+    const credentialsProvider = (0,dist_cjs/* fromNodeProviderChain */.br)();
     const credentials = await credentialsProvider();
 
     // Create the STS request body and URL
