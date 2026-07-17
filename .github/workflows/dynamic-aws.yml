@@ -12,7 +12,7 @@ on:
 #      - '.github/workflows/dynamic-aws.yml'
 
 env:
-  ALLOWED_ENDPOINTS: "github.com:443 registry.npmjs.org:443 api.akeyless.io:443"
+  ALLOWED_ENDPOINTS: "github.com:443 registry.npmjs.org:443 api.akeyless.io:443 pkg.harness.io:443"
 
 permissions:
   id-token: write
