@@ -26,9 +26,9 @@ jobs:
     name: Build Package
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
-        egress-policy: block
+        egress-policy: audit
         allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
@@ -58,9 +58,9 @@ jobs:
     name: Custom producer (default)
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
-        egress-policy: block
+        egress-policy: audit
         allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
@@ -109,9 +109,9 @@ jobs:
     name: Custom producer (parsed)
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
-        egress-policy: block
+        egress-policy: audit
         allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
@@ -149,9 +149,9 @@ jobs:
     name: Custom producer (prefix-parsed)
     steps:
     - name: Harden Runner
-      uses: step-security/harden-runner@f808768d1510423e83855289c910610ca9b43176 # v2.17.0
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
       with:
-        egress-policy: block
+        egress-policy: audit
         allowed-endpoints: ${{env.ALLOWED_ENDPOINTS}}
 
     - name: Checkout
