@@ -31,7 +31,7 @@
   "devDependencies": {
     "@actions/core": "3.0.1",
     "@aws-crypto/sha256-js": "5.2.0",
-    "@aws-sdk/credential-providers": "^3.1081.0",
+    "@aws-sdk/credential-providers": "^3.1096.0",
     "@eslint/eslintrc": "^3.3.6",
     "@eslint/js": "10.0.1",
     "@smithy/signature-v4": "^5.6.4",
@@ -39,7 +39,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "akeyless": "5.0.26",
     "eslint": "^10.6.0",
-    "globals": "17.7.0",
+    "globals": "17.8.0",
     "prettier": "^3.9.5",
     "vitest": "^4.1.10"
   }
