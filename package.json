@@ -17,6 +17,7 @@
     "package": "npm run format && npm run lint && npm run test && npm run build",
     "precommit": "npm run restore && npm run package"
   },
+  "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/LanceMcCarthy/akeyless-action.git"
@@ -27,10 +28,6 @@
   "bugs": {
     "url": "https://github.com/LanceMcCarthy/akeyless-action/issues"
   },
-  "homepage": "https://github.com/LanceMcCarthy/akeyless-action#readme",
-  "overrides": {
-    "js-yaml": "4.3.2"
-  },
   "devDependencies": {
     "@actions/core": "3.0.1",
     "@aws-crypto/sha256-js": "5.2.0",
@@ -39,11 +36,16 @@
     "@eslint/js": "10.0.1",
     "@smithy/signature-v4": "^5.7.3",
     "@vercel/ncc": "^0.45.0",
-    "@vitest/coverage-v8": "^5.0.0",
+    "@vitest/coverage-v8": "^5.0.1",
     "akeyless": "5.0.26",
     "eslint": "^10.6.0",
     "globals": "17.11.0",
     "prettier": "^3.9.5",
-    "vitest": "^5.0.0"
+    "vitest": "^5.0.1"
+  },
+  "overrides": {
+    "js-yaml": "4.3.2",
+    "esbuild": "0.28.1",
+    "superagent": "10.2.2"
   }
 }
