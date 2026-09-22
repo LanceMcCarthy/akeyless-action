@@ -1,6 +1,6 @@
 {
   "name": "akeyless-action",
-  "version": "5.5.3",
+  "version": "5.6.0",
   "type": "module",
   "description": "This action will login to AKeyless using JWT or IAM auth and then fetch secrets and/or provision AWS access via a dynamic producer.",
   "main": "dist/index.cjs",
@@ -37,7 +37,7 @@
     "@smithy/signature-v4": "^5.7.3",
     "@vercel/ncc": "^0.45.0",
     "@vitest/coverage-v8": "^5.0.1",
-    "akeyless": "5.0.26",
+    "akeyless": "^5.0.37",
     "eslint": "^10.6.0",
     "globals": "17.11.0",
     "prettier": "^3.9.5",
