@@ -113,7 +113,7 @@ async function getAwsCloudIdV3() {
   }
 }
 
-async function jwtLogin(apiUrl, accessId) {
+async function jwtLogin(apiUrl, accessId, audienceUrl) {
   const api = akeyless_api_api(apiUrl);
   core.debug(apiUrl);
   let githubToken = undefined;
@@ -121,7 +121,7 @@ async function jwtLogin(apiUrl, accessId) {
 
   try {
     core.debug('Fetching JWT from Github');
-    githubToken = await core.getIDToken();
+    githubToken = audienceUrl ? await core.getIDToken(audienceUrl) : await core.getIDToken();
   } catch (error) {
     action_fail(`Failed to fetch Github JWT: ${error.message}`);
   }
@@ -169,10 +169,10 @@ const login = {
 
 const allowedAccessTypes = Object.keys(login);
 
-async function akeylessLogin(accessId, accessType, apiUrl) {
+async function akeylessLogin(accessId, accessType, apiUrl, audienceUrl) {
   try {
     core.debug('fetch token');
-    return login[accessType](apiUrl, accessId);
+    return login[accessType](apiUrl, accessId, audienceUrl);
   } catch (error) {
     action_fail(error.message);
   }
@@ -375,6 +375,7 @@ const stringInputs = {
   accessId: 'access-id',
   accessType: 'access-type',
   apiUrl: 'api-url',
+  audienceUrl: 'audience-url',
   producerForAwsAccess: 'producer-for-aws-access'
 };
 
@@ -404,7 +405,8 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
-    timeout: Number(core.getInput('timeout') || '15')
+    timeout: Number(core.getInput('timeout') || '15'),
+    audienceUrl: core.getInput('audience-url')
   };
 
   // our only required parameter
@@ -481,8 +483,19 @@ const fetchAndValidateInput = () => {
 async function run() {
   core.debug('Fetching input');
 
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
-    fetchAndValidateInput();
+  const {
+    accessId,
+    accessType,
+    apiUrl,
+    audienceUrl,
+    producerForAwsAccess,
+    staticSecrets,
+    dynamicSecrets,
+    exportSecretsToOutputs,
+    exportSecretsToEnvironment,
+    parseDynamicSecrets,
+    timeout
+  } = fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
   core.debug(`Fetch akeyless token with access type ${accessType}`);
@@ -490,7 +503,7 @@ async function run() {
   let akeylessToken;
 
   try {
-    const akeylessLoginResponse = await akeylessLogin(accessId, accessType, apiUrl);
+    const akeylessLoginResponse = await akeylessLogin(accessId, accessType, apiUrl, audienceUrl);
     akeylessToken = akeylessLoginResponse['token'];
   } catch (error) {
     let message = `Failed to login to AKeyless: ${JSON.stringify(error)}`;

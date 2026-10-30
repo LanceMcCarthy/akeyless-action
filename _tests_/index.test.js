@@ -22,6 +22,7 @@ describe('Main index module', () => {
       accessId: 'p-12345',
       accessType: 'jwt',
       apiUrl: 'https://api.akeyless.io',
+      audienceUrl: 'https://example.com/akeyless',
       producerForAwsAccess: '/aws/producer',
       staticSecrets: {'/static/secret': 'static_var'},
       dynamicSecrets: {'/dynamic/secret': 'dynamic_var'},
@@ -43,7 +44,7 @@ describe('Main index module', () => {
 
     // ASSERT
     expect(input.fetchAndValidateInput).toHaveBeenCalledTimes(1);
-    expect(auth.akeylessLogin).toHaveBeenCalledWith('p-12345', 'jwt', 'https://api.akeyless.io');
+    expect(auth.akeylessLogin).toHaveBeenCalledWith('p-12345', 'jwt', 'https://api.akeyless.io', 'https://example.com/akeyless');
     expect(awsAccess.awsLogin).toHaveBeenCalledWith('akeyless-token-123', '/aws/producer', 'https://api.akeyless.io');
     expect(secrets.exportStaticSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/static/secret': 'static_var'}, 'https://api.akeyless.io', true, true);
     expect(secrets.exportDynamicSecrets).toHaveBeenCalledWith('akeyless-token-123', {'/dynamic/secret': 'dynamic_var'}, 'https://api.akeyless.io', true, true, false);
@@ -75,6 +76,7 @@ describe('Main index module', () => {
     await index.run();
 
     // ASSERT
+    expect(auth.akeylessLogin).toHaveBeenCalledWith('p-12345', 'jwt', 'https://api.akeyless.io', undefined);
     expect(awsAccess.awsLogin).not.toHaveBeenCalled();
     expect(secrets.exportStaticSecrets).toHaveBeenCalled();
     expect(secrets.exportDynamicSecrets).toHaveBeenCalled();
