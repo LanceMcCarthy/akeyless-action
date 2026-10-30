@@ -13,7 +13,7 @@ describe('Input validation module', () => {
   });
 
   test('valid input with all parameters', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('JWT');
     core.getInput.mockReturnValueOnce('https://api.akeyless.io');
@@ -25,6 +25,7 @@ describe('Input validation module', () => {
     core.getBooleanInput.mockReturnValueOnce(true);
     core.getBooleanInput.mockReturnValueOnce(false);
     core.getInput.mockReturnValueOnce('30');
+    core.getInput.mockReturnValueOnce('https://example.com/akeyless');
 
     const params = input.fetchAndValidateInput();
 
@@ -38,7 +39,8 @@ describe('Input validation module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
-      timeout: 30
+      timeout: 30,
+      audienceUrl: 'https://example.com/akeyless'
     });
 
     expect(core.getInput.mock.calls).toEqual([
@@ -48,7 +50,8 @@ describe('Input validation module', () => {
       ['producer-for-aws-access'],
       ['static-secrets'],
       ['dynamic-secrets'],
-      ['timeout']
+      ['timeout'],
+      ['audience-url']
     ]);
 
     expect(core.getBooleanInput.mock.calls).toEqual([
@@ -59,7 +62,7 @@ describe('Input validation module', () => {
   });
 
   test('valid input with minimal parameters', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -84,12 +87,23 @@ describe('Input validation module', () => {
       exportSecretsToOutputs: true,
       exportSecretsToEnvironment: true,
       parseDynamicSecrets: false,
-      timeout: 15
+      timeout: 15,
+      audienceUrl: ''
     });
   });
 
+  test('throws error when audience-url is not a string', () => {
+    core.getInput = vi.fn(name => {
+      if (name === 'access-id') return 'p-asdf';
+      if (name === 'audience-url') return 123;
+      return '';
+    });
+
+    expect(() => input.fetchAndValidateInput()).toThrow("Input 'audience-url' should be a string");
+  });
+
   test('throws error when access-id is missing', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('');
 
     expect(() => {
@@ -98,7 +112,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when access-type is not a string', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce(343);
     core.getInput.mockReturnValue('sup');
@@ -109,7 +123,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid access type', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('invalid-type');
     core.getInput.mockReturnValueOnce('https://api.akeyless.io');
@@ -128,7 +142,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when boolean input is not boolean', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -144,7 +158,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid JSON in static-secrets', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -163,7 +177,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when static-secrets is not a string', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -182,7 +196,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error for invalid JSON dictionary in dynamic-secrets', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -201,7 +215,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is not a number', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -220,7 +234,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is below minimum', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -239,7 +253,7 @@ describe('Input validation module', () => {
   });
 
   test('throws error when timeout is above maximum', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');
@@ -258,7 +272,7 @@ describe('Input validation module', () => {
   });
 
   test('converts access type to lowercase', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('AWS_IAM'); // Uppercase
     core.getInput.mockReturnValueOnce('');
@@ -277,7 +291,7 @@ describe('Input validation module', () => {
   });
 
   test('uses default timeout when empty', () => {
-    core.getInput = vi.fn();
+    core.getInput = vi.fn(() => '');
     core.getInput.mockReturnValueOnce('p-asdf');
     core.getInput.mockReturnValueOnce('jwt');
     core.getInput.mockReturnValueOnce('');

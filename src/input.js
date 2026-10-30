@@ -5,6 +5,7 @@ const stringInputs = {
   accessId: 'access-id',
   accessType: 'access-type',
   apiUrl: 'api-url',
+  audienceUrl: 'audience-url',
   producerForAwsAccess: 'producer-for-aws-access'
 };
 
@@ -34,7 +35,8 @@ const fetchAndValidateInput = () => {
     exportSecretsToOutputs: core.getBooleanInput('export-secrets-to-outputs', {default: true}),
     exportSecretsToEnvironment: core.getBooleanInput('export-secrets-to-environment', {default: true}),
     parseDynamicSecrets: core.getBooleanInput('parse-dynamic-secrets', {default: false}),
-    timeout: Number(core.getInput('timeout') || '15')
+    timeout: Number(core.getInput('timeout') || '15'),
+    audienceUrl: core.getInput('audience-url')
   };
 
   // our only required parameter

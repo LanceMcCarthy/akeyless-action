@@ -75,7 +75,7 @@ async function getAwsCloudIdV3() {
   }
 }
 
-async function jwtLogin(apiUrl, accessId) {
+async function jwtLogin(apiUrl, accessId, audienceUrl) {
   const api = akeylessApi.api(apiUrl);
   core.debug(apiUrl);
   let githubToken = undefined;
@@ -83,7 +83,7 @@ async function jwtLogin(apiUrl, accessId) {
 
   try {
     core.debug('Fetching JWT from Github');
-    githubToken = await core.getIDToken();
+    githubToken = audienceUrl ? await core.getIDToken(audienceUrl) : await core.getIDToken();
   } catch (error) {
     action_fail(`Failed to fetch Github JWT: ${error.message}`);
   }
@@ -131,10 +131,10 @@ const login = {
 
 const allowedAccessTypes = Object.keys(login);
 
-async function akeylessLogin(accessId, accessType, apiUrl) {
+async function akeylessLogin(accessId, accessType, apiUrl, audienceUrl) {
   try {
     core.debug('fetch token');
-    return login[accessType](apiUrl, accessId);
+    return login[accessType](apiUrl, accessId, audienceUrl);
   } catch (error) {
     action_fail(error.message);
   }

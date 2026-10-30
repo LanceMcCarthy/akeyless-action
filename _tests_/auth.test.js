@@ -62,12 +62,38 @@ describe('Authentication module', () => {
 
     expect(response).toEqual({token: 'akeyless-token'});
     expect(core.getIDToken).toHaveBeenCalledTimes(1);
+    expect(core.getIDToken).toHaveBeenCalledWith();
     expect(akeylessApi.api).toHaveBeenCalledWith('https://api.akeyless.io');
     expect(akeyless.Auth.constructFromObject).toHaveBeenCalledWith({
       'access-type': 'jwt',
       'access-id': 'p-access',
       jwt: 'gh-jwt-token'
     });
+  });
+
+  test('jwt login uses a custom audience URL', async () => {
+    const response = await auth.akeylessLogin('p-access', 'jwt', 'https://api.akeyless.io', 'https://example.com/akeyless');
+
+    expect(response).toEqual({token: 'akeyless-token'});
+    expect(core.getIDToken).toHaveBeenCalledExactlyOnceWith('https://example.com/akeyless');
+    expect(akeyless.Auth.constructFromObject).toHaveBeenCalledWith({
+      'access-type': 'jwt',
+      'access-id': 'p-access',
+      jwt: 'gh-jwt-token'
+    });
+  });
+
+  test('jwt login uses the default audience when the audience URL is empty', async () => {
+    await auth.akeylessLogin('p-access', 'jwt', 'https://api.akeyless.io', '');
+
+    expect(core.getIDToken).toHaveBeenCalledExactlyOnceWith();
+  });
+
+  test('aws iam login ignores the audience URL', async () => {
+    const response = await auth.akeylessLogin('p-access', 'aws_iam', 'https://api.akeyless.io', 'https://example.com/akeyless');
+
+    expect(response).toEqual({token: 'akeyless-token'});
+    expect(core.getIDToken).not.toHaveBeenCalled();
   });
 
   test('jwt login fails when GitHub ID token fetch fails', async () => {
