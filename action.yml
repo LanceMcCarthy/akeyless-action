@@ -16,6 +16,9 @@ inputs:
     description: 'The API endpoint to use, defaults to https://api.akeyless.io.'
     default: 'https://api.akeyless.io'
     required: false
+  audience-url:
+    description: 'Custom audience URL for the GitHub OIDC token (JWT only). If omitted, uses the repository owner URL.'
+    required: false
   producer-for-aws-access:
     description: 'Path to an AWS dynamic producer. If provided, AWS credentials will be fetched from it and exported to the environment.'
     default: ''
