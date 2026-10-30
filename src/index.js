@@ -7,8 +7,19 @@ import * as input from './input.js';
 async function run() {
   core.debug('Fetching input');
 
-  const {accessId, accessType, apiUrl, producerForAwsAccess, staticSecrets, dynamicSecrets, exportSecretsToOutputs, exportSecretsToEnvironment, parseDynamicSecrets, timeout} =
-    input.fetchAndValidateInput();
+  const {
+    accessId,
+    accessType,
+    apiUrl,
+    audienceUrl,
+    producerForAwsAccess,
+    staticSecrets,
+    dynamicSecrets,
+    exportSecretsToOutputs,
+    exportSecretsToEnvironment,
+    parseDynamicSecrets,
+    timeout
+  } = input.fetchAndValidateInput();
 
   core.debug(`access id: ${accessId}`);
   core.debug(`Fetch akeyless token with access type ${accessType}`);
@@ -16,7 +27,7 @@ async function run() {
   let akeylessToken;
 
   try {
-    const akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl);
+    const akeylessLoginResponse = await auth.akeylessLogin(accessId, accessType, apiUrl, audienceUrl);
     akeylessToken = akeylessLoginResponse['token'];
   } catch (error) {
     let message = `Failed to login to AKeyless: ${JSON.stringify(error)}`;

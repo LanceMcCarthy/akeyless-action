@@ -22,6 +22,7 @@ This action will login to AKeyless using JWT or IAM authentication and then fetc
 | **access-id** | Yes | `string`  | The access id for your auth method. |
 | **access-type**  | No | `string`  | Default: `jwt`. The login method to use, must be `jwt` or `aws_iam`.  |
 | **api-url** | No | `string`  | Default: `https://api.akeyless.io`. The API endpoint to use. |
+| **audience-url** | No | `string` | Custom audience URL (`aud` claim) for the GitHub OIDC token when using `jwt`. If omitted or empty, GitHub uses the repository owner URL. Must match the audience configured in your AKeyless JWT auth method. Ignored for `aws_iam`. |
 | **producer-for-aws-access** | No | `string`  | Path to an AWS dynamic producer. If provided, AWS credentials will be fetched from it and exported to the environment |
 | **static-secrets** | No | `string` | A JSON object as a string, with a list of static secrets to fetch/export.  The key should be the path to the secret and the value should be the name of the environment variable/output to save it to. |
 | **dynamic-secrets** | No | `string` | A JSON object as a string, with a list of dynamic secrets to fetch/export.  The key should be the path to the secret and the value should be the name of the environment variable/output to save it to. |
